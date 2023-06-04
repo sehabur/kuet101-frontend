@@ -23,7 +23,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { authActions } from '../../store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ToastMessage from './ToastMessage';
 const Header = () => {
   const theme = useTheme();
@@ -31,6 +31,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const auth = useSelector((state) => state.auth);
 
   const [logoutSuccess, setLogoutSuccess] = useState(false);
 
@@ -82,7 +84,7 @@ const Header = () => {
     localStorage.removeItem('userInfo');
     dispatch(authActions.logout());
     setLogoutSuccess(true);
-    // navigate('/signin');
+    navigate('/signin');
   };
 
   const profileMenu = (
@@ -99,7 +101,7 @@ const Header = () => {
         sx={{ mt: 1, mb: 1.4, mx: 4, maxWidth: '200px' }}
         textAlign="center"
       >
-        Hello, Sehabur!
+        Hello, {auth?.firstName}
       </Typography>
       <Divider sx={{ mb: 1 }} />
       <MenuItem onClick={() => handleNavigation('/myAccount', 'profile')}>
@@ -231,7 +233,7 @@ const Header = () => {
 
           <Avatar
             src="/static/images/avatar/1.jpg"
-            alt="Remy Sharp"
+            alt={auth?.firstName}
             onClick={handleProfileMenuOpen}
             sx={{
               color: 'secondary.main',

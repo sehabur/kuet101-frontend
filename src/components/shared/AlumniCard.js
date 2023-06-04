@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 const AlumniCard = ({ data }) => {
   return (

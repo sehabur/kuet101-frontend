@@ -119,7 +119,7 @@ const Signup = () => {
         // );
 
         const response = await axios.post(
-          `http://localhost:5000/api/users/register`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
           formData
         );
 
