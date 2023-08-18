@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import {
   Alert,
   Box,
@@ -9,40 +13,33 @@ import {
   Paper,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
-import axios from 'axios';
-import React from 'react';
-import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import Spinner from '../components/shared/Spinner';
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../store';
-import { useEffect } from 'react';
+
+import { authActions } from '../../store';
+import Spinner from '../../components/shared/Spinner';
 
 const Signin = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-
   const [errorMessage, setErrorMessage] = useState('');
-
-  const auth = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (auth) {
-      if (auth.isLoggedIn) {
-        navigate('/');
-      }
-    }
-  }, [auth, navigate]);
 
   const [formData, setFormData] = useState({
     rollNo: '',
     password: '',
     keepMeLoggedin: false,
   });
+
+  const auth = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const theme = useTheme();
+
+  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -83,12 +80,20 @@ const Signin = () => {
     });
   };
 
+  useEffect(() => {
+    if (auth) {
+      if (auth.isLoggedIn) {
+        navigate('/');
+      }
+    }
+  }, [auth, navigate]);
+
   return (
     <>
       <Spinner open={isLoading} />
       <Box
         sx={{
-          backgroundColor: '#eceff1',
+          bgcolor: matchesSmDown ? '#ffffff' : '#eceff1',
           height: '100vh',
           width: '100vw',
           display: 'flex',
@@ -101,7 +106,7 @@ const Signin = () => {
           sx={{ maxWidth: '550px', mr: { xs: 0, sm: 8 }, textAlign: 'center' }}
         >
           <Box sx={{ mt: { xs: 3 } }}>
-            <img src="logo.png" alt="logo" width="80%" />
+            <img src="/images/logo.png" alt="logo" width="80%" />
           </Box>
           <Typography
             sx={{
@@ -118,17 +123,17 @@ const Signin = () => {
         </Box>
         <Box>
           <Paper
-            elevation={4}
+            elevation={matchesSmDown ? 0 : 2}
             component="form"
             onSubmit={handleSubmit}
             sx={{
               mt: 2,
               py: 3,
-              px: 6,
-              maxWidth: '400px',
+              px: 8,
+              maxWidth: '420px',
               mx: 'auto',
               textAlign: 'center',
-              borderRadius: 2,
+              borderRadius: { xs: 0, sm: 2 },
             }}
           >
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
@@ -181,7 +186,7 @@ const Signin = () => {
 
               <Typography
                 component={RouterLink}
-                to="#"
+                to="/manage-password/reset-link"
                 sx={{ textAlign: 'center', fontSize: '1.1rem' }}
               >
                 Forgotten password?

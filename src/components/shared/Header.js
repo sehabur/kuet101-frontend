@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   AppBar,
   Avatar,
@@ -13,18 +16,14 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
-
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { authActions } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
 import ToastMessage from './ToastMessage';
+
 const Header = () => {
   const theme = useTheme();
 
@@ -43,6 +42,8 @@ const Header = () => {
   const [exploreMenuAnchorEl, setExploreMenuAnchorEl] = useState(null);
 
   const [mobileViewMenuAnchorEl, setMobileViewMenuAnchorEl] = useState(null);
+
+  const [tutionMenuAnchorEl, setTutionMenuAnchorEl] = useState(null);
 
   const handleProfileMenuOpen = (event) => {
     setProfileMenuAnchorEl(event.currentTarget);
@@ -65,6 +66,13 @@ const Header = () => {
     setMobileViewMenuAnchorEl(null);
   };
 
+  const handleTutionMenuOpen = (event) => {
+    setTutionMenuAnchorEl(event.currentTarget);
+  };
+  const handleTutionMenuClose = () => {
+    setTutionMenuAnchorEl(null);
+  };
+
   const handleNavigation = (navigateTo, type) => {
     if (type === 'profile') {
       handleProfileMenuClose();
@@ -72,6 +80,8 @@ const Header = () => {
       handleMobileViewMenuClose();
     } else if (type === 'explore') {
       handleExploreMenuClose();
+    } else if (type === 'tution') {
+      handleTutionMenuClose();
     }
     navigate(navigateTo);
   };
@@ -79,6 +89,7 @@ const Header = () => {
   const handleLogoutToastColse = () => {
     setLogoutSuccess(false);
   };
+
   const handleLogout = () => {
     handleProfileMenuClose();
     localStorage.removeItem('userInfo');
@@ -104,7 +115,9 @@ const Header = () => {
         Hello, {auth?.firstName}
       </Typography>
       <Divider sx={{ mb: 1 }} />
-      <MenuItem onClick={() => handleNavigation('/myAccount', 'profile')}>
+      <MenuItem
+        onClick={() => handleNavigation(`/profile/${auth._id}`, 'profile')}
+      >
         <ListItemIcon>
           <ManageAccountsIcon color="primary" />
         </ListItemIcon>
@@ -134,14 +147,29 @@ const Header = () => {
       }}
     >
       <MenuItem
+        onClick={() => handleNavigation('/find-your-mates', 'explore')}
         sx={{ px: 4 }}
-        onClick={() => handleNavigation('/events', 'explore')}
       >
-        Events
+        Find Your Mates
       </MenuItem>
-      <MenuItem sx={{ px: 4 }}>Stories</MenuItem>
-      <MenuItem sx={{ px: 4 }}>Club activity</MenuItem>
-      <MenuItem sx={{ px: 4 }}>Learning hub</MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/posts', 'explore')}
+        sx={{ px: 4 }}
+      >
+        Posts
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/gallery', 'explore')}
+        sx={{ px: 4 }}
+      >
+        Photo Gallery
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/about', 'explore')}
+        sx={{ px: 4 }}
+      >
+        About Us
+      </MenuItem>
     </Menu>
   );
 
@@ -155,19 +183,89 @@ const Header = () => {
         horizontal: 'left',
       }}
     >
-      <MenuItem sx={{ px: 4, color: 'primary.dark' }}>Seach alumni</MenuItem>
       <MenuItem
         sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/findYourMates', 'mobileView')}
-        component={RouterLink}
-        to="/findYourMates"
+        onClick={() => handleNavigation('/search-alumni', 'mobileView')}
+      >
+        Seach alumni
+      </MenuItem>
+      <MenuItem
+        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation('/find-your-mates', 'mobileView')}
       >
         Find your mates
       </MenuItem>
-      <MenuItem sx={{ px: 4, color: 'primary.dark' }}>Events</MenuItem>
-      <MenuItem sx={{ px: 4, color: 'primary.dark' }}>Stories</MenuItem>
-      <MenuItem sx={{ px: 4, color: 'primary.dark' }}>Club activity</MenuItem>
-      <MenuItem sx={{ px: 4, color: 'primary.dark' }}>Learning hub</MenuItem>
+
+      <MenuItem
+        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation('/search-blood', 'mobileView')}
+      >
+        Blood
+      </MenuItem>
+
+      <MenuItem
+        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation('/learning', 'mobileView')}
+      >
+        Learning hub
+      </MenuItem>
+
+      <MenuItem
+        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation('/tutor/find', 'mobileView')}
+      >
+        Find a tutor
+      </MenuItem>
+      <MenuItem
+        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation('/tutor/enroll', 'mobileView')}
+      >
+        Enroll to be a tutor
+      </MenuItem>
+
+      <MenuItem
+        onClick={() => handleNavigation('/posts', 'mobileView')}
+        sx={{ px: 4, color: 'primary.dark' }}
+      >
+        Posts
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/gallery', 'mobileView')}
+        sx={{ px: 4, color: 'primary.dark' }}
+      >
+        Photo Gallery
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/about', 'mobileView')}
+        sx={{ px: 4, color: 'primary.dark' }}
+      >
+        About Us
+      </MenuItem>
+    </Menu>
+  );
+
+  const tutionMenu = (
+    <Menu
+      anchorEl={tutionMenuAnchorEl}
+      open={Boolean(tutionMenuAnchorEl)}
+      onClose={handleTutionMenuClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+    >
+      <MenuItem
+        sx={{ px: 4 }}
+        onClick={() => handleNavigation('/tutor/find', 'tution')}
+      >
+        Find a tutor
+      </MenuItem>
+      <MenuItem
+        sx={{ px: 4 }}
+        onClick={() => handleNavigation('/tutor/enroll', 'tution')}
+      >
+        Enroll to be a tutor
+      </MenuItem>
     </Menu>
   );
 
@@ -186,16 +284,15 @@ const Header = () => {
         }}
         elevation={0}
       >
-        <Toolbar>
+        <Toolbar sx={{ width: { xs: 'inherit', sm: '980px' }, mx: 'auto' }}>
           <Box
             sx={{
               pt: 0.7,
-              ml: { xs: 0, sm: 5 },
             }}
             component={RouterLink}
             to="/"
           >
-            <img src="logo.png" alt="logo" width="180" />
+            <img src="/images/logo.png" alt="logo" width="180" />
           </Box>
 
           <Box sx={{ flexGrow: 1 }} />
@@ -204,8 +301,7 @@ const Header = () => {
             <>
               <Button
                 color="primary"
-                component={RouterLink}
-                to="/searchAlumni"
+                onClick={() => handleNavigation('/search-alumni')}
                 sx={{ mx: 1 }}
               >
                 Search alumni
@@ -213,11 +309,29 @@ const Header = () => {
 
               <Button
                 color="primary"
-                onClick={() => handleNavigation('/findYourMates')}
+                onClick={() => handleNavigation('/search-blood')}
                 sx={{ mx: 1 }}
               >
-                Find your mates
+                Blood
               </Button>
+
+              <Button
+                color="primary"
+                onClick={() => handleNavigation('/learning')}
+                sx={{ mx: 1 }}
+              >
+                Learning hub
+              </Button>
+
+              <Button
+                color="primary"
+                sx={{ mx: 1 }}
+                endIcon={<ArrowDropDownIcon sx={{ ml: -1 }} />}
+                onClick={handleTutionMenuOpen}
+              >
+                Tution
+              </Button>
+              {tutionMenu}
 
               <Button
                 color="primary"
@@ -225,33 +339,32 @@ const Header = () => {
                 endIcon={<ArrowDropDownIcon sx={{ ml: -1 }} />}
                 onClick={handleExploreMenuOpen}
               >
-                Explore
+                More
               </Button>
               {exploreMenu}
             </>
           )}
+          {matchesSmDown && (
+            <MenuIcon
+              color="primary"
+              onClick={handleMobileViewMenuOpen}
+              sx={{ mx: 1, fontSize: '1.8rem' }}
+            />
+          )}
 
           <Avatar
-            src="/static/images/avatar/1.jpg"
+            src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${auth?.profilePicture}`}
             alt={auth?.firstName}
             onClick={handleProfileMenuOpen}
             sx={{
               color: 'secondary.main',
               bgcolor: '#ddd',
-              ml: 1,
-              mr: { xs: 0, sm: 4 },
+              mx: 2,
             }}
           />
           {profileMenu}
-          {mobileViewMenu}
 
-          {matchesSmDown && (
-            <MenuIcon
-              color="primary"
-              onClick={handleMobileViewMenuOpen}
-              sx={{ ml: 2, fontSize: '1.8rem' }}
-            />
-          )}
+          {mobileViewMenu}
         </Toolbar>
       </AppBar>
       <Toolbar />

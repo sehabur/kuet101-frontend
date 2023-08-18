@@ -1,43 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import {
-  Divider,
   Grid,
   Paper,
   TextField,
   Typography,
   MenuItem,
-  FormLabel,
-  RadioGroup,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
   Button,
   Box,
   Drawer,
-  FormControl,
-  Radio,
   useTheme,
   useMediaQuery,
-  IconButton,
-  Autocomplete,
 } from '@mui/material';
-
 import CloseIcon from '@mui/icons-material/Close';
 
-import { useState } from 'react';
-import { departments, districts, status } from '../data/mappingFile';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-
+import {
+  bloodGroupList,
+  departments,
+  districts,
+  status,
+} from '../data/mappingFile';
 import AlumniCard from '../components/shared/AlumniCard';
+import Spinner from '../components/shared/Spinner';
 
 const SearchAlumni = () => {
-  const theme = useTheme();
-
-  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [searchResult, setSearchResult] = useState(null);
@@ -48,8 +38,6 @@ const SearchAlumni = () => {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const auth = useSelector((state) => state.auth);
-
   const [filterOption, setFilterOption] = useState({
     name: '',
     rollNo: '',
@@ -57,10 +45,19 @@ const SearchAlumni = () => {
     departmentShort: '',
     homeDistrict: '',
     presentDistrict: '',
+    gender: '',
     status: '',
     currentJobTitle: '',
     currentOrganization: '',
   });
+
+  const auth = useSelector((state) => state.auth);
+
+  const theme = useTheme();
+
+  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const navigate = useNavigate();
 
   const handleToggleDrawer = (state) => {
     setOpenDrawer(state);
@@ -99,10 +96,6 @@ const SearchAlumni = () => {
       }
       handleToggleDrawer(false);
       setIsLoading(false);
-
-      //   console.log(
-      //     `${process.env.REACT_APP_BACKEND_URL}/api/users/getUsersByQuery?${queryText}`
-      //   );
     } catch (error) {
       setIsLoading(false);
       console.log(error);
@@ -137,7 +130,7 @@ const SearchAlumni = () => {
 
       <TextField
         fullWidth
-        label="Joining year/batch"
+        label="batch"
         name="batch"
         type="number"
         value={filterOption.batch}
@@ -202,6 +195,45 @@ const SearchAlumni = () => {
 
       <TextField
         select
+        label="Gender"
+        name="gender"
+        fullWidth
+        value={filterOption.gender}
+        onChange={handleFilterOptionChange}
+        size="small"
+        sx={{ my: 1 }}
+      >
+        <MenuItem value="all">Select All</MenuItem>
+        <MenuItem key="female" value="female">
+          Female
+        </MenuItem>
+        <MenuItem key="male" value="male">
+          Male
+        </MenuItem>
+        <MenuItem key="other" value="other">
+          Other
+        </MenuItem>
+      </TextField>
+
+      <TextField
+        select
+        label="Blood Group"
+        name="bloodGroup"
+        fullWidth
+        value={filterOption.bloodGroup}
+        onChange={handleFilterOptionChange}
+        size="small"
+        sx={{ my: 1 }}
+      >
+        {bloodGroupList.map((group) => (
+          <MenuItem key={group} value={group}>
+            {group}
+          </MenuItem>
+        ))}
+      </TextField>
+
+      <TextField
+        select
         fullWidth
         value={filterOption.status}
         onChange={handleFilterOptionChange}
@@ -251,15 +283,15 @@ const SearchAlumni = () => {
     </Box>
   );
 
+  useEffect(() => {
+    if (!auth?.isLoggedIn) {
+      navigate('/signin');
+    }
+  }, [navigate, auth]);
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        maxWidth: '1150px',
-        mx: 'auto',
-        alignItems: 'flex-start',
-      }}
-    >
+    <>
+      <Spinner open={isLoading} />
       <Drawer
         anchor="bottom"
         open={openDrawer}
@@ -284,64 +316,88 @@ const SearchAlumni = () => {
             Cancel
           </Button>
         </Box>
-
         {filterMenu}
       </Drawer>
-      <Paper
+
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
         sx={{
-          maxWidth: '350px',
-          py: 2,
-          mt: 6,
-          mb: 4,
-          borderRadius: 2,
-          mr: 6,
-          display: { xs: 'none', sm: 'block' },
+          maxWidth: '1175px',
+          mx: 'auto',
         }}
-        elevation={2}
       >
-        {filterMenu}
-      </Paper>
-      <Box sx={{ maxWidth: '800px' }}>
-        {matchesSmDown && (
-          <Box sx={{ px: 3, mt: 4 }}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => handleToggleDrawer(true)}
-              sx={{ px: 8, py: 1.5 }}
-            >
-              Advanced search options
-            </Button>
-          </Box>
-        )}
-        <Typography sx={{ fontSize: '1.6rem', my: 2, px: { xs: 3, sm: 0 } }}>
-          Search results
-        </Typography>
-        <Grid
-          container
-          spacing={3}
-          display="flex"
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-        >
-          {searchResult?.length > 0 ? (
-            searchResult.map((item) => (
-              <Grid item xs={12} sm={4} sx={{ mx: { xs: 3, sm: 0 } }}>
-                <AlumniCard data={item} />
-              </Grid>
-            ))
-          ) : (
-            <Typography
-              sx={{ pt: 6, pl: 3, mb: { xs: 10 } }}
-              color="text.secondary"
-            >
-              {searchMessage}
-            </Typography>
-          )}
+        <Grid item xs={12} sm={3.5}>
+          <Paper
+            sx={{
+              maxWidth: '300px',
+              py: 2,
+              mt: 6,
+              mb: 4,
+              borderRadius: 2,
+              display: { xs: 'none', sm: 'block' },
+            }}
+            elevation={2}
+          >
+            {filterMenu}
+          </Paper>
         </Grid>
-      </Box>
-    </Box>
+
+        <Grid item xs={12} sm={8.5}>
+          <Box sx={{ maxWidth: '800px' }}>
+            {matchesSmDown && (
+              <Box sx={{ px: 4, mt: 4 }}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  onClick={() => handleToggleDrawer(true)}
+                  sx={{ px: 8, py: 1.5 }}
+                >
+                  Advanced search options
+                </Button>
+              </Box>
+            )}
+            <Typography
+              sx={{ fontSize: '1.6rem', mt: 5, mb: 2, px: { xs: 3, sm: 0 } }}
+            >
+              Search result {searchResult && `(${searchResult.length} matches)`}
+            </Typography>
+
+            <Box sx={{ mb: 4 }}>
+              <Grid
+                container
+                spacing={3}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
+                {searchResult?.length > 0 ? (
+                  searchResult.map((user) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
+                    >
+                      <AlumniCard data={user} />
+                    </Grid>
+                  ))
+                ) : (
+                  <Typography
+                    sx={{ pt: 6, pl: 3, mb: { xs: 10 }, mx: { xs: 3, sm: 0 } }}
+                    color="text.secondary"
+                  >
+                    {searchMessage}
+                  </Typography>
+                )}
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

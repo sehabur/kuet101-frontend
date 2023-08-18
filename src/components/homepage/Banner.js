@@ -1,73 +1,76 @@
 import React from 'react';
-
-import { Box, Button, Typography } from '@mui/material';
+import Carousel from 'react-material-ui-carousel';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
-const Banner = () => {
-  return (
-    <Box
-      sx={{
-        // backgroundColor: '#202F7A',
-        backgroundImage: 'url("ban2.png")',
-        backgroundPosition: 'right bottom',
-        height: { xs: '300px', sm: '550px' },
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        p: 2,
-      }}
-    >
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography
-          sx={{
-            color: `${grey[300]}`,
-            fontSize: { xs: '2.2rem', sm: '4rem' },
-            fontFamily: 'Noto Sans Display, sans-serif',
-            fontWeight: 'bold',
-          }}
-        >
-          Kuetians HUB
-        </Typography>
+// import ReactPlayer from 'react-player/lazy';
 
+const Banner = () => {
+  const bannerNames = [
+    'banner_1.jpg',
+    'banner_2.jpg',
+    'banner_3.jpg',
+    'banner_4.jpeg',
+  ];
+
+  const cardText = (
+    <Card
+      sx={{
+        maxWidth: 750,
+        bgcolor: grey[200],
+        opacity: '.8',
+        py: 3,
+        px: { xs: 3, sm: 8 },
+        mx: { xs: 6, sm: 0 },
+        borderRadius: 4,
+      }}
+      elevation={0}
+    >
+      <CardContent>
         <Typography
+          variant="h4"
           sx={{
-            color: `${grey[100]}`,
-            fontSize: { xs: '1.4rem', sm: '2.2rem' },
-            fontFamily: 'Proza Libre, sans-serif',
-            mt: 1.2,
-            mb: { xs: 3, sm: 5 },
+            lineHeight: 1.7,
+            textAlign: 'center',
+            fontSize: { xs: '1.2rem', sm: '2rem' },
           }}
         >
-          Stay connected with your Kuetian community
+          Get conneted and start sharing with your kuetian community
         </Typography>
-        <Button
-          variant="contained"
-          color="success"
-          sx={{
-            mx: { xs: 1, sm: 2 },
-            mb: 2,
-            py: 1.5,
-            px: { sm: 6 },
-            fontSize: '1.1rem',
-          }}
-        >
-          Search alumni
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            mx: { xs: 1, sm: 2 },
-            mb: 2,
-            py: 1.5,
-            px: { sm: 6 },
-            fontSize: '1.1rem',
-          }}
-        >
-          Find your mates
-        </Button>
-      </Box>
-    </Box>
+      </CardContent>
+    </Card>
+  );
+  return (
+    <>
+      <Carousel autoPlay={true} stopAutoPlayOnHover={false} indicators={false}>
+        {/* <Box>
+          <ReactPlayer
+            url="banners/banner_4.mp4"
+            playing={true}
+            volume={0}
+            width="1000px"
+            height="100%"
+            style={{ textAlign: 'center', margin: 'auto' }}
+          />
+        </Box> */}
+
+        {bannerNames.map((item) => (
+          <Box
+            sx={{
+              backgroundImage: `url(banners/${item})`,
+              height: { xs: '370px', sm: '575px' },
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {cardText}
+          </Box>
+        ))}
+      </Carousel>
+    </>
   );
 };
 

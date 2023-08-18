@@ -25,6 +25,17 @@ export const departments = [
   },
 ];
 
+export const bloodGroupList = [
+  'A+',
+  'A-',
+  'B+',
+  'B-',
+  'O+',
+  'O-',
+  'AB+',
+  'AB-',
+];
+
 export const status = [
   {
     id: 1,

@@ -1,35 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
   Chip,
   Divider,
   Grid,
-  Paper,
-  Stack,
   Typography,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import Spinner from '../components/shared/Spinner';
-import { useEffect } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+import Spinner from '../../components/shared/Spinner';
+
 const AlumniDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth);
 
   const [userDetails, setUserDetails] = useState(null);
 
-  let { id } = useParams();
+  const { id } = useParams();
 
   const getUserDetails = async () => {
     try {
@@ -54,7 +50,13 @@ const AlumniDetails = () => {
   useEffect(() => {
     getUserDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, [id]);
+
+  useEffect(() => {
+    if (!auth?.isLoggedIn) {
+      navigate('/signin');
+    }
+  }, [navigate, auth]);
 
   return (
     <Box sx={{ maxWidth: '950px', mx: 'auto', py: 4, px: 2, mb: 4 }}>
@@ -78,9 +80,36 @@ const AlumniDetails = () => {
             <Typography variant="h4">
               {userDetails.firstName} {userDetails.lastName}
             </Typography>
+
+            {id === auth?._id && (
+              <>
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  component={RouterLink}
+                  to={`/profile/edit/${id}`}
+                  sx={{ py: 0.25, my: 1, mr: 2 }}
+                >
+                  Edit profile
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  component={RouterLink}
+                  to={`/posts/my-posts/${id}`}
+                  sx={{ py: 0.25, my: 1, mr: 2 }}
+                >
+                  My posts
+                </Button>
+              </>
+            )}
+
             <Typography variant="h5" color="primary.dark" sx={{ mt: 0.5 }}>
-              {userDetails.currentJobTitle} at {userDetails.currentOrganization}
+              {userDetails.status === 'seekingJob'
+                ? 'I am still seeking an appropiate opportunity'
+                : `${userDetails.currentJobTitle} at ${userDetails.currentOrganization}`}
             </Typography>
+
             <Typography variant="h6" sx={{ mt: 4, mb: 1 }}>
               Department of {userDetails.departmentLong}
             </Typography>
@@ -98,6 +127,11 @@ const AlumniDetails = () => {
             <Typography variant="body1" sx={{ mt: 3 }}>
               Home District: {userDetails.homeDistrict}
             </Typography>
+
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              Blood Group: {userDetails.bloodGroup}
+            </Typography>
+
             <Divider sx={{ my: 3 }} />
             <Typography
               variant="body1"
@@ -112,7 +146,7 @@ const AlumniDetails = () => {
             </Typography>
             {userDetails.phoneNo && (
               <Typography variant="body1" sx={{ mt: 1 }}>
-                Phone number: {userDetails.phoneNo}
+                Phone number: {userDetails?.phoneNo || 'Not available'}
               </Typography>
             )}
             <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
@@ -136,6 +170,17 @@ const AlumniDetails = () => {
             >
               Facebook profile
             </Button>
+
+            {id === auth?._id && (
+              <Box sx={{ my: 4 }}>
+                <Typography variant="h6" color="success.dark">
+                  Referral Code: {userDetails.selfReferralCode}
+                </Typography>
+                <Typography color="text.secondary">
+                  Use this code to refer another alumni
+                </Typography>
+              </Box>
+            )}
           </Grid>
         </Grid>
       )}

@@ -1,28 +1,18 @@
-import React, { useState } from 'react';
-
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { grey } from '@mui/material/colors';
-import Spinner from '../components/shared/Spinner';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import AlumniCard from '../components/shared/AlumniCard';
-import { useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+import { Box, Button, Grid, Typography } from '@mui/material';
+import { grey } from '@mui/material/colors';
+
+import Spinner from '../components/shared/Spinner';
+import AlumniCard from '../components/shared/AlumniCard';
+
 const FindYourMates = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth);
 
@@ -53,6 +43,12 @@ const FindYourMates = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
+  useEffect(() => {
+    if (!auth?.isLoggedIn) {
+      navigate('/signin');
+    }
+  }, [navigate, auth]);
+
   return (
     <>
       <Spinner open={isLoading} />
@@ -67,28 +63,33 @@ const FindYourMates = () => {
           >
             Trending people in your community
           </Typography>
-          <Grid
-            container
-            spacing={3}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {findYourMatesData?.usersByTrend.map((user) => (
-              <Grid
-                item
-                xs={12}
-                sm={3}
-                sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
-              >
-                <AlumniCard data={user} />
-              </Grid>
-            ))}
-          </Grid>
+
+          {findYourMatesData?.usersByTrend?.length > 0 ? (
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              {findYourMatesData?.usersByTrend.map((user) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
+                >
+                  <AlumniCard data={user} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography>No alumni found with trending profile</Typography>
+          )}
         </Box>
       </Box>
 
-      <Box sx={{ my: 4, bgcolor: '#eee' }}>
+      <Box sx={{ my: 4, bgcolor: grey[50] }}>
         <Box
           sx={{
             maxWidth: '1080px',
@@ -105,25 +106,28 @@ const FindYourMates = () => {
           >
             Alumni from your department
           </Typography>
-          <Grid
-            container
-            spacing={3}
-            display="flex"
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {findYourMatesData?.usersByDept.map((user) => (
-              <Grid
-                item
-                xs={12}
-                sm={3}
-                sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
-              >
-                <AlumniCard data={user} />
-              </Grid>
-            ))}
-          </Grid>
+          {findYourMatesData?.usersByDept?.length > 0 ? (
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              {findYourMatesData?.usersByDept.map((user) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
+                >
+                  <AlumniCard data={user} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography>No alumni found matching your profile</Typography>
+          )}
         </Box>
       </Box>
 
@@ -138,29 +142,33 @@ const FindYourMates = () => {
           >
             Alumni from your batch
           </Typography>
-          <Grid
-            container
-            spacing={3}
-            display="flex"
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {findYourMatesData?.usersByBatch.map((user) => (
-              <Grid
-                item
-                xs={12}
-                sm={3}
-                sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
-              >
-                <AlumniCard data={user} />
-              </Grid>
-            ))}
-          </Grid>
+
+          {findYourMatesData?.usersByBatch?.length > 0 ? (
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              {findYourMatesData?.usersByBatch.map((user) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
+                >
+                  <AlumniCard data={user} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography>No alumni found matching your profile</Typography>
+          )}
         </Box>
       </Box>
 
-      <Box sx={{ my: 4 }}>
+      <Box sx={{ mt: 4, pb: 4, bgcolor: grey[50] }}>
         <Box
           sx={{ maxWidth: '1080px', mx: 'auto', py: 4, textAlign: 'center' }}
         >
@@ -171,32 +179,35 @@ const FindYourMates = () => {
           >
             Alumni from your home district
           </Typography>
-          <Grid
-            container
-            spacing={3}
-            display="flex"
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {findYourMatesData?.usersByHomeDistrict.map((user) => (
-              <Grid
-                item
-                xs={12}
-                sm={3}
-                sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
-              >
-                <AlumniCard data={user} />
-              </Grid>
-            ))}
-          </Grid>
+
+          {findYourMatesData?.usersByHomeDistrict?.length > 0 ? (
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              {findYourMatesData?.usersByHomeDistrict.map((user) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  sx={{ mx: { xs: 4, sm: 0 }, mb: { xs: 0, sm: 1 } }}
+                >
+                  <AlumniCard data={user} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Typography>No alumni found matching your profile</Typography>
+          )}
         </Box>
       </Box>
 
       <Box
         sx={{
           textAlign: 'center',
-          mt: 4,
           py: 8,
           bgcolor: '#202F7A',
         }}
@@ -212,7 +223,7 @@ const FindYourMates = () => {
           variant="contained"
           color="primary"
           component={RouterLink}
-          to="/searchAlumni"
+          to="/search-alumni"
           sx={{ fontSize: '1.1rem', px: 6, py: 1.5, mt: 4 }}
         >
           Search for an alumni

@@ -1,3 +1,8 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import 'react-image-upload/dist/index.css';
+import { Link as RouterLink } from 'react-router-dom';
+
 import {
   Alert,
   Box,
@@ -7,37 +12,32 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   Grid,
   MenuItem,
-  Paper,
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
-import { useState } from 'react';
-import ImageUploader from 'react-image-upload';
-import 'react-image-upload/dist/index.css';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { compressImageFile } from '../helper';
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { departments, districts, status } from '../data/mappingFile';
-import axios from 'axios';
-import Spinner from '../components/shared/Spinner';
+import {
+  departments,
+  districts,
+  status,
+  bloodGroupList,
+} from '../../data/mappingFile';
+import Spinner from '../../components/shared/Spinner';
+import ImageEditor from '../../components/shared/ImageEditor';
 
 const Signup = () => {
   const [formInputs, setFormInputs] = useState({
     firstName: '',
     lastName: '',
     homeDistrict: '',
+    currentlyLiveIn: '',
     presentDistrict: '',
+    gender: '',
+    bloodGroup: '',
     departmentShort: '',
+    rollNo: '',
     batch: '',
     email: '',
     phoneNo: '',
@@ -60,9 +60,12 @@ const Signup = () => {
 
   const [isImageSelected, setIsImageSelected] = useState(false);
 
-  const navigate = useNavigate();
-
-  // const auth = useSelector((state) => state.auth);
+  const handleImageEditorCallback = (imageData) => {
+    setFormInputs({
+      ...formInputs,
+      profilePicture: imageData,
+    });
+  };
 
   const handleSuccessDialogOpen = () => {
     setOpenSuccessDialog(true);
@@ -78,30 +81,19 @@ const Signup = () => {
       [event.target.name]: event.target.value,
     });
   };
-  // console.log(formInputs);
-
-  const getImageFileObject = async ({ file }) => {
-    setIsImageSelected(true);
-    console.log(file);
-
-    const compressedFile = await compressImageFile(file, 0.08);
-
-    setFormInputs({
-      ...formInputs,
-      profilePicture: compressedFile,
-    });
-  };
-
-  const runAfterImageDelete = (file) => {
-    setIsImageSelected(false);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setIsLoading(true);
       if (formInputs.password === formInputs.confirmPassword) {
-        setIsLoading(true);
-
+        if (formInputs.status === 'seekingJob') {
+          setFormInputs({
+            ...formInputs,
+            currentJobTitle: 'notApplicable',
+            currentOrganization: 'notApplicable',
+          });
+        }
         let formData = new FormData();
 
         departments.forEach((item) => {
@@ -112,11 +104,6 @@ const Signup = () => {
         for (let key in formInputs) {
           formData.append(key, formInputs[key]);
         }
-
-        // const response = await axios.post(
-        //   `${process.env.REACT_APP_BACKEND_URL}/api/register`,
-        //   formData
-        // );
 
         const response = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
@@ -144,14 +131,6 @@ const Signup = () => {
       setIsLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   if (auth) {
-  //     if (auth.isLoggedIn) {
-  //       navigate('/');
-  //     }
-  //   }
-  // }, [auth, navigate]);
 
   const successDialog = (
     <Dialog open={openSuccessDialog}>
@@ -185,7 +164,7 @@ const Signup = () => {
       {successDialog}
       <Box sx={{ textAlign: 'center' }}>
         <Box sx={{ mt: 2 }}>
-          <img src="logo.png" alt="logo" width="275" />
+          <img src="/logo.png" alt="logo" width="275" />
         </Box>
         <Typography
           sx={{
@@ -247,6 +226,63 @@ const Signup = () => {
             onChange={handleChange}
           ></TextField>
         </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            select
+            label="Currently live in"
+            name="currentlyLiveIn"
+            fullWidth
+            required
+            value={formInputs.currentlyLiveIn}
+            onChange={handleChange}
+          >
+            <MenuItem key="insideBd" value="insideBd">
+              Inside Bangladesh
+            </MenuItem>
+            <MenuItem key="outsideBd" value="outsideBd">
+              Outside of Bangladesh
+            </MenuItem>
+          </TextField>
+        </Grid>
+
+        {formInputs.currentlyLiveIn === 'outsideBd' ? (
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Present Address"
+              name="presentDistrict"
+              fullWidth
+              required
+              helperText="Please write state and country"
+              value={formInputs.presentDistrict}
+              onChange={handleChange}
+              sx={{
+                '.MuiFormHelperText-root': {
+                  color: 'warning.main',
+                },
+              }}
+            />
+          </Grid>
+        ) : (
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              label="Present District"
+              name="presentDistrict"
+              fullWidth
+              required
+              value={formInputs.presentDistrict}
+              onChange={handleChange}
+            >
+              {districts.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+        )}
+
         <Grid item xs={12} sm={6}>
           <TextField
             select
@@ -264,19 +300,42 @@ const Signup = () => {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} sm={6}>
           <TextField
             select
-            label="Present District"
-            name="presentDistrict"
+            label="Gender"
+            name="gender"
             fullWidth
             required
-            value={formInputs.presentDistrict}
+            value={formInputs.gender}
             onChange={handleChange}
           >
-            {districts.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
+            <MenuItem key="female" value="female">
+              Female
+            </MenuItem>
+            <MenuItem key="male" value="male">
+              Male
+            </MenuItem>
+            <MenuItem key="other" value="other">
+              Other
+            </MenuItem>
+          </TextField>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            select
+            label="Blood Group"
+            name="bloodGroup"
+            fullWidth
+            required
+            value={formInputs.bloodGroup}
+            onChange={handleChange}
+          >
+            {bloodGroupList.map((group) => (
+              <MenuItem key={group} value={group}>
+                {group}
               </MenuItem>
             ))}
           </TextField>
@@ -329,7 +388,7 @@ const Signup = () => {
 
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Joining year/Batch"
+            label="Batch"
             name="batch"
             fullWidth
             required
@@ -382,7 +441,12 @@ const Signup = () => {
             name="linkedinProfileUrl"
             type="url"
             fullWidth
-            required
+            helperText="Please ensure to fill this field as this url will be used further to update your profile"
+            sx={{
+              '.MuiFormHelperText-root': {
+                color: 'warning.main',
+              },
+            }}
             value={formInputs.linkedinProfileUrl}
             onChange={handleChange}
           ></TextField>
@@ -393,7 +457,6 @@ const Signup = () => {
             name="facebookProfileUrl"
             type="url"
             fullWidth
-            required
             value={formInputs.facebookProfileUrl}
             onChange={handleChange}
           ></TextField>
@@ -430,27 +493,37 @@ const Signup = () => {
           </TextField>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Position"
-            name="currentJobTitle"
-            fullWidth
-            required
-            value={formInputs.currentJobTitle}
-            onChange={handleChange}
-          ></TextField>
-        </Grid>
+        {formInputs.status !== 'seekingJob' && (
+          <>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Position"
+                name="currentJobTitle"
+                fullWidth
+                required
+                value={formInputs.currentJobTitle}
+                onChange={handleChange}
+              ></TextField>
+            </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            label="Organization Name"
-            name="currentOrganization"
-            fullWidth
-            required
-            value={formInputs.currentOrganization}
-            onChange={handleChange}
-          ></TextField>
-        </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Organization Name"
+                name="currentOrganization"
+                fullWidth
+                required
+                helperText="Please write the full name"
+                value={formInputs.currentOrganization}
+                onChange={handleChange}
+                sx={{
+                  '.MuiFormHelperText-root': {
+                    color: 'warning.main',
+                  },
+                }}
+              ></TextField>
+            </Grid>
+          </>
+        )}
 
         <Grid item xs={12}>
           <Typography
@@ -467,34 +540,11 @@ const Signup = () => {
         </Grid>
 
         <Grid item xs={12} sx={{ ml: 0.5 }}>
-          <ImageUploader
-            onFileAdded={(img) => getImageFileObject(img)}
-            onFileRemoved={(img) => runAfterImageDelete(img)}
-            style={{
-              height: isImageSelected ? 175 : 25,
-              width: isImageSelected ? 175 : 25,
-              background: 'transparent',
-              borderRadius: 12,
-            }}
-            deleteIcon={
-              <DeleteIcon
-                sx={{
-                  display: ` ${!isImageSelected && 'none'}`,
-                  color: 'white',
-                  bgcolor: 'red',
-                  fontSize: '1.8rem',
-                }}
-              />
-            }
-            uploadIcon={
-              <CloudUploadIcon
-                sx={{
-                  display: ` ${isImageSelected && 'none'}`,
-                  color: 'primary.main',
-                  fontSize: '4rem',
-                }}
-              />
-            }
+          <ImageEditor
+            prevImageUrl={null}
+            imageEditorCallback={handleImageEditorCallback}
+            imageHeight={175}
+            imageWidth={175}
           />
         </Grid>
 
@@ -518,7 +568,7 @@ const Signup = () => {
             name="password"
             type="password"
             inputProps={{ minLength: 6 }}
-            placeholder="minimun 6 character"
+            placeholder="Minimum 6 character"
             fullWidth
             required
             value={formInputs.password}
@@ -530,7 +580,7 @@ const Signup = () => {
             label="Confirm Password"
             name="confirmPassword"
             type="password"
-            placeholder="minimun 6 character"
+            placeholder="Minimum 6 character"
             fullWidth
             required
             value={formInputs.confirmPassword}

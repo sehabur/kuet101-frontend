@@ -1,27 +1,19 @@
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
-  Container,
-  Grid,
-  Link,
   Typography,
   Paper,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListItemButton,
   Stack,
-  IconButton,
 } from '@mui/material';
-import { grey, yellow, blue } from '@mui/material/colors';
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
+import { grey } from '@mui/material/colors';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import EmailIcon from '@mui/icons-material/Email';
 import CallIcon from '@mui/icons-material/Call';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const footerMenu = [
   {
@@ -111,7 +103,7 @@ const Footer = () => {
 
             <ListItem alignItems="flex-start" disablePadding dense>
               <ListItemIcon>
-                <CallIcon color="primary" />
+                <CallIcon color="info" />
               </ListItemIcon>
               <ListItemText primary="Call Us" secondary="01311086137" />
             </ListItem>

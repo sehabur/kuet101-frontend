@@ -29,13 +29,11 @@ const theme = createTheme({
       color: '#202F7A',
       lineHeight: 1.3,
     },
+    h6: {
+      lineHeight: 1.3,
+    },
   },
   components: {
-    // MuiTypography: {
-    //   defaultProps: {
-    //     variant: 'body2',
-    //   },
-    // },
     MuiButton: {
       styleOverrides: {
         root: {
