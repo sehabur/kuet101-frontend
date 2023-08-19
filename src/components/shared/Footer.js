@@ -21,39 +21,39 @@ const footerMenu = [
     link: '/',
   },
   {
-    name: 'Find alumni',
-    link: '/findPost',
+    name: 'Search alumni',
+    link: '/search-alumni',
   },
   {
-    name: 'Explore your mates',
-    link: '/createPost',
+    name: 'Find your mates',
+    link: '/find-your-mates',
   },
   {
     name: 'Learning Hub',
-    link: '/exploreShops',
+    link: '/learning',
   },
   {
-    name: 'Upcoming events',
-    link: '/notification',
+    name: 'Photo Gallery',
+    link: '/gallery',
   },
   {
-    name: 'Stories',
-    link: '/myAccount#0',
+    name: 'Posts',
+    link: '/posts',
   },
 ];
 
 const footerSecondMenu = [
   {
     name: 'About Us',
-    link: '/',
+    link: '/aboutus',
   },
   {
     name: 'Terms & Condition',
-    link: '/',
+    link: '#',
   },
   {
     name: 'Privacy Policy',
-    link: '/',
+    link: '#',
   },
 ];
 
@@ -79,7 +79,7 @@ const Footer = () => {
         }}
       >
         <Box sx={{ my: 'auto' }}>
-          <img src="logo.png" alt="logo" width="220" />
+          <img src="/images/logo.png" alt="logo" width="220" />
         </Box>
 
         <Box sx={{ mx: 6 }}>
@@ -95,17 +95,14 @@ const Footer = () => {
               <ListItemIcon>
                 <EmailIcon color="info" />
               </ListItemIcon>
-              <ListItemText
-                primary="Email Us"
-                secondary="sehabur42@gmail.com"
-              />
+              <ListItemText primary="Email" secondary="sehabur42@gmail.com" />
             </ListItem>
 
             <ListItem alignItems="flex-start" disablePadding dense>
               <ListItemIcon>
                 <CallIcon color="info" />
               </ListItemIcon>
-              <ListItemText primary="Call Us" secondary="01311086137" />
+              <ListItemText primary="Contact" secondary="01311086137" />
             </ListItem>
           </List>
         </Box>

@@ -3,7 +3,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import { format } from 'date-fns';
 import {
   Avatar,
   Box,
@@ -59,7 +59,7 @@ const AlumniDetails = () => {
   }, [navigate, auth]);
 
   return (
-    <Box sx={{ maxWidth: '950px', mx: 'auto', py: 4, px: 2, mb: 4 }}>
+    <Box sx={{ maxWidth: '850px', mx: 'auto', py: 4, px: 2, mb: 4 }}>
       <Spinner open={isLoading} />
       {userDetails && (
         <Grid
@@ -77,7 +77,7 @@ const AlumniDetails = () => {
           </Grid>
 
           <Grid item xs={12} sm={9} sx={{ mt: 2 }}>
-            <Typography variant="h4">
+            <Typography variant="h4" sx={{ fontSize: '2rem' }}>
               {userDetails.firstName} {userDetails.lastName}
             </Typography>
 
@@ -104,13 +104,18 @@ const AlumniDetails = () => {
               </>
             )}
 
-            <Typography variant="h5" color="primary.dark" sx={{ mt: 0.5 }}>
+            <Typography
+              color="primary.dark"
+              sx={{ mt: 0.5, fontSize: '1.3rem' }}
+            >
               {userDetails.status === 'seekingJob'
                 ? 'I am still seeking an appropiate opportunity'
                 : `${userDetails.currentJobTitle} at ${userDetails.currentOrganization}`}
             </Typography>
 
-            <Typography variant="h6" sx={{ mt: 4, mb: 1 }}>
+            <Divider sx={{ my: 2 }} light={true} />
+
+            <Typography sx={{ mb: 1, fontSize: '1.15rem' }}>
               Department of {userDetails.departmentLong}
             </Typography>
             <Chip
@@ -132,12 +137,8 @@ const AlumniDetails = () => {
               Blood Group: {userDetails.bloodGroup}
             </Typography>
 
-            <Divider sx={{ my: 3 }} />
-            <Typography
-              variant="body1"
-              sx={{ mt: 1, mb: 2 }}
-              color="text.secondary"
-            >
+            <Divider sx={{ my: 2 }} light={true} />
+            <Typography variant="body1" sx={{ mb: 2 }} color="text.secondary">
               Contact information
             </Typography>
 
@@ -172,15 +173,22 @@ const AlumniDetails = () => {
             </Button>
 
             {id === auth?._id && (
-              <Box sx={{ my: 4 }}>
-                <Typography variant="h6" color="success.dark">
-                  Referral Code: {userDetails.selfReferralCode}
-                </Typography>
-                <Typography color="text.secondary">
-                  Use this code to refer another alumni
-                </Typography>
-              </Box>
+              <>
+                <Divider sx={{ mt: 3 }} light={true} />
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="h6" color="success.dark">
+                    Referral Code: {userDetails.selfReferralCode}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Use this code to refer another alumni
+                  </Typography>
+                </Box>
+              </>
             )}
+            <Typography sx={{ mt: 4, fontSize: '.9rem', fontStyle: 'italic' }}>
+              Profile last updated on{' '}
+              {format(new Date(userDetails.createdAt), 'dd/MM/yyyy')}
+            </Typography>
           </Grid>
         </Grid>
       )}

@@ -28,6 +28,7 @@ import LearningFileExplorer from './pages/learning/LearningFileExplorer';
 import Gallery from './pages/gallery/Gallery';
 import AddGalleryPhoto from './pages/gallery/AddGalleryPhoto';
 import Blood from './pages/Blood';
+import About from './pages/About';
 
 const App = () => {
   return (
@@ -75,6 +76,8 @@ const App = () => {
                   <Route path="edit/:id" element={<EditProfile />} />
                 </Route>
               </Route>
+
+              <Route path="aboutus" element={<About />} />
 
               <Route path="/signin" element={<Signin />} />
               <Route path="/signup" element={<Signup />} />

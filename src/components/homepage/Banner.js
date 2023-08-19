@@ -16,23 +16,28 @@ const Banner = () => {
   const cardText = (
     <Card
       sx={{
-        maxWidth: 750,
-        bgcolor: grey[200],
-        opacity: '.8',
-        py: 3,
-        px: { xs: 3, sm: 8 },
+        maxWidth: 710,
+        bgcolor: 'white',
+        opacity: '0.85',
+        py: { xs: 1, sm: 2.5 },
+        px: { xs: 2, sm: 4 },
         mx: { xs: 6, sm: 0 },
-        borderRadius: 4,
+        borderRadius: 2,
       }}
       elevation={0}
     >
       <CardContent>
         <Typography
-          variant="h4"
           sx={{
             lineHeight: 1.7,
             textAlign: 'center',
-            fontSize: { xs: '1.2rem', sm: '2rem' },
+            fontSize: {
+              xs: '1.4rem',
+              sm: '2.2rem',
+            },
+            color: '#3d3f42',
+            fontFamily: 'Roboto',
+            fontWeight: 300,
           }}
         >
           Get conneted and start sharing with your kuetian community
@@ -58,7 +63,7 @@ const Banner = () => {
           <Box
             sx={{
               backgroundImage: `url(banners/${item})`,
-              height: { xs: '370px', sm: '575px' },
+              height: { xs: '350px', sm: '550px' },
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center center',
               display: 'flex',

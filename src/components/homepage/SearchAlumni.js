@@ -26,7 +26,7 @@ const SearchAlumni = () => {
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        py: { xs: 4, sm: 10 },
+        py: { xs: 4, sm: 8 },
         px: { xs: 2, sm: 0 },
         bgcolor: grey[100],
       }}

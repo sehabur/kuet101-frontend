@@ -165,7 +165,7 @@ const Header = () => {
         Photo Gallery
       </MenuItem>
       <MenuItem
-        onClick={() => handleNavigation('/about', 'explore')}
+        onClick={() => handleNavigation('/aboutus', 'explore')}
         sx={{ px: 4 }}
       >
         About Us
@@ -236,7 +236,7 @@ const Header = () => {
         Photo Gallery
       </MenuItem>
       <MenuItem
-        onClick={() => handleNavigation('/about', 'mobileView')}
+        onClick={() => handleNavigation('/aboutus', 'mobileView')}
         sx={{ px: 4, color: 'primary.dark' }}
       >
         About Us
