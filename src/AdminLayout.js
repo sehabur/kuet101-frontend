@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 
 import { Outlet, useLocation } from 'react-router-dom';
 
-import Header from './components/shared/Header';
-import Footer from './components/shared/Footer';
 import AdminHeader from './components/admin/AdminHeader';
+import AdminFooter from './components/admin/AdminFooter';
 
-const LayoutWithHeader = () => {
+const AdminLayout = () => {
   let location = useLocation();
 
   useEffect(() => {
@@ -15,11 +14,11 @@ const LayoutWithHeader = () => {
 
   return (
     <>
-      <Header />
+      <AdminHeader />
       <Outlet />
-      <Footer />
+      <AdminFooter />
     </>
   );
 };
 
-export default LayoutWithHeader;
+export default AdminLayout;

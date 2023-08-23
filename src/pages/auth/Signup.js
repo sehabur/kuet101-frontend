@@ -139,8 +139,8 @@ const Signup = () => {
         <DialogContent>
           <DialogContentText>Dear {formInputs.firstName},</DialogContentText>
           <DialogContentText>
-            Your account has been created successfully. Please sign in to
-            continue visiting the site.
+            Your account has been created and is now pending for approval. You
+            will get an email shortly once it is approved.
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>

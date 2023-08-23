@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import ImageUploader from 'react-image-upload';
 
 import { Box, Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { compressImageFile } from '../../helper';
+import { grey, red } from '@mui/material/colors';
 
 const ImageEditor = ({
   prevImageUrl,
@@ -64,11 +65,11 @@ const ImageEditor = ({
           borderRadius: 12,
         }}
         deleteIcon={
-          <DeleteIcon
+          <DeleteOutlineIcon
             sx={{
               display: ` ${!isNewImgSelected && 'none'}`,
-              color: 'white',
-              bgcolor: 'red',
+              color: grey[200],
+              bgcolor: red[400],
               fontSize: '1.8rem',
             }}
           />

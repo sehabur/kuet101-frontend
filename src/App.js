@@ -1,13 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
-
 import { Container, CssBaseline, ThemeProvider } from '@mui/material';
 
 import LayoutWithHeader from './LayoutWithHeader';
 import theme from './context/theme';
 import store from './store';
-
 import Homepage from './pages/Homepage';
 import Signin from './pages/auth/Signin';
 import Signup from './pages/auth/Signup';
@@ -29,6 +27,10 @@ import Gallery from './pages/gallery/Gallery';
 import AddGalleryPhoto from './pages/gallery/AddGalleryPhoto';
 import Blood from './pages/Blood';
 import About from './pages/About';
+import AdminLayout from './AdminLayout';
+import Users from './pages/admin/Users';
+import UserDetails from './pages/admin/UserDetails';
+import Dashboard from './pages/admin/Dashboard';
 
 const App = () => {
   return (
@@ -75,9 +77,9 @@ const App = () => {
                   <Route path=":id" element={<AlumniDetails />} />
                   <Route path="edit/:id" element={<EditProfile />} />
                 </Route>
-              </Route>
 
-              <Route path="aboutus" element={<About />} />
+                <Route path="aboutus" element={<About />} />
+              </Route>
 
               <Route path="/signin" element={<Signin />} />
               <Route path="/signup" element={<Signup />} />
@@ -85,6 +87,12 @@ const App = () => {
                 path="/manage-password/:type"
                 element={<ManagePassword />}
               />
+
+              <Route path="/admin/" element={<AdminLayout />}>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="all-users" element={<Users />} />
+                <Route path="user-profile" element={<UserDetails />} />
+              </Route>
             </Routes>
           </BrowserRouter>
         </Container>

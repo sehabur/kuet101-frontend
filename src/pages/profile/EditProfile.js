@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../components/shared/Spinner';
@@ -22,7 +22,6 @@ import {
   districts,
   status,
 } from '../../data/mappingFile';
-import { authActions } from '../../store';
 import ImageEditor from '../../components/shared/ImageEditor';
 
 const EditProfile = () => {
@@ -50,8 +49,6 @@ const EditProfile = () => {
     selfReferralCode: auth?.selfReferralCode,
   });
 
-  const dispatch = useDispatch();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -76,6 +73,7 @@ const EditProfile = () => {
     });
   };
 
+  console.log(formInputs);
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -116,9 +114,11 @@ const EditProfile = () => {
         setSuccessMessage(
           'Profile update successful. Please re-login to take effect.'
         );
-        dispatch(authActions.login(response.data.userUpdate));
-        setIsLoading(false);
+      } else {
+        setErrorMessage('Profile update failed.');
+        setSuccessMessage('');
       }
+      setIsLoading(false);
     } catch (error) {
       setSuccessMessage('');
       if (error.response) {

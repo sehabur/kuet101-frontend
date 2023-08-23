@@ -1,21 +1,19 @@
 import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
 import Spinner from '../../components/shared/Spinner';
-import ImageEditor from '../../components/shared/ImageEditor';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import ImageUploader from '../../components/shared/ImageUploader';
 
 const CreatePost = () => {
   const auth = useSelector((state) => state.auth);
 
-  const navigate = useNavigate();
-
   const formDefaultState = {
     title: '',
     description: '',
-    image: null,
+    images: [],
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -33,17 +31,15 @@ const CreatePost = () => {
     });
   };
 
-  const handleImageEditorCallback = (imageData) => {
+  const handleImageSelection = (selectedImages) => {
     setFormInputs({
       ...formInputs,
-      image: imageData,
+      images: selectedImages,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log('asdasd');
 
     try {
       setIsLoading(true);
@@ -51,7 +47,13 @@ const CreatePost = () => {
       const formData = new FormData();
 
       for (let key in formInputs) {
-        formData.append(key, formInputs[key]);
+        if (key === 'images') {
+          formInputs[key].forEach((image) => {
+            formData.append('image', image);
+          });
+        } else {
+          formData.append(key, formInputs[key]);
+        }
       }
 
       const response = await axios.post(
@@ -169,12 +171,7 @@ const CreatePost = () => {
         </Grid>
 
         <Grid item xs={12} sx={{ ml: 0.5 }}>
-          <ImageEditor
-            prevImageUrl={null}
-            imageEditorCallback={handleImageEditorCallback}
-            imageHeight={220}
-            imageWidth={320}
-          />
+          <ImageUploader getImageFiles={handleImageSelection} />
         </Grid>
 
         <Grid item xs={12}>

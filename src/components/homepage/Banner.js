@@ -7,22 +7,29 @@ import { grey } from '@mui/material/colors';
 
 const Banner = () => {
   const bannerNames = [
-    'banner_1.jpg',
-    'banner_2.jpg',
-    'banner_3.jpg',
-    'banner_4.jpeg',
+    // 'banner_1.jpg',
+    // 'banner_2.jpg',
+    // 'banner_3.jpg',
+    // 'banner_4.jpeg',
+    // '1.jpg',
+    '3.jpg',
+    '4.jpg',
+    '5.jpg',
+    '2.jpg',
   ];
 
   const cardText = (
     <Card
       sx={{
-        maxWidth: 710,
-        bgcolor: 'white',
+        maxWidth: 650,
         opacity: '0.85',
-        py: { xs: 1, sm: 2.5 },
-        px: { xs: 2, sm: 4 },
+        py: { sm: 2.5 },
+        px: { sm: 4 },
         mx: { xs: 6, sm: 0 },
-        borderRadius: 2,
+        borderRadius: 1,
+      }}
+      style={{
+        'background-image': 'linear-gradient(0deg,#162055 12%,#202F7A 53%)',
       }}
       elevation={0}
     >
@@ -32,10 +39,10 @@ const Banner = () => {
             lineHeight: 1.7,
             textAlign: 'center',
             fontSize: {
-              xs: '1.4rem',
-              sm: '2.2rem',
+              xs: '1.2rem',
+              sm: '2rem',
             },
-            color: '#3d3f42',
+            color: '#fff',
             fontFamily: 'Roboto',
             fontWeight: 300,
           }}
@@ -63,15 +70,17 @@ const Banner = () => {
           <Box
             sx={{
               backgroundImage: `url(banners/${item})`,
-              height: { xs: '350px', sm: '550px' },
+              height: { xs: '300px', sm: '600px' },
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center center',
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-end',
               justifyContent: 'center',
+              // backgroundSize: 'contain',
+              backgroundSize: '100%',
             }}
           >
-            {cardText}
+            <Box sx={{ mb: 4 }}>{cardText}</Box>
           </Box>
         ))}
       </Carousel>

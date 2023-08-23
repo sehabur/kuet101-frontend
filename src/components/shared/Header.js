@@ -20,6 +20,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 import { authActions } from '../../store';
 import ToastMessage from './ToastMessage';
@@ -125,6 +126,20 @@ const Header = () => {
           <Typography>My Profile</Typography>
         </ListItemText>
       </MenuItem>
+
+      {auth?.isAdmin && (
+        <MenuItem
+          onClick={() => handleNavigation(`/admin/dashboard`, 'profile')}
+        >
+          <ListItemIcon>
+            <AdminPanelSettingsIcon color="primary" />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography>Admin panel</Typography>
+          </ListItemText>
+        </MenuItem>
+      )}
+
       <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <LogoutIcon color="primary" />
@@ -284,7 +299,7 @@ const Header = () => {
         }}
         elevation={0}
       >
-        <Toolbar sx={{ width: { xs: 'inherit', sm: '980px' }, mx: 'auto' }}>
+        <Toolbar sx={{ width: { xs: 'inherit', sm: '1280px' }, mx: 'auto' }}>
           <Box
             sx={{
               pt: 0.7,

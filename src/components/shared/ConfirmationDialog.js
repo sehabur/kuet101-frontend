@@ -15,17 +15,10 @@ const ConfirmationDialog = ({
   dialogText,
 }) => {
   return (
-    <Dialog
-      open={dialogOpen}
-      onClose={dialogOnClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
+    <Dialog open={dialogOpen} onClose={dialogOnClose}>
+      <dialogTitle>{dialogTitle}</dialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {dialogText}
-        </DialogContentText>
+        <DialogContentText>{dialogText}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ mr: 2, mb: 2 }}>
         <Button onClick={(e) => dialogOnClose(e, 'cancel')} variant="outlined">
