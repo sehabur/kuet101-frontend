@@ -46,6 +46,7 @@ const SearchAlumni = () => {
     homeDistrict: '',
     presentDistrict: '',
     gender: '',
+    bloodGroup: '',
     status: '',
     currentJobTitle: '',
     currentOrganization: '',
@@ -74,7 +75,11 @@ const SearchAlumni = () => {
     let queryText = 'search=1';
     for (let key in filterOption) {
       if (filterOption[key] !== 'all' && filterOption[key] !== '') {
-        queryText += '&' + key + '=' + filterOption[key];
+        if (key === 'bloodGroup') {
+          queryText += '&' + key + '=' + filterOption[key].replace('+', '%2B');
+        } else {
+          queryText += '&' + key + '=' + filterOption[key];
+        }
       }
     }
     try {
@@ -225,6 +230,7 @@ const SearchAlumni = () => {
         size="small"
         sx={{ my: 1 }}
       >
+        <MenuItem value="all">Select All</MenuItem>
         {bloodGroupList.map((group) => (
           <MenuItem key={group} value={group}>
             {group}
@@ -370,8 +376,8 @@ const SearchAlumni = () => {
                 container
                 spacing={3}
                 direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
+                justifyContent="center"
+                alignItems="flex-start"
               >
                 {searchResult?.length > 0 ? (
                   searchResult.map((user) => (

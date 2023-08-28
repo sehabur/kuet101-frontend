@@ -73,7 +73,6 @@ const EditProfile = () => {
     });
   };
 
-  console.log(formInputs);
   const handleSubmit = async (event) => {
     event.preventDefault();
 

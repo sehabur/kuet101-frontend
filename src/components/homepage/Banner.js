@@ -1,22 +1,10 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Link as RouterLink } from 'react-router-dom';
 import { Box, Card, CardContent, Typography } from '@mui/material';
-import { grey } from '@mui/material/colors';
 // import ReactPlayer from 'react-player/lazy';
 
 const Banner = () => {
-  const bannerNames = [
-    // 'banner_1.jpg',
-    // 'banner_2.jpg',
-    // 'banner_3.jpg',
-    // 'banner_4.jpeg',
-    // '1.jpg',
-    '3.jpg',
-    '4.jpg',
-    '5.jpg',
-    '2.jpg',
-  ];
+  const bannerNames = ['1.jpg', '2.jpg', '3.jpg', '4.jpg'];
 
   const cardText = (
     <Card

@@ -1,15 +1,22 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { grey, red } from '@mui/material/colors';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Box, IconButton, Typography } from '@mui/material';
+import { compressImageFile } from '../../helper';
 
-const ImageUploader = ({ getImageFiles }) => {
-  const [selectedImages, setSelectedImages] = useState([]);
+const ImageUploader = ({ preLoadedImages, getImageFiles }) => {
+  const [selectedImages, setSelectedImages] = useState(preLoadedImages || []);
 
-  const onDrop = (acceptedFiles) => {
-    setSelectedImages([...selectedImages, ...acceptedFiles]);
+  const onDrop = async (acceptedFiles) => {
+    let compressedFile = [];
+
+    for (let file of acceptedFiles) {
+      compressedFile.push(await compressImageFile(file, 0.08));
+    }
+
+    setSelectedImages([...selectedImages, ...compressedFile]);
   };
 
   const handleDeleteImage = (indexToRemove) => {
@@ -71,11 +78,15 @@ const ImageUploader = ({ getImageFiles }) => {
               justifyContent: 'center',
             }}
           >
-            {selectedImages.map((file, index) => (
+            {selectedImages.map((image, index) => (
               <Box key={index} sx={{ mx: 1, my: 1 }}>
                 <Box sx={{ width: 120, height: 110 }}>
                   <img
-                    src={URL.createObjectURL(file)}
+                    src={
+                      typeof image === 'string'
+                        ? `${process.env.REACT_APP_CLOUD_IMAGE_URL}/${image}`
+                        : URL.createObjectURL(image)
+                    }
                     alt={`${index}`}
                     width="100%"
                     height="100%"

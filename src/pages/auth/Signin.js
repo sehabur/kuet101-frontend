@@ -133,14 +133,12 @@ const Signin = () => {
               maxWidth: '420px',
               mx: 'auto',
               textAlign: 'center',
-              borderRadius: { xs: 0, sm: 2 },
+              borderRadius: { xs: 0, sm: 3 },
             }}
           >
-            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              Sign In
-            </Typography>
+            <Typography variant="h5">Sign In</Typography>
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-            <Box sx={{ mt: 1 }}>
+            <Box sx={{ mt: 2 }}>
               <TextField
                 type="number"
                 margin="normal"

@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import Spinner from '../../components/shared/Spinner';
 import ReactTimeAgo from 'react-time-ago';
 import { Link as RouterLink } from 'react-router-dom';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 const PostDetails = () => {
   const { id: postId } = useParams();
@@ -75,15 +77,46 @@ const PostDetails = () => {
               timeStyle="round-minute"
             />
           </Typography>
-          {postDetails.image && (
-            <Box sx={{ width: { xs: '95vw', sm: 650 }, pr: 2 }}>
-              <img
-                src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${postDetails.image}`}
-                alt="no img available"
-                width="100%"
-              />
-            </Box>
-          )}
+          <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+            <PhotoProvider>
+              {postDetails.images.map((image) => (
+                <PhotoView
+                  src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${image}`}
+                >
+                  <Box
+                    sx={{
+                      width: { xs: '95vw', sm: 220 },
+                      pr: 2,
+                      height: 175,
+                      mb: 2,
+                      ':hover': {
+                        cursor: 'pointer',
+                      },
+                    }}
+                    // component={RouterLink}
+                    // to={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${image}`}
+                    // target="_blank"
+                  >
+                    <img
+                      src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${image}`}
+                      sx={{
+                        width: { xs: '95vw', sm: 220 },
+                        pr: 2,
+                        height: 175,
+                        mb: 2,
+                      }}
+                      alt="no img available"
+                      width="100%"
+                      height="100%"
+                      style={{
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </Box>
+                </PhotoView>
+              ))}
+            </PhotoProvider>
+          </Box>
 
           <Typography paragraph={true} sx={{ mt: 2, whiteSpace: 'pre-wrap' }}>
             {postDetails.description}

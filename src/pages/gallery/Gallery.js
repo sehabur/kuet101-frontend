@@ -19,6 +19,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link as RouterLink } from 'react-router-dom';
 import { departments } from '../../data/mappingFile';
 import { grey } from '@mui/material/colors';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
 const Gallery = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -169,42 +171,45 @@ const Gallery = () => {
                   maxWidth: 275,
                   minWidth: 200,
                   mb: { xs: 2, sm: 4 },
-                  mr: 4,
+                  mr: { xs: 0, sm: 4 },
                 }}
                 variant="outlined"
               >
                 <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${item.image}`}
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      color="primary.dark"
-                      sx={{ fontSize: '1rem' }}
+                  <PhotoProvider>
+                    <PhotoView
+                      src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${item.image}`}
                     >
-                      {item.title}
-                      <Typography
-                        gutterBottom
-                        color="text.primary"
-                        sx={{ fontSize: '.8rem' }}
-                      >
-                        {item.department} {', '} {item.batch}
-                      </Typography>
-                    </Typography>
-
-                    <Typography
-                      gutterBottom
-                      sx={{ fontSize: '.75rem', fontStyle: 'italic' }}
-                    >
-                      uploaded by {item.uploadedBy.firstName}{' '}
-                      {item.uploadedBy.lastName}
-                    </Typography>
-                  </CardContent>
+                      <CardMedia
+                        component="img"
+                        height="200"
+                        image={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${item.image}`}
+                        alt="green iguana"
+                      />
+                    </PhotoView>
+                  </PhotoProvider>
                 </CardActionArea>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    color="primary.dark"
+                    sx={{ fontSize: '1rem' }}
+                  >
+                    {item.title}
+                    <Typography
+                      gutterBottom
+                      color="text.primary"
+                      sx={{ fontSize: '.8rem' }}
+                    >
+                      {item.department} {', '} {item.batch}
+                    </Typography>
+                  </Typography>
+
+                  <Typography sx={{ fontSize: '.75rem', fontStyle: 'italic' }}>
+                    uploaded by {item.uploadedBy.firstName}{' '}
+                    {item.uploadedBy.lastName}
+                  </Typography>
+                </CardContent>
               </Card>
             ))
           ) : (

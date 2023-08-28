@@ -17,9 +17,10 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Rubik, sans-serif',
+
     h4: {
       fontFamily: 'Proza Libre, sans-serif',
-      fontSize: '2.3rem',
+      fontSize: '2rem',
       fontWeight: 700,
       color: '#162055',
     },

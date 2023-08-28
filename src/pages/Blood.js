@@ -163,10 +163,10 @@ const Blood = () => {
           spacing={3}
           direction="row"
           justifyContent="flex-start"
-          alignItems="center"
+          alignItems="flex-start"
         >
           {searchResult?.length > 0 ? (
-            [...searchResult, ...searchResult, ...searchResult].map((user) => (
+            searchResult.map((user) => (
               <Grid
                 item
                 xs={12}

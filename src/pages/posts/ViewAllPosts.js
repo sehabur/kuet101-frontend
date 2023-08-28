@@ -82,9 +82,9 @@ const ViewAllPosts = () => {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          flexDirection: { xs: 'column', sm: 'row' },
+          flexDirection: 'row',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}
       >
         {posts && posts.map((post) => <PostCard post={post} />)}

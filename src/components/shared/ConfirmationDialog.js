@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -16,21 +17,26 @@ const ConfirmationDialog = ({
 }) => {
   return (
     <Dialog open={dialogOpen} onClose={dialogOnClose}>
-      <dialogTitle>{dialogTitle}</dialogTitle>
-      <DialogContent>
-        <DialogContentText>{dialogText}</DialogContentText>
-      </DialogContent>
-      <DialogActions sx={{ mr: 2, mb: 2 }}>
-        <Button onClick={(e) => dialogOnClose(e, 'cancel')} variant="outlined">
-          Cancel
-        </Button>
-        <Button
-          onClick={(e) => dialogOnClose(e, 'confirm')}
-          variant="contained"
-        >
-          Confirm
-        </Button>
-      </DialogActions>
+      <Box sx={{ p: 2 }}>
+        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{dialogText}</DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ mr: 2, mb: 1.5 }}>
+          <Button
+            onClick={(e) => dialogOnClose(e, 'cancel')}
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={(e) => dialogOnClose(e, 'confirm')}
+            variant="contained"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 };

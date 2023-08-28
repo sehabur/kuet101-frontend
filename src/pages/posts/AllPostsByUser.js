@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Spinner from '../../components/shared/Spinner';
 import PostCard from '../../components/shared/PostCard';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ConfirmationDialog from '../../components/shared/ConfirmationDialog';
@@ -26,6 +26,8 @@ const AllPostsByUser = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const auth = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (auth?.isLoggedIn) getPosts();
@@ -55,6 +57,10 @@ const AllPostsByUser = () => {
     setDeletePostId(postId);
   };
 
+  const handlePostEdit = async (postId) => {
+    navigate(`/posts/edit/${postId}`);
+  };
+
   const handleDialogOnClose = async (e, action) => {
     if (action === 'confirm') {
       try {
@@ -69,18 +75,21 @@ const AllPostsByUser = () => {
           }
         );
         if (response.status === 200) {
-          setSuccessMessage('Deletion successful');
+          setPosts((prevPosts) =>
+            prevPosts.filter((prevPost) => prevPost._id !== deletePostId)
+          );
+          setSuccessMessage('Deletion successful.');
           setErrorMessage('');
         } else {
           setSuccessMessage('');
-          setErrorMessage('Deletion failed');
+          setErrorMessage('Deletion failed.');
         }
 
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
         setSuccessMessage('');
-        setErrorMessage('Deletion failed');
+        setErrorMessage('Deletion failed.');
       }
     }
     setDialogOpen(false);
@@ -115,16 +124,18 @@ const AllPostsByUser = () => {
         </Box>
       </Box>
 
-      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-      {successMessage && <Alert severity="success">{successMessage}</Alert>}
+      <Box sx={{ maxWidth: 400, mx: 'auto', mb: 2 }}>
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        {successMessage && <Alert severity="success">{successMessage}</Alert>}
+      </Box>
 
       <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          flexDirection: { xs: 'column', sm: 'row' },
+          flexDirection: 'row',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}
       >
         {posts &&
@@ -135,6 +146,7 @@ const AllPostsByUser = () => {
                 post={post}
                 isMyPost={true}
                 handlePostDelete={handlePostDelete}
+                handlePostEdit={handlePostEdit}
               />
             </Box>
           ))}

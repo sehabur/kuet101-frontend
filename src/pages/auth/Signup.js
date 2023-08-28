@@ -164,7 +164,7 @@ const Signup = () => {
       {successDialog}
       <Box sx={{ textAlign: 'center' }}>
         <Box sx={{ mt: 2 }}>
-          <img src="/logo.png" alt="logo" width="275" />
+          <img src="/images/logo.png" alt="logo" width="275" />
         </Box>
         <Typography
           sx={{

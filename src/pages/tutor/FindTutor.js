@@ -75,7 +75,7 @@ const FindTutor = () => {
             spacing={3}
             direction="row"
             justifyContent="center"
-            alignItems="center"
+            alignItems="flex-start"
           >
             {findTutorData?.length > 0 ? (
               findTutorData.map((tutors) => (

@@ -13,25 +13,22 @@ import ReactTimeAgo from 'react-time-ago';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const PostCard = ({ post, isMyPost, handlePostDelete }) => {
+const PostCard = ({ post, isMyPost, handlePostDelete, handlePostEdit }) => {
   return (
     <>
       {post && (
-        <Card
-          sx={{ maxWidth: 325, minWidth: 280, mx: 2, mb: 2 }}
-          variant="text"
-        >
+        <Card sx={{ maxWidth: 325, minWidth: 280, m: 2 }} variant="outlined">
           <CardActionArea
             component={RouterLink}
             to={`/posts/${post._id}`}
             sx={{ py: 2 }}
           >
             <CardMedia
-              sx={{ height: 200, ml: 2, mr: 4 }}
+              sx={{ height: 160, mx: 2 }}
               image={
-                post.image
-                  ? `${process.env.REACT_APP_CLOUD_IMAGE_URL}/${post.image}`
-                  : `/fallback.jpg`
+                post?.images?.length > 0
+                  ? `${process.env.REACT_APP_CLOUD_IMAGE_URL}/${post.images[0]}`
+                  : `/images/fallback.jpg`
               }
               onError={(e) => {
                 e.target.onerror = null;
@@ -41,7 +38,8 @@ const PostCard = ({ post, isMyPost, handlePostDelete }) => {
             />
             <CardContent sx={{ pb: 0 }}>
               <Typography variant="title" sx={{ fontSize: '1.2rem' }}>
-                {post.title}
+                {post.title.substr(0, 70) +
+                  (post.description.length > 130 ? '..' : '')}
               </Typography>
 
               <Typography sx={{ mt: 1.2 }} color="text.secondary">
@@ -66,16 +64,24 @@ const PostCard = ({ post, isMyPost, handlePostDelete }) => {
             </CardContent>
           </CardActionArea>
           {isMyPost && (
-            <CardActions>
+            <CardActions sx={{ my: 1 }}>
+              <Button
+                size="small"
+                color="primary"
+                variant="outlined"
+                sx={{ ml: 0.8 }}
+                onClick={() => handlePostEdit(post._id)}
+              >
+                Edit
+              </Button>
               <Button
                 size="small"
                 color="error"
-                variant="text"
+                variant="outlined"
                 sx={{ ml: 0.8 }}
-                startIcon={<DeleteOutlineIcon />}
                 onClick={() => handlePostDelete(post._id)}
               >
-                Delete post
+                Delete
               </Button>
             </CardActions>
           )}

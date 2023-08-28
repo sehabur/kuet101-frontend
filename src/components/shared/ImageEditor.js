@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import ImageUploader from 'react-image-upload';
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { compressImageFile } from '../../helper';
 import { grey, red } from '@mui/material/colors';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 const ImageEditor = ({
   prevImageUrl,
@@ -34,7 +37,7 @@ const ImageEditor = ({
   return (
     <>
       {prevImageUrl && !isNewImgSelected && (
-        <>
+        <Box sx={{ position: 'relative', mb: 1 }}>
           <Box>
             <img
               src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${prevImageUrl}`}
@@ -44,15 +47,23 @@ const ImageEditor = ({
               style={{ borderRadius: 12 }}
             />
           </Box>
-          <Button
-            component="div"
-            variant="outlined"
+          <IconButton
             onClick={handleDeletProfilePhoto}
-            sx={{ py: 0.2 }}
+            sx={{ position: 'absolute', top: 0, left: 2, py: 0.2 }}
           >
-            Delete photo
-          </Button>
-        </>
+            <DeleteOutlineIcon
+              sx={{
+                color: grey[200],
+                bgcolor: red[400],
+                borderRadius: '50%',
+                fontSize: '2.4rem',
+                mr: 1.5,
+                mt: 1,
+                p: 0.5,
+              }}
+            />
+          </IconButton>
+        </Box>
       )}
 
       <ImageUploader
@@ -67,26 +78,33 @@ const ImageEditor = ({
         deleteIcon={
           <DeleteOutlineIcon
             sx={{
-              display: ` ${!isNewImgSelected && 'none'}`,
+              display: `${!isNewImgSelected && 'none'}`,
               color: grey[200],
               bgcolor: red[400],
-              fontSize: '1.8rem',
+              borderRadius: '50%',
+              fontSize: '2.4rem',
+              mr: 1.5,
+              mt: 1,
+              p: 0.5,
             }}
           />
         }
         uploadIcon={
-          <Button
+          <AddPhotoAlternateIcon
             sx={{
-              display: ` ${isNewImgSelected && 'none'}`,
-              color: 'primary.main',
-              ml: -7,
-              py: 0.2,
+              display: `${isNewImgSelected && 'none'}`,
+              fontSize: '5rem',
+              border: `1px solid ${grey[300]}`,
+              borderRadius: 1.5,
+              p: 1,
+              mt: -1,
+              ml: -12,
+              ':hover': {
+                color: 'secondary.light',
+              },
             }}
-            component="p"
-            variant="outlined"
-          >
-            Upload new photo
-          </Button>
+            color="info"
+          />
         }
       />
     </>

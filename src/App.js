@@ -31,6 +31,7 @@ import AdminLayout from './AdminLayout';
 import Users from './pages/admin/Users';
 import UserDetails from './pages/admin/UserDetails';
 import Dashboard from './pages/admin/Dashboard';
+import EditPost from './pages/posts/EditPost';
 
 const App = () => {
   return (
@@ -69,6 +70,7 @@ const App = () => {
                 <Route path="posts/">
                   <Route path="" element={<ViewAllPosts />} />
                   <Route path=":id" element={<PostDetails />} />
+                  <Route path="edit/:id" element={<EditPost />} />
                   <Route path="create" element={<CreatePost />} />
                   <Route path="my-posts/:id" element={<AllPostsByUser />} />
                 </Route>

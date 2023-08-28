@@ -70,7 +70,7 @@ const FindYourMates = () => {
               spacing={3}
               direction="row"
               justifyContent="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {findYourMatesData?.usersByTrend.map((user) => (
                 <Grid
@@ -112,7 +112,7 @@ const FindYourMates = () => {
               spacing={3}
               direction="row"
               justifyContent="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {findYourMatesData?.usersByDept.map((user) => (
                 <Grid
@@ -149,7 +149,7 @@ const FindYourMates = () => {
               spacing={3}
               direction="row"
               justifyContent="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {findYourMatesData?.usersByBatch.map((user) => (
                 <Grid
@@ -186,7 +186,7 @@ const FindYourMates = () => {
               spacing={3}
               direction="row"
               justifyContent="center"
-              alignItems="center"
+              alignItems="flex-start"
             >
               {findYourMatesData?.usersByHomeDistrict.map((user) => (
                 <Grid
