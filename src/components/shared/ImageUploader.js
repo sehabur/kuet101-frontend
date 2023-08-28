@@ -6,10 +6,12 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Box, IconButton, Typography } from '@mui/material';
 import { compressImageFile } from '../../helper';
 
-const ImageUploader = ({ preLoadedImages, getImageFiles }) => {
+const ImageUploader = ({ preLoadedImages, getImageFiles, getImageLoading }) => {
   const [selectedImages, setSelectedImages] = useState(preLoadedImages || []);
 
   const onDrop = async (acceptedFiles) => {
+    getImageLoading(true);
+
     let compressedFile = [];
 
     for (let file of acceptedFiles) {
@@ -17,6 +19,7 @@ const ImageUploader = ({ preLoadedImages, getImageFiles }) => {
     }
 
     setSelectedImages([...selectedImages, ...compressedFile]);
+    getImageLoading(false);
   };
 
   const handleDeleteImage = (indexToRemove) => {

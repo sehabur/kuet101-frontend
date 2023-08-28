@@ -19,6 +19,7 @@ import {
 
 import { authActions } from '../../store';
 import Spinner from '../../components/shared/Spinner';
+import { grey } from '@mui/material/colors';
 
 const Signin = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +94,7 @@ const Signin = () => {
       <Spinner open={isLoading} />
       <Box
         sx={{
-          bgcolor: matchesSmDown ? '#ffffff' : '#eceff1',
+          bgcolor: { xs: '#ffffff', sm: grey[100] },
           height: '100vh',
           width: '100vw',
           display: 'flex',
@@ -106,15 +107,14 @@ const Signin = () => {
           sx={{ maxWidth: '550px', mr: { xs: 0, sm: 8 }, textAlign: 'center' }}
         >
           <Box sx={{ mt: { xs: 3 } }}>
-            <img src="/images/logo.png" alt="logo" width="80%" />
+            <img src="/images/logo.png" alt="logo" width="75%" />
           </Box>
           <Typography
             sx={{
               fontFamily: 'Proza Libre, sans-serif',
-              fontSize: { xs: '1.3rem', sm: '2rem' },
+              fontSize: { xs: '1.3rem', sm: '1.8rem' },
               textAlign: 'center',
-              mt: 2,
-              mb: 1,
+              mt: { xs: 1, sm: 4 },
               px: 2,
             }}
           >
@@ -123,21 +123,23 @@ const Signin = () => {
         </Box>
         <Box>
           <Paper
-            elevation={matchesSmDown ? 0 : 2}
+            elevation={matchesSmDown ? 0 : 12}
             component="form"
             onSubmit={handleSubmit}
             sx={{
-              mt: 2,
-              py: 3,
+              pt: 3,
+              pb: 5,
               px: 8,
-              maxWidth: '420px',
+              maxWidth: '380px',
               mx: 'auto',
               textAlign: 'center',
-              borderRadius: { xs: 0, sm: 3 },
+              borderRadius: { xs: 0, sm: 2 },
             }}
           >
-            <Typography variant="h5">Sign In</Typography>
+            <Typography variant="h6">Sign In</Typography>
+
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+
             <Box sx={{ mt: 2 }}>
               <TextField
                 type="number"
@@ -177,6 +179,7 @@ const Signin = () => {
                 fullWidth
                 variant="contained"
                 type="submit"
+                color="primary"
                 sx={{ mt: 2, mb: 3, py: 1.1, fontSize: '1.2rem' }}
               >
                 Sign In
@@ -185,7 +188,7 @@ const Signin = () => {
               <Typography
                 component={RouterLink}
                 to="/manage-password/reset-link"
-                sx={{ textAlign: 'center', fontSize: '1.1rem' }}
+                sx={{ textAlign: 'center', fontSize: '1rem' }}
               >
                 Forgotten password?
               </Typography>
@@ -194,9 +197,10 @@ const Signin = () => {
               <Button
                 variant="contained"
                 color="success"
+                fullWidth
                 component={RouterLink}
                 to="/signup"
-                sx={{ mt: 3, mb: 3, py: 1.2, px: 4, fontSize: '1.1rem' }}
+                sx={{ mt: 3, py: 1.2, fontSize: '1rem' }}
               >
                 Create new account
               </Button>

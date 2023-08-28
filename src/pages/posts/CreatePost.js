@@ -4,7 +4,6 @@ import Spinner from '../../components/shared/Spinner';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../../components/shared/ImageUploader';
 
 const CreatePost = () => {
@@ -36,6 +35,10 @@ const CreatePost = () => {
       ...formInputs,
       images: selectedImages,
     });
+  };
+
+  const handleImageLoading = (state) => {
+    setIsLoading(state);
   };
 
   const handleSubmit = async (e) => {
@@ -171,7 +174,10 @@ const CreatePost = () => {
         </Grid>
 
         <Grid item xs={12} sx={{ ml: 0.5 }}>
-          <ImageUploader getImageFiles={handleImageSelection} />
+          <ImageUploader
+            getImageFiles={handleImageSelection}
+            getImageLoading={handleImageLoading}
+          />
         </Grid>
 
         <Grid item xs={12}>
