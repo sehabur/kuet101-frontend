@@ -131,3 +131,15 @@ export const districts = [
   'Tangail',
   'Thakurgaon',
 ];
+
+export const interests = [
+  'software engineering',
+  'product management',
+  'intrumentaion',
+  'data science',
+  'artificial intelligence',
+  'machine lerarning',
+  'web development',
+  'power plant',
+  'nuclear engineering',
+];

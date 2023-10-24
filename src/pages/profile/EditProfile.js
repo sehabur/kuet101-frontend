@@ -7,6 +7,7 @@ import Spinner from '../../components/shared/Spinner';
 
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
   Grid,
@@ -20,6 +21,7 @@ import {
   bloodGroupList,
   departments,
   districts,
+  interests,
   status,
 } from '../../data/mappingFile';
 import ImageEditor from '../../components/shared/ImageEditor';
@@ -45,9 +47,15 @@ const EditProfile = () => {
     status: auth?.status,
     currentJobTitle: auth?.currentJobTitle || '',
     currentOrganization: auth?.currentOrganization || '',
+    registrationNo: auth?.registrationNo,
+    interests: auth?.interests,
+    expertin: auth?.expertin,
     profilePicture: auth?.profilePicture || null,
     selfReferralCode: auth?.selfReferralCode,
   });
+
+  console.log(formInputs);
+  const [interestsList, setInterestsList] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -73,17 +81,21 @@ const EditProfile = () => {
     });
   };
 
+  const handleAutoCompleteChange = (name, value) => {
+    setFormInputs({
+      ...formInputs,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     setIsLoading(true);
     try {
-      if (formInputs.status === 'seekingJob') {
-        setFormInputs({
-          ...formInputs,
-          currentJobTitle: 'notApplicable',
-          currentOrganization: 'notApplicable',
-        });
+      if (['seekingJob', 'runningStudent'].includes(formInputs.status)) {
+        formInputs.currentJobTitle = 'notApplicable';
+        formInputs.currentOrganization = 'notApplicable';
       }
 
       let formData = new FormData();
@@ -132,6 +144,18 @@ const EditProfile = () => {
       setIsLoading(false);
     }
   };
+
+  const getInerests = async () => {
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/api/users/getAllInterests`
+    );
+    const data = [...new Set(res.data.concat(interests))];
+    setInterestsList(data);
+  };
+
+  useEffect(() => {
+    getInerests();
+  }, []);
 
   useEffect(() => {
     if (!auth?.isLoggedIn) {
@@ -200,6 +224,7 @@ const EditProfile = () => {
             label="Currently live in"
             name="currentlyLiveIn"
             fullWidth
+            required
             value={formInputs.currentlyLiveIn}
             onChange={handleChange}
           >
@@ -404,7 +429,6 @@ const EditProfile = () => {
             name="linkedinProfileUrl"
             type="url"
             fullWidth
-            required
             value={formInputs.linkedinProfileUrl}
             onChange={handleChange}
           ></TextField>
@@ -415,7 +439,6 @@ const EditProfile = () => {
             name="facebookProfileUrl"
             type="url"
             fullWidth
-            required
             value={formInputs.facebookProfileUrl}
             onChange={handleChange}
           ></TextField>
@@ -452,14 +475,16 @@ const EditProfile = () => {
           </TextField>
         </Grid>
 
-        {formInputs.status !== 'seekingJob' && (
+        {!['seekingJob', 'runningStudent'].includes(formInputs.status) && (
           <>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Position"
                 name="currentJobTitle"
                 fullWidth
-                required
+                required={
+                  !['seekingJob', 'runningStudent'].includes(formInputs.status)
+                }
                 value={formInputs.currentJobTitle}
                 onChange={handleChange}
               ></TextField>
@@ -470,7 +495,9 @@ const EditProfile = () => {
                 label="Organization Name"
                 name="currentOrganization"
                 fullWidth
-                required
+                required={
+                  !['seekingJob', 'runningStudent'].includes(formInputs.status)
+                }
                 helperText="Please write the full name"
                 value={formInputs.currentOrganization}
                 onChange={handleChange}
@@ -483,6 +510,72 @@ const EditProfile = () => {
             </Grid>
           </>
         )}
+
+        <Grid item xs={12}>
+          <Typography
+            sx={{
+              fontSize: '1.1rem',
+              color: 'primary.main',
+              textAlign: 'left',
+              ml: 0.5,
+              mt: 2,
+            }}
+          >
+            Other information
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Autocomplete
+            freeSolo
+            multiple
+            name="interests"
+            options={interestsList}
+            defaultValue={formInputs.interests}
+            onChange={(event, value, reason = 'selectOption') => {
+              handleAutoCompleteChange('interests', value);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Area of interest"
+                placeholder="Add interest"
+                onChange={handleChange}
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Autocomplete
+            freeSolo
+            multiple
+            options={interestsList}
+            defaultValue={formInputs.expertin}
+            onChange={(event, value, reason = 'selectOption') => {
+              handleAutoCompleteChange('expertin', value);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="expertin"
+                label="Area of expertise"
+                placeholder="Add expertise"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            label="Alumni registration Number"
+            name="registrationNo"
+            type="number"
+            fullWidth
+            value={formInputs.registrationNo}
+            onChange={handleChange}
+          ></TextField>
+        </Grid>
 
         <Grid item xs={12}>
           <Typography

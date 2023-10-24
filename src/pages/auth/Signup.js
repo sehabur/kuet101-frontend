@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'react-image-upload/dist/index.css';
 import { Link as RouterLink } from 'react-router-dom';
 
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
   Dialog,
@@ -23,6 +24,7 @@ import {
   districts,
   status,
   bloodGroupList,
+  interests,
 } from '../../data/mappingFile';
 import Spinner from '../../components/shared/Spinner';
 import ImageEditor from '../../components/shared/ImageEditor';
@@ -46,19 +48,22 @@ const Signup = () => {
     status: '',
     currentJobTitle: '',
     currentOrganization: '',
+    registrationNo: '',
+    interests: [],
+    expertin: [],
     profilePicture: null,
     password: '',
     confirmPassword: '',
     referral: '',
   });
 
+  const [interestsList, setInterestsList] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState('');
 
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
-
-  const [isImageSelected, setIsImageSelected] = useState(false);
 
   const handleImageEditorCallback = (imageData) => {
     setFormInputs({
@@ -75,6 +80,13 @@ const Signup = () => {
     setOpenSuccessDialog(false);
   };
 
+  const handleAutoCompleteChange = (name, value) => {
+    setFormInputs({
+      ...formInputs,
+      [name]: value,
+    });
+  };
+
   const handleChange = (event) => {
     setFormInputs({
       ...formInputs,
@@ -84,53 +96,70 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      setIsLoading(true);
-      if (formInputs.password === formInputs.confirmPassword) {
-        if (formInputs.status === 'seekingJob') {
-          setFormInputs({
-            ...formInputs,
-            currentJobTitle: 'notApplicable',
-            currentOrganization: 'notApplicable',
-          });
-        }
-        let formData = new FormData();
+    // try {
+    setIsLoading(true);
 
-        departments.forEach((item) => {
-          if (item.short === formInputs.departmentShort) {
-            formData.append('departmentLong', item.long);
-          }
-        });
-        for (let key in formInputs) {
-          formData.append(key, formInputs[key]);
-        }
+    if (formInputs.password === formInputs.confirmPassword) {
+      // console.log(formInputs);
 
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
-          formData
-        );
-
-        if (response.status === 201) {
-          setErrorMessage('');
-          setIsLoading(false);
-          handleSuccessDialogOpen();
-        }
-      } else {
-        setErrorMessage(`Password does not match with confirm password`);
+      if (['seekingJob', 'runningStudent'].includes(formInputs.status)) {
+        formInputs.currentJobTitle = 'notApplicable';
+        formInputs.currentOrganization = 'notApplicable';
       }
-    } catch (error) {
-      if (error.response) {
-        let composeMsg;
-        if (error.response.data.message) {
-          composeMsg = error.response.data.message;
-        } else if (error.response.data.errors) {
-          composeMsg = error.response.data.errors[0].msg;
+
+      let formData = new FormData();
+
+      departments.forEach((item) => {
+        if (item.short === formInputs.departmentShort) {
+          formData.append('departmentLong', item.long);
         }
-        setErrorMessage(`Account creation failed. ${composeMsg}`);
+      });
+
+      for (let key in formInputs) {
+        formData.append(key, formInputs[key]);
       }
-      setIsLoading(false);
+
+      // console.log([...formData.entries()]);
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
+        formData
+      );
+
+      console.log('b');
+      if (response.status === 201) {
+        setErrorMessage('');
+        setIsLoading(false);
+        handleSuccessDialogOpen();
+      }
+    } else {
+      setErrorMessage(`Password does not match with confirm password`);
     }
+    // } catch (error) {
+    //   if (error.response) {
+    //     let composeMsg;
+    //     if (error.response.data.message) {
+    //       composeMsg = error.response.data.message;
+    //     } else if (error.response.data.errors) {
+    //       composeMsg = error.response.data.errors[0].msg;
+    //     }
+    //     setErrorMessage(`Account creation failed. ${composeMsg}`);
+    //   }
+    //   setIsLoading(false);
+    // }
   };
+
+  const getInerests = async () => {
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/api/users/getAllInterests`
+    );
+    const data = [...new Set(res.data.concat(interests))];
+    setInterestsList(data);
+  };
+
+  useEffect(() => {
+    getInerests();
+  }, []);
 
   const successDialog = (
     <Dialog open={openSuccessDialog}>
@@ -211,7 +240,7 @@ const Signup = () => {
             label="First Name"
             name="firstName"
             fullWidth
-            required
+            // required
             value={formInputs.firstName}
             onChange={handleChange}
           ></TextField>
@@ -221,7 +250,7 @@ const Signup = () => {
             label="Last Name"
             name="lastName"
             fullWidth
-            required
+            // required
             value={formInputs.lastName}
             onChange={handleChange}
           ></TextField>
@@ -233,7 +262,7 @@ const Signup = () => {
             label="Currently live in"
             name="currentlyLiveIn"
             fullWidth
-            required
+            // required
             value={formInputs.currentlyLiveIn}
             onChange={handleChange}
           >
@@ -252,7 +281,7 @@ const Signup = () => {
               label="Present Address"
               name="presentDistrict"
               fullWidth
-              required
+              // required
               helperText="Please write state and country"
               value={formInputs.presentDistrict}
               onChange={handleChange}
@@ -270,7 +299,7 @@ const Signup = () => {
               label="Present District"
               name="presentDistrict"
               fullWidth
-              required
+              // required
               value={formInputs.presentDistrict}
               onChange={handleChange}
             >
@@ -289,7 +318,7 @@ const Signup = () => {
             label="Home District"
             name="homeDistrict"
             fullWidth
-            required
+            // required
             value={formInputs.homeDistrict}
             onChange={handleChange}
           >
@@ -307,7 +336,7 @@ const Signup = () => {
             label="Gender"
             name="gender"
             fullWidth
-            required
+            // required
             value={formInputs.gender}
             onChange={handleChange}
           >
@@ -329,7 +358,7 @@ const Signup = () => {
             label="Blood Group"
             name="bloodGroup"
             fullWidth
-            required
+            // required
             value={formInputs.bloodGroup}
             onChange={handleChange}
           >
@@ -361,7 +390,7 @@ const Signup = () => {
             label="Department"
             name="departmentShort"
             fullWidth
-            required
+            // required
             value={formInputs.departmentShort}
             onChange={handleChange}
           >
@@ -378,7 +407,7 @@ const Signup = () => {
             label="Roll Number"
             name="rollNo"
             fullWidth
-            required
+            // required
             type="number"
             placeholder="example: 0903042"
             value={formInputs.rollNo}
@@ -391,7 +420,7 @@ const Signup = () => {
             label="Batch"
             name="batch"
             fullWidth
-            required
+            // required
             type="number"
             placeholder="example: 2009"
             value={formInputs.batch}
@@ -419,7 +448,7 @@ const Signup = () => {
             name="email"
             type="email"
             fullWidth
-            required
+            // required
             value={formInputs.email}
             onChange={handleChange}
           ></TextField>
@@ -481,7 +510,7 @@ const Signup = () => {
             label="Status"
             name="status"
             fullWidth
-            required
+            // required
             value={formInputs.status}
             onChange={handleChange}
           >
@@ -493,14 +522,16 @@ const Signup = () => {
           </TextField>
         </Grid>
 
-        {formInputs.status !== 'seekingJob' && (
+        {!['seekingJob', 'runningStudent'].includes(formInputs.status) && (
           <>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Position"
                 name="currentJobTitle"
                 fullWidth
-                required
+                required={
+                  !['seekingJob', 'runningStudent'].includes(formInputs.status)
+                }
                 value={formInputs.currentJobTitle}
                 onChange={handleChange}
               ></TextField>
@@ -511,7 +542,9 @@ const Signup = () => {
                 label="Organization Name"
                 name="currentOrganization"
                 fullWidth
-                required
+                required={
+                  !['seekingJob', 'runningStudent'].includes(formInputs.status)
+                }
                 helperText="Please write the full name"
                 value={formInputs.currentOrganization}
                 onChange={handleChange}
@@ -524,6 +557,69 @@ const Signup = () => {
             </Grid>
           </>
         )}
+
+        <Grid item xs={12}>
+          <Typography
+            sx={{
+              fontSize: '1.1rem',
+              color: 'primary.main',
+              textAlign: 'left',
+              ml: 0.5,
+              mt: 2,
+            }}
+          >
+            Other information
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Autocomplete
+            freeSolo
+            multiple
+            options={interestsList}
+            onChange={(event, value, reason = 'selectOption') => {
+              handleAutoCompleteChange('interests', value);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="interests"
+                label="Area of interest"
+                placeholder="Add interest"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Autocomplete
+            freeSolo
+            multiple
+            options={interestsList}
+            onChange={(event, value, reason = 'selectOption') => {
+              handleAutoCompleteChange('expertin', value);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="expertin"
+                label="Area of expertise"
+                placeholder="Add expertise"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            label="Alumni registration Number"
+            name="registrationNo"
+            type="number"
+            fullWidth
+            value={formInputs.registrationNo}
+            onChange={handleChange}
+          ></TextField>
+        </Grid>
 
         <Grid item xs={12}>
           <Typography
@@ -570,7 +666,7 @@ const Signup = () => {
             inputProps={{ minLength: 6 }}
             placeholder="Minimum 6 character"
             fullWidth
-            required
+            // required
             value={formInputs.password}
             onChange={handleChange}
           ></TextField>
@@ -582,7 +678,7 @@ const Signup = () => {
             type="password"
             placeholder="Minimum 6 character"
             fullWidth
-            required
+            // required
             value={formInputs.confirmPassword}
             onChange={handleChange}
           ></TextField>
@@ -593,7 +689,7 @@ const Signup = () => {
             name="referral"
             type="number"
             fullWidth
-            required
+            // required
             value={formInputs.referral}
             onChange={handleChange}
           ></TextField>

@@ -19,7 +19,7 @@ const About = () => {
 
         <Typography sx={{ my: 2, color: grey[300], fontSize: '1.2rem' }}>
           Kuetians Hub is developed with a vision to create seamless connection
-          amoung the kutian community and get the utmost advantage of belonging
+          amoung the kuetian community and get the utmost advantage of belonging
           to a fabulous alumni.
         </Typography>
       </Box>

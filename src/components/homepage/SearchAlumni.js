@@ -1,5 +1,4 @@
 import React from 'react';
-import Carousel from 'react-material-ui-carousel';
 import { Link as RouterLink } from 'react-router-dom';
 
 import {
@@ -9,13 +8,9 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Paper,
   Typography,
 } from '@mui/material';
-import { blueGrey, grey, orange } from '@mui/material/colors';
-import ReactPlayer from 'react-player/lazy';
-import GroupIcon from '@mui/icons-material/Group';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import { grey } from '@mui/material/colors';
 
 const SearchAlumni = () => {
   return (
@@ -26,7 +21,8 @@ const SearchAlumni = () => {
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        py: { xs: 4, sm: 8 },
+        pt: { xs: 10, sm: 18 },
+        pb: { xs: 4, sm: 8 },
         px: { xs: 2, sm: 0 },
         bgcolor: grey[100],
       }}

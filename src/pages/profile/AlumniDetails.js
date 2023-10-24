@@ -108,9 +108,14 @@ const AlumniDetails = () => {
               color="primary.dark"
               sx={{ mt: 0.5, fontSize: '1.3rem' }}
             >
-              {userDetails.status === 'seekingJob'
-                ? 'I am still seeking an appropiate opportunity'
-                : `${userDetails.currentJobTitle} at ${userDetails.currentOrganization}`}
+              {userDetails.status === 'seekingJob' &&
+                'I am still seeking an appropiate opportunity'}
+
+              {userDetails.status === 'runningStudent' &&
+                'I am a running student'}
+
+              {!['seekingJob', 'runningStudent'].includes(userDetails.status) &&
+                `${userDetails.currentJobTitle} at ${userDetails.currentOrganization}`}
             </Typography>
 
             <Divider sx={{ my: 2 }} light={true} />
@@ -153,24 +158,48 @@ const AlumniDetails = () => {
             <Typography variant="body1" sx={{ mt: 1, mb: 2 }}>
               Present location: {userDetails.presentDistrict}
             </Typography>
-            <Button
-              variant="outlined"
-              sx={{ mt: 1, mr: 2 }}
-              component={RouterLink}
-              to={userDetails.linkedinProfileUrl}
-              target="_blank"
-            >
-              Linkedin profile
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ mt: 1 }}
-              component={RouterLink}
-              to={userDetails.facebookProfileUrl}
-              target="_blank"
-            >
-              Facebook profile
-            </Button>
+            {userDetails.linkedinProfileUrl && (
+              <Button
+                variant="outlined"
+                sx={{ mt: 1, mr: 2 }}
+                component={RouterLink}
+                to={userDetails.linkedinProfileUrl}
+                target="_blank"
+              >
+                Linkedin profile
+              </Button>
+            )}
+
+            {userDetails.facebookProfileUrl && (
+              <Button
+                variant="outlined"
+                sx={{ mt: 1 }}
+                component={RouterLink}
+                to={userDetails.facebookProfileUrl}
+                target="_blank"
+              >
+                Facebook profile
+              </Button>
+            )}
+
+            <Divider sx={{ my: 2 }} light={true} />
+            <Typography variant="body1" sx={{ mb: 2 }} color="text.secondary">
+              Interests
+            </Typography>
+            {userDetails.interests
+              .filter((item) => item !== '')
+              .map((item) => (
+                <Chip label={item} sx={{ mr: 2 }} />
+              ))}
+
+            <Typography variant="body1" sx={{ my: 2 }} color="text.secondary">
+              Expert zone
+            </Typography>
+            {userDetails.expertin
+              .filter((item) => item !== '')
+              .map((item) => (
+                <Chip label={item} sx={{ mr: 2 }} />
+              ))}
 
             {id === auth?._id && (
               <>

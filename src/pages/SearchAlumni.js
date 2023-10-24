@@ -15,6 +15,7 @@ import {
   Drawer,
   useTheme,
   useMediaQuery,
+  Autocomplete,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -23,6 +24,7 @@ import {
   departments,
   districts,
   status,
+  interests,
 } from '../data/mappingFile';
 import AlumniCard from '../components/shared/AlumniCard';
 import Spinner from '../components/shared/Spinner';
@@ -35,6 +37,8 @@ const SearchAlumni = () => {
   const [searchMessage, setSearchMessage] = useState(
     'Search alumni using filters'
   );
+
+  const [interestsList, setInterestsList] = useState([]);
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -50,6 +54,8 @@ const SearchAlumni = () => {
     status: '',
     currentJobTitle: '',
     currentOrganization: '',
+    interests: '',
+    expertin: '',
   });
 
   const auth = useSelector((state) => state.auth);
@@ -70,6 +76,15 @@ const SearchAlumni = () => {
       [event.target.name]: event.target.value,
     });
   };
+
+  const handleAutoCompleteChange = (event, targetName) => {
+    setFilterOption({
+      ...filterOption,
+      [targetName]: event.target.textContent,
+    });
+  };
+
+  console.log(filterOption);
 
   const handleFilterSubmit = async () => {
     let queryText = 'search=1';
@@ -101,11 +116,23 @@ const SearchAlumni = () => {
       }
       handleToggleDrawer(false);
       setIsLoading(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
     }
   };
+
+  const getInerests = async () => {
+    const res = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/api/users/getAllInterests`
+    );
+    const data = [...new Set(res.data.concat(interests))];
+    setInterestsList(data);
+  };
+
+  useEffect(() => {
+    getInerests();
+  }, []);
 
   const filterMenu = (
     <Box sx={{ px: 3, py: 2 }}>
@@ -274,6 +301,41 @@ const SearchAlumni = () => {
         onChange={handleFilterOptionChange}
         size="small"
         sx={{ my: 1 }}
+      />
+
+      <Autocomplete
+        freeSolo
+        options={interestsList}
+        onChange={(e) => {
+          handleAutoCompleteChange(e, 'interests');
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Interested in"
+            name="interests"
+            value={filterOption.interests}
+            size="small"
+            sx={{ my: 1 }}
+          />
+        )}
+      />
+      <Autocomplete
+        freeSolo
+        options={interestsList}
+        onChange={(e) => {
+          handleAutoCompleteChange(e, 'expertin');
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Expert zone"
+            name="expertin"
+            value={filterOption.expertin}
+            size="small"
+            sx={{ my: 1 }}
+          />
+        )}
       />
 
       <Box sx={{ mb: 1 }}>

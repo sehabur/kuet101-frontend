@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 
-import { blueGrey, grey } from '@mui/material/colors';
+import { blueGrey } from '@mui/material/colors';
 import ScrollHorizontal from '../shared/ScrollHorizontal.js';
 import { clubs } from '../../data/clubDetails.js';
 

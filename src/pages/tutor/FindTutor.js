@@ -4,9 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-import { Box, Grid, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Spinner from '../../components/shared/Spinner';
 import TutorCard from '../../components/shared/TutorCard';
+import { grey } from '@mui/material/colors';
+import { districts } from '../../data/mappingFile';
 
 const FindTutor = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +26,21 @@ const FindTutor = () => {
 
   const [findTutorData, setFindTutorData] = useState(null);
 
+  const [district, setDistrict] = useState(auth?.presentDistrict);
+
+  const handleChange = (event) => {
+    setDistrict(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    getTutorData(district);
+  };
+
   const getTutorData = async () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/users/findTutor`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/findTutor?district=${district}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -29,7 +48,6 @@ const FindTutor = () => {
           },
         }
       );
-      console.log(response);
       setFindTutorData(response.data.tutors);
       setIsLoading(false);
     } catch (error) {
@@ -52,6 +70,43 @@ const FindTutor = () => {
   return (
     <>
       <Spinner open={isLoading} />
+      <Box sx={{ bgcolor: grey[100] }}>
+        <Box
+          sx={{
+            maxWidth: '980px',
+            mx: 'auto',
+            px: 2,
+            pt: 2,
+          }}
+        >
+          <TextField
+            select
+            label="Present district"
+            name="presentDistrict"
+            size="small"
+            value={district}
+            onChange={handleChange}
+            sx={{ minWidth: 175, mr: 2, mb: 2 }}
+          >
+            <MenuItem value="all">Select All</MenuItem>
+            {districts.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mb: 2, px: 3 }}
+            onClick={handleSubmit}
+          >
+            Search
+          </Button>
+        </Box>
+      </Box>
       <Box sx={{ my: 0 }}>
         <Box
           sx={{ maxWidth: '1080px', mx: 'auto', py: 4, textAlign: 'center' }}

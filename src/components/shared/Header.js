@@ -298,6 +298,7 @@ const Header = () => {
           borderBottom: `1px solid #d8daf9`,
         }}
         elevation={0}
+        // variant="outlined"
       >
         <Toolbar sx={{ width: { xs: 'inherit', sm: '1280px' }, mx: 'auto' }}>
           <Box
