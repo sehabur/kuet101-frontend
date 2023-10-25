@@ -30,15 +30,16 @@ const AlumniCard = ({ data }) => {
             >
               {`${data.firstName} ${data.lastName}`}
             </Typography>
-            {data.status === 'seekingJob' ? (
-              <Typography variant="body2">
-                I am still seeking an appropiate opportunity
-              </Typography>
-            ) : (
-              <Typography variant="body2">
-                {data.currentJobTitle} at {data.currentOrganization}
-              </Typography>
-            )}
+
+            <Typography variant="body2">
+              {data.status === 'seekingJob' &&
+                'I am still seeking an appropiate opportunity'}
+
+              {data.status === 'runningStudent' && 'I am a running student'}
+
+              {!['seekingJob', 'runningStudent'].includes(data.status) &&
+                `${data.currentJobTitle} at ${data.currentOrganization}`}
+            </Typography>
 
             <Typography variant="body1" sx={{ mt: 1 }} color="text.secondary">
               {data.departmentShort}, {data.batch}
