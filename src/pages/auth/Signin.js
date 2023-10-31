@@ -142,7 +142,6 @@ const Signin = () => {
 
             <Box sx={{ mt: 2 }}>
               <TextField
-                type="number"
                 margin="normal"
                 required
                 fullWidth

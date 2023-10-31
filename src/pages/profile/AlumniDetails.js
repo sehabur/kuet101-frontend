@@ -189,8 +189,11 @@ const AlumniDetails = () => {
             {userDetails.interests
               .filter((item) => item !== '')
               .map((item) => (
-                <Chip label={item} sx={{ mr: 2 }} />
+                <Chip label={item} sx={{ mr: 1.5 }} />
               ))}
+            {userDetails.interests.filter((item) => item !== '').length < 1 && (
+              <Typography>No interest added</Typography>
+            )}
 
             <Typography variant="body1" sx={{ my: 2 }} color="text.secondary">
               Expert zone
@@ -198,8 +201,11 @@ const AlumniDetails = () => {
             {userDetails.expertin
               .filter((item) => item !== '')
               .map((item) => (
-                <Chip label={item} sx={{ mr: 2 }} />
+                <Chip label={item} sx={{ mr: 1.5 }} />
               ))}
+            {userDetails.expertin.filter((item) => item !== '').length < 1 && (
+              <Typography>No expert zone added</Typography>
+            )}
 
             {id === auth?._id && (
               <>

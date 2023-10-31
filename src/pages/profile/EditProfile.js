@@ -364,7 +364,6 @@ const EditProfile = () => {
             name="rollNo"
             fullWidth
             required
-            type="number"
             placeholder="example: 0903042"
             value={formInputs.rollNo}
             onChange={handleChange}
@@ -380,7 +379,6 @@ const EditProfile = () => {
             name="batch"
             fullWidth
             required
-            type="number"
             placeholder="example: 2009"
             value={formInputs.batch}
             onChange={handleChange}
@@ -416,7 +414,6 @@ const EditProfile = () => {
           <TextField
             label="Phone Number (optional)"
             name="phoneNo"
-            type="number"
             placeholder="example: 01711xxxxxx..."
             fullWidth
             value={formInputs.phoneNo}
@@ -529,7 +526,6 @@ const EditProfile = () => {
           <Autocomplete
             freeSolo
             multiple
-            name="interests"
             options={interestsList}
             defaultValue={formInputs.interests}
             onChange={(event, value, reason = 'selectOption') => {
@@ -539,8 +535,7 @@ const EditProfile = () => {
               <TextField
                 {...params}
                 label="Area of interest"
-                placeholder="Add interest"
-                onChange={handleChange}
+                placeholder="Select from list or add your own"
               />
             )}
           />
@@ -558,9 +553,8 @@ const EditProfile = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name="expertin"
                 label="Area of expertise"
-                placeholder="Add expertise"
+                placeholder="Select from list or add your own"
               />
             )}
           />
@@ -570,7 +564,6 @@ const EditProfile = () => {
           <TextField
             label="Alumni registration Number"
             name="registrationNo"
-            type="number"
             fullWidth
             value={formInputs.registrationNo}
             onChange={handleChange}

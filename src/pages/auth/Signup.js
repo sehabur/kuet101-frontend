@@ -96,57 +96,56 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // try {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    if (formInputs.password === formInputs.confirmPassword) {
-      // console.log(formInputs);
+      if (formInputs.password === formInputs.confirmPassword) {
+        // console.log(formInputs);
 
-      if (['seekingJob', 'runningStudent'].includes(formInputs.status)) {
-        formInputs.currentJobTitle = 'notApplicable';
-        formInputs.currentOrganization = 'notApplicable';
-      }
-
-      let formData = new FormData();
-
-      departments.forEach((item) => {
-        if (item.short === formInputs.departmentShort) {
-          formData.append('departmentLong', item.long);
+        if (['seekingJob', 'runningStudent'].includes(formInputs.status)) {
+          formInputs.currentJobTitle = 'notApplicable';
+          formInputs.currentOrganization = 'notApplicable';
         }
-      });
 
-      for (let key in formInputs) {
-        formData.append(key, formInputs[key]);
+        let formData = new FormData();
+
+        departments.forEach((item) => {
+          if (item.short === formInputs.departmentShort) {
+            formData.append('departmentLong', item.long);
+          }
+        });
+
+        for (let key in formInputs) {
+          formData.append(key, formInputs[key]);
+        }
+
+        // console.log([...formData.entries()]);
+
+        const response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
+          formData
+        );
+
+        if (response.status === 201) {
+          setErrorMessage('');
+          setIsLoading(false);
+          handleSuccessDialogOpen();
+        }
+      } else {
+        setErrorMessage(`Password does not match with confirm password`);
       }
-
-      // console.log([...formData.entries()]);
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
-        formData
-      );
-
-      console.log('b');
-      if (response.status === 201) {
-        setErrorMessage('');
-        setIsLoading(false);
-        handleSuccessDialogOpen();
+    } catch (error) {
+      if (error.response) {
+        let composeMsg;
+        if (error.response.data.message) {
+          composeMsg = error.response.data.message;
+        } else if (error.response.data.errors) {
+          composeMsg = error.response.data.errors[0].msg;
+        }
+        setErrorMessage(`Account creation failed. ${composeMsg}`);
       }
-    } else {
-      setErrorMessage(`Password does not match with confirm password`);
+      setIsLoading(false);
     }
-    // } catch (error) {
-    //   if (error.response) {
-    //     let composeMsg;
-    //     if (error.response.data.message) {
-    //       composeMsg = error.response.data.message;
-    //     } else if (error.response.data.errors) {
-    //       composeMsg = error.response.data.errors[0].msg;
-    //     }
-    //     setErrorMessage(`Account creation failed. ${composeMsg}`);
-    //   }
-    //   setIsLoading(false);
-    // }
   };
 
   const getInerests = async () => {
@@ -240,7 +239,7 @@ const Signup = () => {
             label="First Name"
             name="firstName"
             fullWidth
-            // required
+            required
             value={formInputs.firstName}
             onChange={handleChange}
           ></TextField>
@@ -250,7 +249,7 @@ const Signup = () => {
             label="Last Name"
             name="lastName"
             fullWidth
-            // required
+            required
             value={formInputs.lastName}
             onChange={handleChange}
           ></TextField>
@@ -262,7 +261,7 @@ const Signup = () => {
             label="Currently live in"
             name="currentlyLiveIn"
             fullWidth
-            // required
+            required
             value={formInputs.currentlyLiveIn}
             onChange={handleChange}
           >
@@ -281,7 +280,7 @@ const Signup = () => {
               label="Present Address"
               name="presentDistrict"
               fullWidth
-              // required
+              required
               helperText="Please write state and country"
               value={formInputs.presentDistrict}
               onChange={handleChange}
@@ -299,7 +298,7 @@ const Signup = () => {
               label="Present District"
               name="presentDistrict"
               fullWidth
-              // required
+              required
               value={formInputs.presentDistrict}
               onChange={handleChange}
             >
@@ -318,7 +317,7 @@ const Signup = () => {
             label="Home District"
             name="homeDistrict"
             fullWidth
-            // required
+            required
             value={formInputs.homeDistrict}
             onChange={handleChange}
           >
@@ -336,7 +335,7 @@ const Signup = () => {
             label="Gender"
             name="gender"
             fullWidth
-            // required
+            required
             value={formInputs.gender}
             onChange={handleChange}
           >
@@ -358,7 +357,7 @@ const Signup = () => {
             label="Blood Group"
             name="bloodGroup"
             fullWidth
-            // required
+            required
             value={formInputs.bloodGroup}
             onChange={handleChange}
           >
@@ -390,7 +389,7 @@ const Signup = () => {
             label="Department"
             name="departmentShort"
             fullWidth
-            // required
+            required
             value={formInputs.departmentShort}
             onChange={handleChange}
           >
@@ -407,8 +406,7 @@ const Signup = () => {
             label="Roll Number"
             name="rollNo"
             fullWidth
-            // required
-            type="number"
+            required
             placeholder="example: 0903042"
             value={formInputs.rollNo}
             onChange={handleChange}
@@ -420,8 +418,7 @@ const Signup = () => {
             label="Batch"
             name="batch"
             fullWidth
-            // required
-            type="number"
+            required
             placeholder="example: 2009"
             value={formInputs.batch}
             onChange={handleChange}
@@ -448,7 +445,7 @@ const Signup = () => {
             name="email"
             type="email"
             fullWidth
-            // required
+            required
             value={formInputs.email}
             onChange={handleChange}
           ></TextField>
@@ -457,7 +454,6 @@ const Signup = () => {
           <TextField
             label="Phone Number (optional)"
             name="phoneNo"
-            type="number"
             placeholder="example: 01711xxxxxx..."
             fullWidth
             value={formInputs.phoneNo}
@@ -510,7 +506,7 @@ const Signup = () => {
             label="Status"
             name="status"
             fullWidth
-            // required
+            required
             value={formInputs.status}
             onChange={handleChange}
           >
@@ -585,7 +581,7 @@ const Signup = () => {
                 {...params}
                 name="interests"
                 label="Area of interest"
-                placeholder="Add interest"
+                placeholder="Select from list or add your own"
               />
             )}
           />
@@ -604,7 +600,7 @@ const Signup = () => {
                 {...params}
                 name="expertin"
                 label="Area of expertise"
-                placeholder="Add expertise"
+                placeholder="Select from list or add your own"
               />
             )}
           />
@@ -614,7 +610,6 @@ const Signup = () => {
           <TextField
             label="Alumni registration Number"
             name="registrationNo"
-            type="number"
             fullWidth
             value={formInputs.registrationNo}
             onChange={handleChange}
@@ -666,7 +661,7 @@ const Signup = () => {
             inputProps={{ minLength: 6 }}
             placeholder="Minimum 6 character"
             fullWidth
-            // required
+            required
             value={formInputs.password}
             onChange={handleChange}
           ></TextField>
@@ -678,7 +673,7 @@ const Signup = () => {
             type="password"
             placeholder="Minimum 6 character"
             fullWidth
-            // required
+            required
             value={formInputs.confirmPassword}
             onChange={handleChange}
           ></TextField>
@@ -687,9 +682,8 @@ const Signup = () => {
           <TextField
             label="Referral Code"
             name="referral"
-            type="number"
             fullWidth
-            // required
+            required
             value={formInputs.referral}
             onChange={handleChange}
           ></TextField>

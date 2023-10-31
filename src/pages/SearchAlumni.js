@@ -16,6 +16,7 @@ import {
   useTheme,
   useMediaQuery,
   Autocomplete,
+  IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -28,8 +29,13 @@ import {
 } from '../data/mappingFile';
 import AlumniCard from '../components/shared/AlumniCard';
 import Spinner from '../components/shared/Spinner';
+import { grey } from '@mui/material/colors';
 
 const SearchAlumni = () => {
+  const theme = useTheme();
+
+  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [searchResult, setSearchResult] = useState(null);
@@ -40,7 +46,7 @@ const SearchAlumni = () => {
 
   const [interestsList, setInterestsList] = useState([]);
 
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(matchesSmDown ? true : false);
 
   const [filterOption, setFilterOption] = useState({
     name: '',
@@ -60,10 +66,6 @@ const SearchAlumni = () => {
 
   const auth = useSelector((state) => state.auth);
 
-  const theme = useTheme();
-
-  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
-
   const navigate = useNavigate();
 
   const handleToggleDrawer = (state) => {
@@ -71,6 +73,7 @@ const SearchAlumni = () => {
   };
 
   const handleFilterOptionChange = (event) => {
+    console.log(event.target.value);
     setFilterOption({
       ...filterOption,
       [event.target.name]: event.target.value,
@@ -78,6 +81,7 @@ const SearchAlumni = () => {
   };
 
   const handleAutoCompleteChange = (event, targetName) => {
+    console.log(event.target.textContent);
     setFilterOption({
       ...filterOption,
       [targetName]: event.target.textContent,
@@ -135,10 +139,11 @@ const SearchAlumni = () => {
   }, []);
 
   const filterMenu = (
-    <Box sx={{ px: 3, py: 2 }}>
+    <Box sx={{ px: { xs: 6, sm: 3 }, pb: { xs: 2, sm: 0 } }}>
       <Typography sx={{ mb: 1 }} color="primary">
         Search options
       </Typography>
+
       <TextField
         fullWidth
         label="Name"
@@ -181,7 +186,7 @@ const SearchAlumni = () => {
         size="small"
         sx={{ my: 1 }}
       >
-        <MenuItem value="all">Select All</MenuItem>
+        <MenuItem value="all">Select any</MenuItem>
         {departments.map((option) => (
           <MenuItem key={option.short} value={option.short}>
             {option.short}
@@ -189,41 +194,43 @@ const SearchAlumni = () => {
         ))}
       </TextField>
 
-      <TextField
-        select
-        fullWidth
-        value={filterOption.homeDistrict}
-        onChange={handleFilterOptionChange}
-        name="homeDistrict"
-        label="Home district"
-        size="small"
-        sx={{ my: 1 }}
-      >
-        <MenuItem value="all">Select All</MenuItem>
-        {districts.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </TextField>
+      <Autocomplete
+        freeSolo
+        options={districts}
+        onChange={(e) => {
+          handleAutoCompleteChange(e, 'homeDistrict');
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Home district"
+            name="homeDistrict"
+            value={filterOption.homeDistrict}
+            size="small"
+            sx={{ my: 1 }}
+            onChange={handleFilterOptionChange}
+          />
+        )}
+      />
 
-      <TextField
-        select
-        fullWidth
-        value={filterOption.presentDistrict}
-        onChange={handleFilterOptionChange}
-        name="presentDistrict"
-        label="Present district"
-        size="small"
-        sx={{ my: 1 }}
-      >
-        <MenuItem value="all">Select All</MenuItem>
-        {districts.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </TextField>
+      <Autocomplete
+        freeSolo
+        options={districts}
+        onChange={(e) => {
+          handleAutoCompleteChange(e, 'presentDistrict');
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Present location"
+            name="presentDistrict"
+            value={filterOption.presentDistrict}
+            size="small"
+            sx={{ my: 1 }}
+            onChange={handleFilterOptionChange}
+          />
+        )}
+      />
 
       <TextField
         select
@@ -235,7 +242,7 @@ const SearchAlumni = () => {
         size="small"
         sx={{ my: 1 }}
       >
-        <MenuItem value="all">Select All</MenuItem>
+        <MenuItem value="all">Select any</MenuItem>
         <MenuItem key="female" value="female">
           Female
         </MenuItem>
@@ -257,7 +264,7 @@ const SearchAlumni = () => {
         size="small"
         sx={{ my: 1 }}
       >
-        <MenuItem value="all">Select All</MenuItem>
+        <MenuItem value="all">Select any</MenuItem>
         {bloodGroupList.map((group) => (
           <MenuItem key={group} value={group}>
             {group}
@@ -275,7 +282,7 @@ const SearchAlumni = () => {
         size="small"
         sx={{ my: 1 }}
       >
-        <MenuItem value="all">Select All</MenuItem>
+        <MenuItem value="all">Select any</MenuItem>
         {status.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.name}
@@ -317,6 +324,7 @@ const SearchAlumni = () => {
             value={filterOption.interests}
             size="small"
             sx={{ my: 1 }}
+            onChange={handleFilterOptionChange}
           />
         )}
       />
@@ -334,6 +342,7 @@ const SearchAlumni = () => {
             value={filterOption.expertin}
             size="small"
             sx={{ my: 1 }}
+            onChange={handleFilterOptionChange}
           />
         )}
       />
@@ -369,20 +378,14 @@ const SearchAlumni = () => {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            mx: 2,
+            justifyContent: 'flex-end',
+            mt: 1,
+            mr: 2,
           }}
         >
-          <Button
-            variant="outlined"
-            color="warning"
-            startIcon={<CloseIcon fontSize="small" />}
-            onClick={() => handleToggleDrawer(false)}
-            sx={{ mt: 2 }}
-          >
-            Cancel
-          </Button>
+          <IconButton onClick={() => handleToggleDrawer(false)}>
+            <CloseIcon color="warning" />
+          </IconButton>
         </Box>
         {filterMenu}
       </Drawer>
@@ -404,10 +407,10 @@ const SearchAlumni = () => {
               py: 2,
               mt: 6,
               mb: 4,
-              borderRadius: 2,
               display: { xs: 'none', sm: 'block' },
             }}
-            elevation={2}
+            elevation={0}
+            variant="outlined"
           >
             {filterMenu}
           </Paper>
