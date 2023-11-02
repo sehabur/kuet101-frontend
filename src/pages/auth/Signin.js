@@ -104,9 +104,14 @@ const Signin = () => {
         }}
       >
         <Box
-          sx={{ maxWidth: '550px', mr: { xs: 0, sm: 8 }, textAlign: 'center' }}
+          sx={{
+            maxWidth: '500px',
+            mr: { xs: 0, sm: 16 },
+            mb: { xs: 2, sm: 0 },
+            textAlign: 'center',
+          }}
         >
-          <Box sx={{ mt: { xs: 3 } }}>
+          <Box sx={{ mt: { xs: 6 } }}>
             <img src="/images/logo.png" alt="logo" width="75%" />
           </Box>
           <Typography
@@ -123,7 +128,7 @@ const Signin = () => {
         </Box>
         <Box>
           <Paper
-            elevation={matchesSmDown ? 0 : 12}
+            elevation={matchesSmDown ? 0 : 24}
             component="form"
             onSubmit={handleSubmit}
             sx={{
@@ -181,17 +186,21 @@ const Signin = () => {
                 color="primary"
                 sx={{ mt: 2, mb: 3, py: 1.1, fontSize: '1.2rem' }}
               >
-                Sign In
+                Sign in
               </Button>
 
               <Typography
                 component={RouterLink}
                 to="/manage-password/reset-link"
-                sx={{ textAlign: 'center', fontSize: '1rem' }}
+                sx={{
+                  textAlign: 'center',
+                  fontSize: '1rem',
+                  textDecoration: 'none',
+                }}
               >
                 Forgotten password?
               </Typography>
-              <Divider sx={{ mt: 2 }} />
+              <Divider sx={{ my: 3 }} />
 
               <Button
                 variant="contained"
@@ -199,7 +208,7 @@ const Signin = () => {
                 fullWidth
                 component={RouterLink}
                 to="/signup"
-                sx={{ mt: 3, py: 1.2, fontSize: '1rem' }}
+                sx={{ py: 1.4, fontSize: '1rem' }}
               >
                 Create new account
               </Button>

@@ -112,6 +112,24 @@ const AdminHeader = () => {
             <Button
               color="primary"
               component={RouterLink}
+              to="/admin/all-posts"
+              sx={{ mx: 1 }}
+            >
+              Posts
+            </Button>
+
+            <Button
+              color="primary"
+              component={RouterLink}
+              to="/admin/gallery"
+              sx={{ mx: 1 }}
+            >
+              Gallery
+            </Button>
+
+            <Button
+              color="primary"
+              component={RouterLink}
               to="/"
               sx={{ mx: 1 }}
             >

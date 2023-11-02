@@ -38,6 +38,7 @@ const Signup = () => {
     presentDistrict: '',
     gender: '',
     bloodGroup: '',
+    bloodDonationEnable: '',
     departmentShort: '',
     rollNo: '',
     batch: '',
@@ -366,6 +367,21 @@ const Signup = () => {
                 {group}
               </MenuItem>
             ))}
+          </TextField>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            select
+            label="Available to donate blood"
+            name="bloodDonationEnable"
+            fullWidth
+            required
+            value={formInputs.bloodDonationEnable}
+            onChange={handleChange}
+          >
+            <MenuItem value={true}>Yes</MenuItem>
+            <MenuItem value={false}>No</MenuItem>
           </TextField>
         </Grid>
 

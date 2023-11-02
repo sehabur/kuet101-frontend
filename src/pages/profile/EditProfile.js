@@ -37,6 +37,7 @@ const EditProfile = () => {
     presentDistrict: auth?.presentDistrict,
     gender: auth?.gender,
     bloodGroup: auth?.bloodGroup,
+    bloodDonationEnable: auth?.bloodDonationEnable,
     departmentShort: auth?.departmentShort,
     rollNo: auth?.rollNo,
     batch: auth?.batch,
@@ -54,7 +55,8 @@ const EditProfile = () => {
     selfReferralCode: auth?.selfReferralCode,
   });
 
-  console.log(formInputs);
+  // console.log(formInputs);
+
   const [interestsList, setInterestsList] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -326,6 +328,21 @@ const EditProfile = () => {
           </TextField>
         </Grid>
 
+        <Grid item xs={12} sm={6}>
+          <TextField
+            select
+            label="Available to donate blood"
+            name="bloodDonationEnable"
+            fullWidth
+            required
+            value={formInputs.bloodDonationEnable}
+            onChange={handleChange}
+          >
+            <MenuItem value={true}>Yes</MenuItem>
+            <MenuItem value={false}>No</MenuItem>
+          </TextField>
+        </Grid>
+
         <Grid item xs={12}>
           <Typography
             sx={{
@@ -527,7 +544,7 @@ const EditProfile = () => {
             freeSolo
             multiple
             options={interestsList}
-            defaultValue={formInputs.interests}
+            defaultValue={formInputs.interests.filter((item) => item !== '')}
             onChange={(event, value, reason = 'selectOption') => {
               handleAutoCompleteChange('interests', value);
             }}
@@ -546,7 +563,7 @@ const EditProfile = () => {
             freeSolo
             multiple
             options={interestsList}
-            defaultValue={formInputs.expertin}
+            defaultValue={formInputs.expertin.filter((item) => item !== '')}
             onChange={(event, value, reason = 'selectOption') => {
               handleAutoCompleteChange('expertin', value);
             }}

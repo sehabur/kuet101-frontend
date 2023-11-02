@@ -1,5 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -18,6 +25,49 @@ const PostDetails = () => {
   const [postDetails, setPostDetails] = useState(null);
 
   const auth = useSelector((state) => state.auth);
+
+  const [postSetActiveStatus, setPostSetActiveStatus] = useState();
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handlePostActiveStatusChange = (event) => {
+    setPostSetActiveStatus(event.target.value);
+  };
+
+  const handlePostActiveStatusSubmit = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/admin/updatePostActiveStatus`,
+        {
+          postId: postDetails._id,
+          isActive: postSetActiveStatus,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        setErrorMessage('');
+        setSuccessMessage('Post status update successful.');
+      } else {
+        setErrorMessage('Post status update failed.');
+        setSuccessMessage('');
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setErrorMessage('Post status update failed.');
+      setSuccessMessage('');
+    }
+  };
 
   const getPostDetails = async () => {
     try {
@@ -122,6 +172,34 @@ const PostDetails = () => {
             {postDetails.description}
           </Typography>
         </>
+      )}
+
+      {auth?.isAdmin && (
+        <Box sx={{ mt: 4 }}>
+          <TextField
+            select
+            label="Active status"
+            name="isActive"
+            size="small"
+            value={postSetActiveStatus}
+            onChange={handlePostActiveStatusChange}
+            sx={{ minWidth: 160, mr: 2, mb: 2 }}
+          >
+            <MenuItem value={true}>Active</MenuItem>
+            <MenuItem value={false}>Inactive</MenuItem>
+          </TextField>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mb: 2, px: 3 }}
+            onClick={handlePostActiveStatusSubmit}
+          >
+            Update
+          </Button>
+
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+          {successMessage && <Alert severity="success">{successMessage}</Alert>}
+        </Box>
       )}
     </Box>
   );

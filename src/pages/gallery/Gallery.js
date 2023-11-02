@@ -104,7 +104,6 @@ const Gallery = () => {
               label="Batch"
               name="batch"
               required
-              type="number"
               size="small"
               placeholder="example: 2009"
               value={formInputs.batch}

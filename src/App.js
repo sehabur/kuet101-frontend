@@ -32,6 +32,8 @@ import Users from './pages/admin/Users';
 import UserDetails from './pages/admin/UserDetails';
 import Dashboard from './pages/admin/Dashboard';
 import EditPost from './pages/posts/EditPost';
+import Posts from './pages/admin/Posts';
+import GalleryAdmin from './pages/admin/Gallery';
 
 const App = () => {
   return (
@@ -94,6 +96,9 @@ const App = () => {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="all-users" element={<Users />} />
                 <Route path="user-profile" element={<UserDetails />} />
+                <Route path="all-posts" element={<Posts />} />
+                <Route path="post-details/:id" element={<PostDetails />} />
+                <Route path="gallery" element={<GalleryAdmin />} />
               </Route>
             </Routes>
           </BrowserRouter>

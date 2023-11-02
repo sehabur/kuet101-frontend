@@ -158,7 +158,6 @@ const SearchAlumni = () => {
         fullWidth
         label="Roll number"
         name="rollNo"
-        type="number"
         value={filterOption.rollNo}
         onChange={handleFilterOptionChange}
         size="small"
@@ -169,7 +168,6 @@ const SearchAlumni = () => {
         fullWidth
         label="batch"
         name="batch"
-        type="number"
         value={filterOption.batch}
         onChange={handleFilterOptionChange}
         size="small"
