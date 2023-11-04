@@ -59,6 +59,10 @@ const EditPost = () => {
 
   console.log(formInputs.images);
 
+  const handleImageLoading = (state) => {
+    setIsLoading(state);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -218,6 +222,7 @@ const EditPost = () => {
             <ImageUploader
               preLoadedImages={preLoadedImages}
               getImageFiles={handleImageSelection}
+              getImageLoading={handleImageLoading}
             />
           )}
         </Grid>

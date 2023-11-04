@@ -66,6 +66,8 @@ const Signup = () => {
 
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
+  const [openRollPatternDialog, setOpenRollPatternDialog] = useState(false);
+
   const handleImageEditorCallback = (imageData) => {
     setFormInputs({
       ...formInputs,
@@ -79,6 +81,14 @@ const Signup = () => {
 
   const handleSuccessDialogClose = () => {
     setOpenSuccessDialog(false);
+  };
+
+  const handleRollPatternDialogOpen = () => {
+    setOpenRollPatternDialog(true);
+  };
+
+  const handleRollPatternDialogClose = () => {
+    setOpenRollPatternDialog(false);
   };
 
   const handleAutoCompleteChange = (name, value) => {
@@ -101,8 +111,6 @@ const Signup = () => {
       setIsLoading(true);
 
       if (formInputs.password === formInputs.confirmPassword) {
-        // console.log(formInputs);
-
         if (['seekingJob', 'runningStudent'].includes(formInputs.status)) {
           formInputs.currentJobTitle = 'notApplicable';
           formInputs.currentOrganization = 'notApplicable';
@@ -120,8 +128,6 @@ const Signup = () => {
           formData.append(key, formInputs[key]);
         }
 
-        // console.log([...formData.entries()]);
-
         const response = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
           formData
@@ -129,12 +135,14 @@ const Signup = () => {
 
         if (response.status === 201) {
           setErrorMessage('');
-          setIsLoading(false);
           handleSuccessDialogOpen();
+        } else {
+          setErrorMessage('Account creation failed');
         }
       } else {
         setErrorMessage(`Password does not match with confirm password`);
       }
+      setIsLoading(false);
     } catch (error) {
       if (error.response) {
         let composeMsg;
@@ -187,10 +195,29 @@ const Signup = () => {
     </Dialog>
   );
 
+  const rollPatternDialog = (
+    <Dialog open={openRollPatternDialog}>
+      <DialogTitle>Roll number pattern helper</DialogTitle>
+      <DialogContent>
+        <img src="/images/roll-pattern.jpg" alt="roll" width="100%" />
+      </DialogContent>
+      <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          onClick={handleRollPatternDialogClose}
+          variant="outlined"
+          sx={{ mb: 1 }}
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
   return (
     <Box sx={{ maxWidth: '760px', mx: 'auto', p: 4 }}>
       <Spinner open={isLoading} />
       {successDialog}
+      {rollPatternDialog}
       <Box sx={{ textAlign: 'center' }}>
         <Box sx={{ mt: 2 }}>
           <img src="/images/logo.png" alt="logo" width="275" />
@@ -427,6 +454,13 @@ const Signup = () => {
             value={formInputs.rollNo}
             onChange={handleChange}
           ></TextField>
+          <Button
+            color="warning"
+            onClick={handleRollPatternDialogOpen}
+            sx={{ fontSize: '.8rem', textDecoration: 'underline' }}
+          >
+            Check roll pattern
+          </Button>
         </Grid>
 
         <Grid item xs={12} sm={6}>
