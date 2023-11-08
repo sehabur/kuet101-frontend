@@ -64,46 +64,72 @@ const Dashboard = () => {
         mx: 'auto',
         px: 2,
         pt: 2,
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
       }}
     >
       <Spinner open={isLoading} />
       <Paper
-        sx={{ bgcolor: grey[100], maxWidth: 270, m: 4, p: 3, fontSize: '2rem' }}
+        elevation={8}
+        sx={{ width: 200, m: 4, p: 3, fontSize: '2rem', borderRadius: 2 }}
       >
-        <Typography variant="h5" sx={{ mb: 1, color: 'primary.dark' }}>
+        <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
           Users
         </Typography>
 
         <Box>
-          <Typography variant="h6">
+          <Typography variant="body1">
             Total users: {data?.total[0].count}
           </Typography>
         </Box>
 
         {data?.activeStatus?.map((item) => (
           <Box>
-            <Typography variant="h6">
+            <Typography variant="body1">
               {item._id === true ? 'Active: ' : 'Inactive: '} {item.count}
             </Typography>
           </Box>
         ))}
         {data?.approvalStatus?.map((item) => (
-          <Box>
-            <Typography variant="h6">
-              Approval {item._id} {item.count}
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              Approval Status
+            </Typography>
+            <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
+              {item._id}: {item.count}
             </Typography>
           </Box>
         ))}
       </Paper>
       <Paper
-        sx={{ bgcolor: grey[100], maxWidth: 270, m: 4, p: 3, fontSize: '2rem' }}
+        elevation={8}
+        sx={{ width: 200, m: 4, p: 3, fontSize: '2rem', borderRadius: 2 }}
       >
-        <Typography variant="h5" sx={{ mb: 1, color: 'primary.dark' }}>
-          By department
+        <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
+          By Department
         </Typography>
         {data?.department?.map((item) => (
           <Box>
-            <Typography variant="h6">
+            <Typography variant="body1">
+              {item._id} {' : '} {item.count}
+            </Typography>
+          </Box>
+        ))}
+      </Paper>
+
+      <Paper
+        elevation={8}
+        sx={{ width: 200, m: 4, p: 3, fontSize: '2rem', borderRadius: 2 }}
+      >
+        <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
+          By Batch
+        </Typography>
+        {data?.batch?.map((item) => (
+          <Box>
+            <Typography variant="body1">
               {item._id} {' : '} {item.count}
             </Typography>
           </Box>

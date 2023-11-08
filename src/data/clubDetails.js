@@ -27,26 +27,25 @@ export const clubs = [
     imageUrl: 'kcc.jpeg',
   },
   {
-    id: 10,
-    title: 'কুয়েট থিয়েটার ',
-    description:
-      '""মৃতের মননশীল মুক্তি"" এই স্লোগানে এগিয়ে যাওয়া ""কুয়েট থিয়েটার""',
-    imageUrl: '',
-  },
-  {
     id: 11,
     title: 'প্রতিধ্বনি - Musical Association',
     description:
       'Musical Association of KUET. A platform for music lovers in KUET',
     imageUrl: 'protiddhoni.jpeg',
   },
-
   {
     id: 2,
     title: 'Dream - Blood Donation Society',
     description:
       'Dream have a vision for the world where no one will die in need of blood',
     imageUrl: 'dream.jpeg',
+  },
+  {
+    id: 10,
+    title: 'কুয়েট থিয়েটার ',
+    description:
+      '""মৃতের মননশীল মুক্তি"" এই স্লোগানে এগিয়ে যাওয়া ""কুয়েট থিয়েটার""',
+    imageUrl: '',
   },
   {
     id: 3,

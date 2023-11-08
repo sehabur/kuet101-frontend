@@ -50,6 +50,18 @@ const AdminHeader = () => {
       >
         User profile
       </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/admin/all-posts')}
+        sx={{ px: 4 }}
+      >
+        Posts
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation('/admin/gallery')}
+        sx={{ px: 4 }}
+      >
+        Gallery
+      </MenuItem>
       <MenuItem onClick={() => handleNavigation('/')} sx={{ px: 4 }}>
         Back to website
       </MenuItem>

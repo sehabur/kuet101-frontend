@@ -5,12 +5,10 @@ import {
   Typography,
   Paper,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Stack,
   Divider,
   Grid,
+  Link,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -99,7 +97,7 @@ const Footer = () => {
             <Box sx={{ ml: { xs: 7.2, sm: 0 } }}>
               <Stack direction="row" spacing={1.5}>
                 <EmailIcon color="primary" />
-                <Typography>support@kuetianshub.com</Typography>
+                <Typography>kuetianshub@gmail.com</Typography>
               </Stack>
             </Box>
           </Grid>
@@ -119,7 +117,12 @@ const Footer = () => {
             </Typography>
           </Grid>
           <Grid item>
-            <Typography>Developed by Purpletech.com</Typography>
+            <Typography>
+              Developed by{' '}
+              <Link target="_blank" href="https://purplesoft.tech/">
+                Purplesoft.tech
+              </Link>
+            </Typography>
           </Grid>
         </Grid>
       </Box>
