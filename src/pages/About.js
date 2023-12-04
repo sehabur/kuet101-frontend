@@ -22,6 +22,13 @@ const About = () => {
           amoung the kuetian community and get the utmost advantage of belonging
           to a fabulous alumni.
         </Typography>
+
+        <Typography sx={{ my: 5, color: grey[400], fontSize: '1.1rem' }}>
+          Privacy sensitive information like phone numbers, blood group,
+          facebook profile are kept optional to provide. All information taken
+          hare are merely for community purpose and will never be used or shared
+          anywhere else than this platform
+        </Typography>
       </Box>
     </Box>
   );

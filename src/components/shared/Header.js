@@ -202,7 +202,7 @@ const Header = () => {
         sx={{ px: 4, color: 'primary.dark' }}
         onClick={() => handleNavigation('/search-alumni', 'mobileView')}
       >
-        Seach alumni
+        Search alumni
       </MenuItem>
       <MenuItem
         sx={{ px: 4, color: 'primary.dark' }}
@@ -215,7 +215,7 @@ const Header = () => {
         sx={{ px: 4, color: 'primary.dark' }}
         onClick={() => handleNavigation('/search-blood', 'mobileView')}
       >
-        Blood
+        Blood donor
       </MenuItem>
 
       <MenuItem
@@ -328,7 +328,7 @@ const Header = () => {
                 onClick={() => handleNavigation('/search-blood')}
                 sx={{ mx: 1 }}
               >
-                Blood
+                Blood donor
               </Button>
 
               <Button

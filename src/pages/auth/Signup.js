@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'react-image-upload/dist/index.css';
 import { Link as RouterLink } from 'react-router-dom';
-
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import EmailIcon from '@mui/icons-material/Email';
 import {
   Alert,
   Autocomplete,
@@ -13,8 +14,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   Grid,
   MenuItem,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -196,7 +199,11 @@ const Signup = () => {
   );
 
   const rollPatternDialog = (
-    <Dialog open={openRollPatternDialog}>
+    <Dialog
+      open={openRollPatternDialog}
+      onClose={handleRollPatternDialogClose}
+      maxWidth="md"
+    >
       <DialogTitle>Roll number pattern helper</DialogTitle>
       <DialogContent>
         <img src="/images/roll-pattern.jpg" alt="roll" width="100%" />
@@ -656,7 +663,7 @@ const Signup = () => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <TextField
             label="Alumni registration Number"
             name="registrationNo"
@@ -756,8 +763,7 @@ const Signup = () => {
       <Box
         sx={{
           textAlign: 'center',
-          mt: 4,
-          mb: 8,
+          my: 4,
         }}
       >
         <Typography>Already have an account?</Typography>
@@ -771,6 +777,34 @@ const Signup = () => {
         >
           Sign In
         </Button>
+
+        <Typography sx={{ mt: 5, color: 'warning.main', fontSize: '1rem' }}>
+          All information taken hare are merely for community purpose and will
+          never be used or shared anywhere else than this platform. Privacy
+          sensitive information like phone number, blood group, facebook profile
+          etc are kept optional to provide.
+        </Typography>
+        <Divider sx={{ my: 3 }} />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            ml: { xs: 7.2, sm: 0 },
+          }}
+        >
+          <Typography sx={{ color: 'text.secondary' }}>
+            For any query or assistance please contact us
+          </Typography>
+          <Stack direction="row" spacing={1.5} sx={{ mt: 2, mb: 1 }}>
+            <EmailIcon color="primary" />
+            <Typography>kuetianshub@gmail.com</Typography>
+          </Stack>
+          <Stack direction="row" spacing={1.5}>
+            <WhatsAppIcon color="success" />
+            <Typography>+880-1629401145</Typography>
+          </Stack>
+        </Box>
       </Box>
     </Box>
   );

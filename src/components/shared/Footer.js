@@ -95,9 +95,13 @@ const Footer = () => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <Box sx={{ ml: { xs: 7.2, sm: 0 } }}>
-              <Stack direction="row" spacing={1.5}>
+              <Stack direction="row" spacing={1.5} sx={{ mb: 1 }}>
                 <EmailIcon color="primary" />
                 <Typography>kuetianshub@gmail.com</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1.5}>
+                <WhatsAppIcon color="success" />
+                <Typography>+880-1629401145</Typography>
               </Stack>
             </Box>
           </Grid>

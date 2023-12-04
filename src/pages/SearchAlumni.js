@@ -88,8 +88,6 @@ const SearchAlumni = () => {
     });
   };
 
-  console.log(filterOption);
-
   const handleFilterSubmit = async () => {
     let queryText = 'search=1';
     for (let key in filterOption) {
@@ -101,6 +99,10 @@ const SearchAlumni = () => {
         }
       }
     }
+    getSearchedItems(queryText);
+  };
+
+  const getSearchedItems = async (queryText = 'search=1') => {
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -136,7 +138,11 @@ const SearchAlumni = () => {
 
   useEffect(() => {
     getInerests();
+    getSearchedItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log(auth);
 
   const filterMenu = (
     <Box sx={{ px: { xs: 6, sm: 3 }, pb: { xs: 2, sm: 0 } }}>
@@ -229,28 +235,29 @@ const SearchAlumni = () => {
           />
         )}
       />
-
-      <TextField
-        select
-        label="Gender"
-        name="gender"
-        fullWidth
-        value={filterOption.gender}
-        onChange={handleFilterOptionChange}
-        size="small"
-        sx={{ my: 1 }}
-      >
-        <MenuItem value="all">Select any</MenuItem>
-        <MenuItem key="female" value="female">
-          Female
-        </MenuItem>
-        <MenuItem key="male" value="male">
-          Male
-        </MenuItem>
-        <MenuItem key="other" value="other">
-          Other
-        </MenuItem>
-      </TextField>
+      {auth?.gender === 'female' && (
+        <TextField
+          select
+          label="Gender"
+          name="gender"
+          fullWidth
+          value={filterOption.gender}
+          onChange={handleFilterOptionChange}
+          size="small"
+          sx={{ my: 1 }}
+        >
+          <MenuItem value="all">Select any</MenuItem>
+          <MenuItem key="female" value="female">
+            Female
+          </MenuItem>
+          <MenuItem key="male" value="male">
+            Male
+          </MenuItem>
+          <MenuItem key="other" value="other">
+            Other
+          </MenuItem>
+        </TextField>
+      )}
 
       <TextField
         select
@@ -431,7 +438,11 @@ const SearchAlumni = () => {
             <Typography
               sx={{ fontSize: '1.6rem', mt: 5, mb: 2, px: { xs: 3, sm: 0 } }}
             >
-              Search result {searchResult && `(${searchResult.length} matches)`}
+              Search result{' '}
+              {searchResult &&
+                `(${
+                  searchResult.length > 99 ? '99+' : searchResult.length
+                } matches)`}
             </Typography>
 
             <Box sx={{ mb: 4 }}>

@@ -54,15 +54,16 @@ const LearningFileExplorer = () => {
 
   const [itemsInTree, setItemsInTree] = useState([]);
 
-  const [isFileType, setIsFileType] = useState(false);
+  // const [isFileType, setIsFileType] = useState(false);
 
   const getCurrentFolders = (data) => {
     const items = data?.map((content) => {
       if (content.type === 'file') {
-        setIsFileType(true);
+        // setIsFileType(true);
         return {
           title: content.name,
           url: content.url,
+          isFileType: true,
         };
       } else {
         return content.name;
@@ -129,9 +130,9 @@ const LearningFileExplorer = () => {
           ))}
         </Breadcrumbs>
 
-        {currentFolders?.map((item) => (
+        {currentFolders?.sort()?.map((item) => (
           <>
-            {isFileType ? (
+            {item?.isFileType ? (
               <ListItem
                 component={RouterLink}
                 to={item.url}
@@ -140,7 +141,6 @@ const LearningFileExplorer = () => {
                   ':hover': {
                     textDecoration: 'underline',
                   },
-                  mb: 1,
                 }}
               >
                 <ListItemIcon>
@@ -151,8 +151,8 @@ const LearningFileExplorer = () => {
             ) : (
               <Card
                 sx={{
-                  width: 300,
-                  my: 4,
+                  maxWidth: 360,
+                  my: 2,
                   bgcolor: blueGrey[50],
                   borderRadius: 3,
                 }}
@@ -175,7 +175,9 @@ const LearningFileExplorer = () => {
                         fontSize: '1.6rem',
                       }}
                     />
-                    <Typography sx={{ color: grey[900] }}>{item}</Typography>
+                    <Typography sx={{ color: grey[900] }}>
+                      {item.substr(0, 30)} {item.length > 30 ? '..' : ''}
+                    </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>

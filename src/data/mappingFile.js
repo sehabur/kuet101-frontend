@@ -34,6 +34,7 @@ export const bloodGroupList = [
   'O-',
   'AB+',
   'AB-',
+  'N/A',
 ];
 
 export const status = [

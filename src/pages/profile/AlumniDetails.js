@@ -27,6 +27,11 @@ const AlumniDetails = () => {
 
   const { id } = useParams();
 
+  let displayPhoneNo = true;
+  if (auth?.gender === 'male' && userDetails?.gender === 'female') {
+    displayPhoneNo = false;
+  }
+
   const getUserDetails = async () => {
     try {
       setIsLoading(true);
@@ -150,7 +155,7 @@ const AlumniDetails = () => {
             <Typography variant="body1" sx={{ mt: 1 }}>
               E-mail: {userDetails.email}
             </Typography>
-            {userDetails.phoneNo && (
+            {displayPhoneNo && userDetails.phoneNo && (
               <Typography variant="body1" sx={{ mt: 1 }}>
                 Phone number: {userDetails?.phoneNo || 'Not available'}
               </Typography>

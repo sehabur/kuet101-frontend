@@ -384,9 +384,15 @@ const EditProfile = () => {
             placeholder="example: 0903042"
             value={formInputs.rollNo}
             onChange={handleChange}
-            InputProps={{
-              readOnly: true,
+            helperText="You need to use this roll for login"
+            sx={{
+              '.MuiFormHelperText-root': {
+                color: 'warning.main',
+              },
             }}
+            // InputProps={{
+            //   readOnly: true,
+            // }}
           ></TextField>
         </Grid>
 

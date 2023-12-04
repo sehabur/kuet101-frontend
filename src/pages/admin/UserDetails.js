@@ -79,6 +79,8 @@ const UserDetails = () => {
           userId: userDetails._id,
           isActive: formInputs.isActive,
           approvalStatus: formInputs.approvalStatus,
+          userEmail: userDetails.email,
+          userName: `${userDetails.firstName} ${userDetails.lastName}`,
         },
         {
           headers: {
