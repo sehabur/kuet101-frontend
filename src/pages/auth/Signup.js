@@ -20,6 +20,8 @@ import {
   Stack,
   TextField,
   Typography,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 
 import {
@@ -28,9 +30,13 @@ import {
   status,
   bloodGroupList,
   interests,
+  batchList,
 } from '../../data/mappingFile';
 import Spinner from '../../components/shared/Spinner';
 import ImageEditor from '../../components/shared/ImageEditor';
+
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Signup = () => {
   const [formInputs, setFormInputs] = useState({
@@ -70,6 +76,14 @@ const Signup = () => {
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
   const [openRollPatternDialog, setOpenRollPatternDialog] = useState(false);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleImageEditorCallback = (imageData) => {
     setFormInputs({
@@ -177,10 +191,15 @@ const Signup = () => {
       <Box sx={{ p: 1, mb: 2 }}>
         <DialogTitle>Account creation successful</DialogTitle>
         <DialogContent>
-          <DialogContentText>Dear {formInputs.firstName},</DialogContentText>
-          <DialogContentText>
+          <DialogContentText color="text.primary">
+            Dear {formInputs.firstName},
+          </DialogContentText>
+          {/* <DialogContentText>
             Your account has been created and is now pending for approval. You
             will get an email shortly once it is approved.
+          </DialogContentText> */}
+          <DialogContentText color="text.primary">
+            Your account has been created successfully. Please login now.
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -474,12 +493,18 @@ const Signup = () => {
           <TextField
             label="Batch"
             name="batch"
+            select
             fullWidth
             required
-            placeholder="example: 2009"
             value={formInputs.batch}
             onChange={handleChange}
-          ></TextField>
+          >
+            {batchList.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
 
         <Grid item xs={12}>
@@ -714,7 +739,19 @@ const Signup = () => {
           <TextField
             label="Password"
             name="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
             inputProps={{ minLength: 6 }}
             placeholder="Minimum 6 character"
             fullWidth

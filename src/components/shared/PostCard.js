@@ -12,16 +12,26 @@ import { Link as RouterLink } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { grey } from '@mui/material/colors';
 
 const PostCard = ({ post, isMyPost, handlePostDelete, handlePostEdit }) => {
   return (
     <>
       {post && (
-        <Card sx={{ maxWidth: 325, minWidth: 280, m: 2 }} variant="outlined">
+        <Card
+          sx={{
+            maxWidth: 325,
+            minWidth: 280,
+            m: 2,
+          }}
+          variant="outlined"
+        >
           <CardActionArea
             component={RouterLink}
             to={`/posts/${post._id}`}
-            sx={{ py: 2 }}
+            sx={{
+              py: 2,
+            }}
           >
             <CardMedia
               sx={{ height: 160, mx: 2 }}
@@ -39,12 +49,12 @@ const PostCard = ({ post, isMyPost, handlePostDelete, handlePostEdit }) => {
             <CardContent sx={{ pb: 0 }}>
               <Typography variant="title" sx={{ fontSize: '1.2rem' }}>
                 {post.title.substr(0, 70) +
-                  (post.description.length > 130 ? '..' : '')}
+                  (post.title.length > 70 ? '..' : '')}
               </Typography>
 
-              <Typography sx={{ mt: 1.2 }} color="text.secondary">
-                {post.description.substr(0, 130) +
-                  (post.description.length > 130 ? '..' : '')}
+              <Typography sx={{ mt: 1.2 }}>
+                {post.description.substr(0, 100) +
+                  (post.description.length > 100 ? '..' : '')}
               </Typography>
               <Typography
                 textAlign="right"

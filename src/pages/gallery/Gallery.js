@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import Spinner from '../../components/shared/Spinner';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link as RouterLink } from 'react-router-dom';
-import { departments } from '../../data/mappingFile';
+import { batchList, departments } from '../../data/mappingFile';
 import { grey } from '@mui/material/colors';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
@@ -28,17 +28,17 @@ const Gallery = () => {
   const auth = useSelector((state) => state.auth);
 
   const [formInputs, setFormInputs] = useState({
-    batch: auth?.batch,
-    department: auth?.departmentShort,
+    batch: '',
+    department: '',
   });
 
   const [galleryImages, setGalleryImages] = useState(null);
 
-  const getGalleryImages = async () => {
+  const getGalleryImages = async (selectall) => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/posts/getGalleryImages?batch=${formInputs.batch}&dept=${formInputs.department}&limit=40`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/posts/getGalleryImages?batch=${formInputs.batch}&dept=${formInputs.department}&selectall=${selectall}&limit=40`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const Gallery = () => {
   };
 
   useEffect(() => {
-    if (auth?.isLoggedIn) getGalleryImages();
+    if (auth?.isLoggedIn) getGalleryImages(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
@@ -103,14 +103,19 @@ const Gallery = () => {
             <TextField
               label="Batch"
               name="batch"
+              select
               required
               size="small"
-              placeholder="example: 2009"
               value={formInputs.batch}
               onChange={handleChange}
-              sx={{ maxWidth: 130, mr: 2, mb: 2 }}
-            />
-
+              sx={{ minWidth: 100, maxWidth: 130, mr: 2, mb: 2 }}
+            >
+              {batchList.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
             <TextField
               select
               label="Department"
@@ -119,7 +124,7 @@ const Gallery = () => {
               size="small"
               value={formInputs.department}
               onChange={handleChange}
-              sx={{ minWidth: 110, mr: 2, mb: 2 }}
+              sx={{ minWidth: 140, mr: 2, mb: 2 }}
             >
               {departments.map((option) => (
                 <MenuItem key={option.short} value={option.short}>
@@ -130,7 +135,7 @@ const Gallery = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={getGalleryImages}
+              onClick={() => getGalleryImages(0)}
               sx={{ mr: 4, mb: 2 }}
             >
               Apply

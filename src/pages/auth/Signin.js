@@ -15,11 +15,16 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 
 import { authActions } from '../../store';
 import Spinner from '../../components/shared/Spinner';
 import { grey } from '@mui/material/colors';
+
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Signin = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +46,14 @@ const Signin = () => {
   const theme = useTheme();
 
   const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -162,7 +175,20 @@ const Signin = () => {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 value={formData.password}
                 onChange={handleInputChange}
               />

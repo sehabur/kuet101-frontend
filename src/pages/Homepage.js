@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Banner from '../components/homepage/Banner';
 // import Events from '../components/homepage/Events';
-// import Posts from '../components/homepage/Posts';
+import Posts from '../components/homepage/Posts';
 import Clubs from '../components/homepage/Clubs';
 import LearningHub from '../components/homepage/LearningHub';
 import Tution from '../components/homepage/Tution';
@@ -75,8 +75,8 @@ const Homepage = () => {
       <Spinner open={isLoading} />
       <Banner />
       {/* <Events events={events} /> */}
-      {/* <Posts /> */}
       <SearchAlumni />
+      <Posts />
       <Blood />
       <LearningHub />
       <Tution />

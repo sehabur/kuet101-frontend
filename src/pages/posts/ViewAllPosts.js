@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Spinner from '../../components/shared/Spinner';
@@ -8,6 +8,7 @@ import PostCard from '../../components/shared/PostCard';
 import { Link as RouterLink } from 'react-router-dom';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { postCategoryList } from '../../data/mappingFile';
 
 const ViewAllPosts = () => {
   const [posts, setPosts] = useState(null);
@@ -17,6 +18,17 @@ const ViewAllPosts = () => {
   const auth = useSelector((state) => state.auth);
 
   const userId = auth ? auth._id : null;
+
+  const [formInputs, setFormInputs] = useState({
+    category: 'all',
+  });
+
+  const handleChange = (event) => {
+    setFormInputs({
+      ...formInputs,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   useEffect(() => {
     if (userId) getPosts();
@@ -42,7 +54,16 @@ const ViewAllPosts = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: '1400px', mx: 'auto', py: 4, px: 2, mb: 4 }}>
+    <Box
+      sx={{
+        maxWidth: '1400px',
+        mx: 'auto',
+        py: 4,
+        px: 2,
+        mb: 4,
+        minHeight: '600px',
+      }}
+    >
       <Spinner open={isLoading} />
       <Box
         sx={{
@@ -87,7 +108,46 @@ const ViewAllPosts = () => {
           alignItems: 'flex-start',
         }}
       >
-        {posts && posts.map((post) => <PostCard post={post} />)}
+        <TextField
+          select
+          name="category"
+          label="Category"
+          size="small"
+          required
+          value={formInputs.category}
+          onChange={handleChange}
+          sx={{ width: 300, mb: 2 }}
+        >
+          <MenuItem value="all">All posts</MenuItem>
+          {postCategoryList.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+        }}
+      >
+        {formInputs.category === 'all'
+          ? posts?.map((post) => <PostCard post={post} />)
+          : posts
+              ?.filter((item) => item.category === formInputs.category)
+              .map((post) => <PostCard post={post} />)}
+
+        {posts?.filter((item) => item.category === formInputs.category).length <
+          1 && (
+          <Typography sx={{ pt: 12, fontSize: '1.4rem' }}>
+            No post found
+          </Typography>
+        )}
       </Box>
     </Box>
   );

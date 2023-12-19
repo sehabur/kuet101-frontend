@@ -7,6 +7,7 @@ import Spinner from '../shared/Spinner';
 import PostCard from '../shared/PostCard';
 
 import { Link as RouterLink } from 'react-router-dom';
+import { grey } from '@mui/material/colors';
 const Posts = () => {
   const [posts, setPosts] = useState(null);
 
@@ -40,7 +41,7 @@ const Posts = () => {
   };
 
   return (
-    <Box sx={{ py: 8 }}>
+    <Box sx={{ py: 8, bgcolor: grey[50] }}>
       <Spinner open={isLoading} />
       <Box sx={{ textAlign: 'center', mb: 4, px: 2 }}>
         <Typography variant="h4">Recent Posts</Typography>
@@ -54,7 +55,7 @@ const Posts = () => {
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'stretch',
         }}
       >
         {posts && posts.map((post) => <PostCard post={post} />)}

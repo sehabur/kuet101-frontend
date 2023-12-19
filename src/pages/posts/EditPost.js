@@ -19,6 +19,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import ImageEditor from '../../components/shared/ImageEditor';
 import ImageUploader from '../../components/shared/ImageUploader';
+import { postCategoryList } from '../../data/mappingFile';
 
 const EditPost = () => {
   const { id: postId } = useParams();
@@ -27,6 +28,7 @@ const EditPost = () => {
 
   const [formInputs, setFormInputs] = useState({
     title: '',
+    category: '',
     description: '',
     images: [],
   });
@@ -56,8 +58,6 @@ const EditPost = () => {
       images: selectedImages,
     });
   };
-
-  console.log(formInputs.images);
 
   const handleImageLoading = (state) => {
     setIsLoading(state);
@@ -178,6 +178,33 @@ const EditPost = () => {
             value={formInputs.title}
             onChange={handleChange}
           ></TextField>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography
+            sx={{
+              color: 'primary.main',
+              textAlign: 'left',
+              ml: 0.5,
+              my: 1,
+            }}
+          >
+            Category
+          </Typography>
+          <TextField
+            name="category"
+            select
+            fullWidth
+            required
+            value={formInputs.category}
+            onChange={handleChange}
+          >
+            {postCategoryList.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
 
         <Grid item xs={12}>

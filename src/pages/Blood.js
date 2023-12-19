@@ -58,6 +58,10 @@ const Blood = () => {
         }
       }
     }
+    getSearchedItems(queryText);
+  };
+
+  const getSearchedItems = async (queryText = 'search=1') => {
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -81,6 +85,11 @@ const Blood = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getSearchedItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //   useEffect(() => {
   //     if (!auth?.isLoggedIn) {

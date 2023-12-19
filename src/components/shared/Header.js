@@ -165,7 +165,7 @@ const Header = () => {
         onClick={() => handleNavigation('/find-your-mates', 'explore')}
         sx={{ px: 4 }}
       >
-        Find Your Mates
+        Alumni dashboard
       </MenuItem>
       <MenuItem
         onClick={() => handleNavigation('/posts', 'explore')}
@@ -177,13 +177,13 @@ const Header = () => {
         onClick={() => handleNavigation('/gallery', 'explore')}
         sx={{ px: 4 }}
       >
-        Photo Gallery
+        Photo gallery
       </MenuItem>
       <MenuItem
         onClick={() => handleNavigation('/aboutus', 'explore')}
         sx={{ px: 4 }}
       >
-        About Us
+        About us
       </MenuItem>
     </Menu>
   );
@@ -208,7 +208,7 @@ const Header = () => {
         sx={{ px: 4, color: 'primary.dark' }}
         onClick={() => handleNavigation('/find-your-mates', 'mobileView')}
       >
-        Find your mates
+        Alumni dashboard
       </MenuItem>
 
       <MenuItem
@@ -248,13 +248,13 @@ const Header = () => {
         onClick={() => handleNavigation('/gallery', 'mobileView')}
         sx={{ px: 4, color: 'primary.dark' }}
       >
-        Photo Gallery
+        Photo gallery
       </MenuItem>
       <MenuItem
         onClick={() => handleNavigation('/aboutus', 'mobileView')}
         sx={{ px: 4, color: 'primary.dark' }}
       >
-        About Us
+        About us
       </MenuItem>
     </Menu>
   );

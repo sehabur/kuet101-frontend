@@ -1,16 +1,26 @@
-import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import Spinner from '../../components/shared/Spinner';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import ImageUploader from '../../components/shared/ImageUploader';
+import { postCategoryList } from '../../data/mappingFile';
 
 const CreatePost = () => {
   const auth = useSelector((state) => state.auth);
 
   const formDefaultState = {
     title: '',
+    category: '',
     description: '',
     images: [],
   };
@@ -134,6 +144,33 @@ const CreatePost = () => {
             value={formInputs.title}
             onChange={handleChange}
           ></TextField>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography
+            sx={{
+              color: 'primary.main',
+              textAlign: 'left',
+              ml: 0.5,
+              my: 1,
+            }}
+          >
+            Category
+          </Typography>
+          <TextField
+            select
+            name="category"
+            fullWidth
+            required
+            value={formInputs.category}
+            onChange={handleChange}
+          >
+            {postCategoryList.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
 
         <Grid item xs={12}>

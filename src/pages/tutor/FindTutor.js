@@ -26,7 +26,7 @@ const FindTutor = () => {
 
   const [findTutorData, setFindTutorData] = useState(null);
 
-  const [district, setDistrict] = useState(auth?.presentDistrict);
+  const [district, setDistrict] = useState('all');
 
   const handleChange = (event) => {
     setDistrict(event.target.value);
