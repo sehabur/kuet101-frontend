@@ -816,7 +816,7 @@ const Signup = () => {
         </Button>
 
         <Typography sx={{ mt: 5, color: 'warning.main', fontSize: '1rem' }}>
-          All information taken hare are merely for community purpose and will
+          All information taken here are merely for community purpose and will
           never be used or shared anywhere else than this platform. Privacy
           sensitive information like phone number, blood group, facebook profile
           etc are kept optional to provide.

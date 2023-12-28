@@ -21,6 +21,7 @@ import Spinner from '../../components/shared/Spinner';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { blueGrey, grey } from '@mui/material/colors';
 import axios from 'axios';
+import { format } from 'date-fns';
 
 const Users = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -131,6 +132,7 @@ const Users = () => {
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Roll no</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Created at</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Active</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Approval</TableCell>
               </TableRow>
@@ -146,6 +148,9 @@ const Users = () => {
                     {row.firstName} {row.lastName}
                   </TableCell>
                   <TableCell>{row.rollNo}</TableCell>
+                  <TableCell>
+                    {format(new Date(row.createdAt), 'dd/MM/yyyy')}{' '}
+                  </TableCell>
                   <TableCell>{row.isActive ? 'Yes' : 'No'}</TableCell>
                   <TableCell>{row.approvalStatus}</TableCell>
                 </TableRow>

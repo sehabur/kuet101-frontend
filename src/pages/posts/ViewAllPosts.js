@@ -142,12 +142,13 @@ const ViewAllPosts = () => {
               ?.filter((item) => item.category === formInputs.category)
               .map((post) => <PostCard post={post} />)}
 
-        {posts?.filter((item) => item.category === formInputs.category).length <
-          1 && (
-          <Typography sx={{ pt: 12, fontSize: '1.4rem' }}>
-            No post found
-          </Typography>
-        )}
+        {formInputs.category !== 'all' &&
+          posts?.filter((item) => item.category === formInputs.category)
+            .length < 1 && (
+            <Typography sx={{ pt: 12, fontSize: '1.4rem' }}>
+              No post found
+            </Typography>
+          )}
       </Box>
     </Box>
   );

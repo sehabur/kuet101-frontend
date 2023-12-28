@@ -18,6 +18,7 @@ import {
 
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  batchList,
   bloodGroupList,
   departments,
   districts,
@@ -402,10 +403,16 @@ const EditProfile = () => {
             name="batch"
             fullWidth
             required
-            placeholder="example: 2009"
+            select
             value={formInputs.batch}
             onChange={handleChange}
-          ></TextField>
+          >
+            {batchList.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
 
         <Grid item xs={12}>

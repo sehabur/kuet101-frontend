@@ -41,7 +41,7 @@ const Posts = () => {
   };
 
   return (
-    <Box sx={{ py: 8, bgcolor: grey[50] }}>
+    <Box sx={{ pt: { xs: 12, sm: 20 }, pb: 8, bgcolor: grey[50] }}>
       <Spinner open={isLoading} />
       <Box sx={{ textAlign: 'center', mb: 4, px: 2 }}>
         <Typography variant="h4">Recent Posts</Typography>
@@ -53,7 +53,8 @@ const Posts = () => {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
+          flexDirection: 'row',
+          flexWrap: 'wrap',
           justifyContent: 'center',
           alignItems: 'stretch',
         }}

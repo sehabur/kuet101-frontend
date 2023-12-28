@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 
 import {
   Grid,
@@ -17,6 +17,7 @@ import {
   useMediaQuery,
   Autocomplete,
   IconButton,
+  Stack,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -26,13 +27,21 @@ import {
   districts,
   status,
   interests,
+  batchList,
 } from '../data/mappingFile';
 import AlumniCard from '../components/shared/AlumniCard';
 import Spinner from '../components/shared/Spinner';
 import { grey } from '@mui/material/colors';
+import { searchActions } from '../store';
 
 const SearchAlumni = () => {
   const theme = useTheme();
+
+  const dispatch = useDispatch();
+
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  const companySearchText = searchParams.get('company');
 
   const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -48,20 +57,31 @@ const SearchAlumni = () => {
 
   const [openDrawer, setOpenDrawer] = useState(matchesSmDown ? true : false);
 
+  const searchFilter = useSelector((state) => state.search);
+
+  let currOrg = '';
+  if (companySearchText) {
+    currOrg = companySearchText;
+  } else if (searchFilter?.currentOrganization) {
+    currOrg = searchFilter.currentOrganization;
+  } else {
+    currOrg = '';
+  }
+
   const [filterOption, setFilterOption] = useState({
-    name: '',
-    rollNo: '',
-    batch: '',
-    departmentShort: '',
-    homeDistrict: '',
-    presentDistrict: '',
-    gender: '',
-    bloodGroup: '',
-    status: '',
-    currentJobTitle: '',
-    currentOrganization: '',
-    interests: '',
-    expertin: '',
+    name: searchFilter?.name || '',
+    rollNo: searchFilter?.rollNo || '',
+    batch: searchFilter?.batch || '',
+    departmentShort: searchFilter?.departmentShort || '',
+    homeDistrict: searchFilter?.homeDistrict || '',
+    presentDistrict: searchFilter?.presentDistrict || '',
+    gender: searchFilter?.gender || '',
+    bloodGroup: searchFilter?.bloodGroup || '',
+    status: searchFilter?.status || '',
+    currentJobTitle: searchFilter?.currentJobTitle || '',
+    currentOrganization: currOrg,
+    interests: searchFilter?.interests || '',
+    expertin: searchFilter?.expertin || '',
   });
 
   const auth = useSelector((state) => state.auth);
@@ -88,7 +108,7 @@ const SearchAlumni = () => {
     });
   };
 
-  const handleFilterSubmit = async () => {
+  const handleFilterSubmit = async (type) => {
     let queryText = 'search=1';
     for (let key in filterOption) {
       if (filterOption[key] !== 'all' && filterOption[key] !== '') {
@@ -100,6 +120,29 @@ const SearchAlumni = () => {
       }
     }
     getSearchedItems(queryText);
+    if (type === 'button') {
+      dispatch(searchActions.setFilter(filterOption));
+      setSearchParams({});
+    }
+  };
+
+  const handleResetSearchFilter = () => {
+    dispatch(searchActions.reset());
+    setFilterOption({
+      name: '',
+      rollNo: '',
+      batch: '',
+      departmentShort: '',
+      homeDistrict: '',
+      presentDistrict: '',
+      gender: '',
+      bloodGroup: '',
+      status: '',
+      currentJobTitle: '',
+      currentOrganization: '',
+      interests: '',
+      expertin: '',
+    });
   };
 
   const getSearchedItems = async (queryText = 'search=1') => {
@@ -138,7 +181,7 @@ const SearchAlumni = () => {
 
   useEffect(() => {
     getInerests();
-    getSearchedItems();
+    handleFilterSubmit('initial');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -146,9 +189,21 @@ const SearchAlumni = () => {
 
   const filterMenu = (
     <Box sx={{ px: { xs: 6, sm: 3 }, pb: { xs: 2, sm: 0 } }}>
-      <Typography sx={{ mb: 1 }} color="primary">
-        Search options
-      </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 1 }}
+      >
+        <Typography>Search options</Typography>
+        <Button
+          size="small"
+          onClick={handleResetSearchFilter}
+          sx={{ textDecoration: 'underline', fontSize: '.95rem' }}
+        >
+          Reset filters
+        </Button>
+      </Stack>
 
       <TextField
         fullWidth
@@ -171,6 +226,7 @@ const SearchAlumni = () => {
       />
 
       <TextField
+        select
         fullWidth
         label="batch"
         name="batch"
@@ -178,7 +234,13 @@ const SearchAlumni = () => {
         onChange={handleFilterOptionChange}
         size="small"
         sx={{ my: 1 }}
-      />
+      >
+        {batchList.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </TextField>
 
       <TextField
         select
@@ -355,7 +417,7 @@ const SearchAlumni = () => {
       <Box sx={{ mb: 1 }}>
         <Button
           variant="contained"
-          onClick={handleFilterSubmit}
+          onClick={() => handleFilterSubmit('button')}
           sx={{ mt: 1.8 }}
           fullWidth
         >
@@ -436,7 +498,7 @@ const SearchAlumni = () => {
               </Box>
             )}
             <Typography
-              sx={{ fontSize: '1.6rem', mt: 5, mb: 2, px: { xs: 3, sm: 0 } }}
+              sx={{ fontSize: '1.4rem', mt: 5.2, mb: 2, px: { xs: 3, sm: 0 } }}
             >
               Search result{' '}
               {searchResult &&

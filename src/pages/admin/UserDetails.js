@@ -6,16 +6,11 @@ import {
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   Alert,
-  Avatar,
   Box,
   Button,
-  Chip,
-  Divider,
-  Grid,
   MenuItem,
   Paper,
   TextField,

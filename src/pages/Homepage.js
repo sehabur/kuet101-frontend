@@ -75,8 +75,8 @@ const Homepage = () => {
       <Spinner open={isLoading} />
       <Banner />
       {/* <Events events={events} /> */}
-      <SearchAlumni />
       <Posts />
+      <SearchAlumni />
       <Blood />
       <LearningHub />
       <Tution />
