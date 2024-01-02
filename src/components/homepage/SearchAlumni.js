@@ -143,7 +143,7 @@ const SearchAlumni = () => {
             <ListItem disablePadding>
               <ListItemButton
                 component={RouterLink}
-                to="/search-alumni?company=electricity generation egcb"
+                to="/search-alumni?company=local lged"
               >
                 <ListItemIcon>
                   <DashboardRoundedIcon
@@ -153,7 +153,7 @@ const SearchAlumni = () => {
                 </ListItemIcon>
                 <ListItemText
                   sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="Electricity Generation Company of Bangladesh (EGCB)"
+                  primary="Local Government Engineering Department (LGED)"
                 />
               </ListItemButton>
             </ListItem>

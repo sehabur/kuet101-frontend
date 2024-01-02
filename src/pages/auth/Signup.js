@@ -121,6 +121,7 @@ const Signup = () => {
       [event.target.name]: event.target.value,
     });
   };
+  console.log(formInputs);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -20,7 +20,7 @@ export const departments = [
   { id: 15, long: 'Industrial Engineering and Management', short: 'IEM' },
   {
     id: 16,
-    long: 'Building Engineering & Construction Management',
+    long: 'Architecture',
     short: 'ARCH',
   },
 ];
@@ -38,6 +38,8 @@ export const bloodGroupList = [
 ];
 
 export const batchList = [
+  '2025',
+  '2024',
   '2023',
   '2022',
   '2021',
