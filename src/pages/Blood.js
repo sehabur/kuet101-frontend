@@ -9,13 +9,14 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/shared/Spinner';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { bloodGroupList, districts } from '../data/mappingFile';
 import { grey } from '@mui/material/colors';
 import AlumniCard from '../components/shared/AlumniCard';
 import axios from 'axios';
+import { searchActions } from '../store';
 
 const Blood = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,14 +27,18 @@ const Blood = () => {
     'Search alumni using filters'
   );
 
-  const [formInputs, setFormInputs] = useState({
-    presentDistrict: '',
-    bloodGroup: '',
-  });
-
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth);
+
+  const filter = useSelector((state) => state.search?.blood);
+
+  const [formInputs, setFormInputs] = useState({
+    presentDistrict: filter?.presentDistrict || '',
+    bloodGroup: filter?.bloodGroup || '',
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,6 +63,7 @@ const Blood = () => {
         }
       }
     }
+    dispatch(searchActions.setBloodFilter(formInputs));
     getSearchedItems(queryText);
   };
 

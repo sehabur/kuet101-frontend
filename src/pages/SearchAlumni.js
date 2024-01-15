@@ -18,6 +18,8 @@ import {
   Autocomplete,
   IconButton,
   Stack,
+  InputAdornment,
+  styled,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -33,6 +35,20 @@ import AlumniCard from '../components/shared/AlumniCard';
 import Spinner from '../components/shared/Spinner';
 import { grey } from '@mui/material/colors';
 import { searchActions } from '../store';
+
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+
+import HelpIcon from '@mui/icons-material/Help';
+
+const CustomTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(() => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 350,
+    fontSize: 14,
+    padding: '12px',
+  },
+}));
 
 const SearchAlumni = () => {
   const theme = useTheme();
@@ -57,7 +73,7 @@ const SearchAlumni = () => {
 
   const [openDrawer, setOpenDrawer] = useState(matchesSmDown ? true : false);
 
-  const searchFilter = useSelector((state) => state.search);
+  const searchFilter = useSelector((state) => state.search?.search);
 
   let currOrg = '';
   if (companySearchText) {
@@ -121,7 +137,7 @@ const SearchAlumni = () => {
     }
     getSearchedItems(queryText);
     if (type === 'button') {
-      dispatch(searchActions.setFilter(filterOption));
+      dispatch(searchActions.setSearchFilter(filterOption));
       setSearchParams({});
     }
   };
@@ -266,37 +282,52 @@ const SearchAlumni = () => {
         onChange={(e) => {
           handleAutoCompleteChange(e, 'homeDistrict');
         }}
+        value={filterOption.homeDistrict}
         renderInput={(params) => (
           <TextField
             {...params}
             label="Home district"
             name="homeDistrict"
-            value={filterOption.homeDistrict}
             size="small"
             sx={{ my: 1 }}
-            onChange={handleFilterOptionChange}
           />
         )}
       />
 
-      <Autocomplete
-        freeSolo
-        options={districts}
-        onChange={(e) => {
-          handleAutoCompleteChange(e, 'presentDistrict');
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Present location"
-            name="presentDistrict"
-            value={filterOption.presentDistrict}
-            size="small"
-            sx={{ my: 1 }}
-            onChange={handleFilterOptionChange}
-          />
-        )}
-      />
+      <Box sx={{ display: 'flex' }}>
+        <Autocomplete
+          fullWidth
+          freeSolo
+          options={districts}
+          onChange={(e) => {
+            handleAutoCompleteChange(e, 'presentDistrict');
+          }}
+          value={filterOption.presentDistrict}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Present location"
+              name="presentDistrict"
+              size="small"
+              sx={{ my: 1 }}
+            />
+          )}
+        />
+        <CustomTooltip
+          title="Input district name to search an alumni inside BD. For searching alumni outside of BD input state or country name"
+          placement="top"
+          enterTouchDelay={10}
+          leaveTouchDelay={8000}
+        >
+          <IconButton
+            edge="end"
+            sx={{ ':hover': { bgcolor: 'transparent', color: 'primary.main' } }}
+          >
+            <HelpIcon sx={{ fontSize: '1.2rem' }} />
+          </IconButton>
+        </CustomTooltip>
+      </Box>
+
       {auth?.gender === 'female' && (
         <TextField
           select
@@ -367,15 +398,47 @@ const SearchAlumni = () => {
         sx={{ my: 1 }}
       />
 
-      <TextField
-        fullWidth
-        label="Current organization"
-        name="currentOrganization"
-        value={filterOption.currentOrganization}
-        onChange={handleFilterOptionChange}
-        size="small"
-        sx={{ my: 1 }}
-      />
+      <Box sx={{ display: 'flex' }}>
+        <TextField
+          fullWidth
+          label="Current organization"
+          name="currentOrganization"
+          value={filterOption.currentOrganization}
+          onChange={handleFilterOptionChange}
+          size="small"
+          sx={{ my: 1 }}
+          // InputProps={{
+          //   endAdornment: (
+          //     <InputAdornment>
+          //       <Tooltip
+          //         title="/ onClick={handleClickShowPassword}
+          //         // onMouseDown={handleMouseDownPassword}"
+          //         placement="top"
+          //         enterTouchDelay={10}
+          //         leaveTouchDelay={8000}
+          //       >
+          //         <IconButton color="warning">
+          //           <HelpIcon sx={{ fontSize: '1.2rem' }} />
+          //         </IconButton>
+          //       </Tooltip>
+          //     </InputAdornment>
+          //   ),
+          // }}
+        />
+        <CustomTooltip
+          title="Input company, university or any organization name you are currently working or studying"
+          placement="top"
+          enterTouchDelay={10}
+          leaveTouchDelay={8000}
+        >
+          <IconButton
+            edge="end"
+            sx={{ ':hover': { bgcolor: 'transparent', color: 'primary.main' } }}
+          >
+            <HelpIcon sx={{ fontSize: '1.2rem' }} />
+          </IconButton>
+        </CustomTooltip>
+      </Box>
 
       <Autocomplete
         freeSolo
@@ -383,15 +446,14 @@ const SearchAlumni = () => {
         onChange={(e) => {
           handleAutoCompleteChange(e, 'interests');
         }}
+        value={filterOption.interests}
         renderInput={(params) => (
           <TextField
             {...params}
             label="Interested in"
             name="interests"
-            value={filterOption.interests}
             size="small"
             sx={{ my: 1 }}
-            onChange={handleFilterOptionChange}
           />
         )}
       />
@@ -401,15 +463,14 @@ const SearchAlumni = () => {
         onChange={(e) => {
           handleAutoCompleteChange(e, 'expertin');
         }}
+        value={filterOption.expertin}
         renderInput={(params) => (
           <TextField
             {...params}
             label="Expert zone"
             name="expertin"
-            value={filterOption.expertin}
             size="small"
             sx={{ my: 1 }}
-            onChange={handleFilterOptionChange}
           />
         )}
       />

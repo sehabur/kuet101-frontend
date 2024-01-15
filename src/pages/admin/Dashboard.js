@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Link as RouterLink,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+// import {
+//   Link as RouterLink,
+//   useNavigate,
+//   useSearchParams,
+// } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
-import {
-  Alert,
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Grid,
-  MenuItem,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 import Spinner from '../../components/shared/Spinner';
 import { grey } from '@mui/material/colors';
@@ -30,7 +17,11 @@ const Dashboard = () => {
 
   const auth = useSelector((state) => state.auth);
 
-  const [data, setData] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  const [postData, setPostData] = useState(null);
+  const [tutionData, setTutionData] = useState(null);
+  const [galleryData, setGalleryData] = useState(null);
 
   const getDashboardData = async () => {
     try {
@@ -44,7 +35,10 @@ const Dashboard = () => {
           },
         }
       );
-      setData(response.data.users[0]);
+      setUserData(response.data.users[0]);
+      setPostData(response.data.posts);
+      setTutionData(response.data.tution);
+      setGalleryData(response.data.gallery);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -60,7 +54,7 @@ const Dashboard = () => {
   return (
     <Box
       sx={{
-        maxWidth: '980px',
+        maxWidth: '1280px',
         mx: 'auto',
         px: 2,
         pt: 2,
@@ -74,7 +68,7 @@ const Dashboard = () => {
       <Spinner open={isLoading} />
       <Paper
         elevation={8}
-        sx={{ width: 200, m: 4, p: 3, fontSize: '2rem', borderRadius: 2 }}
+        sx={{ width: 200, m: 2, p: 2, fontSize: '2rem', borderRadius: 2 }}
       >
         <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
           Users
@@ -82,18 +76,18 @@ const Dashboard = () => {
 
         <Box>
           <Typography variant="body1">
-            Total users: {data?.total[0].count}
+            Total users: {userData?.total[0].count}
           </Typography>
         </Box>
 
-        {data?.activeStatus?.map((item) => (
+        {userData?.activeStatus?.map((item) => (
           <Box>
             <Typography variant="body1">
               {item._id === true ? 'Active: ' : 'Inactive: '} {item.count}
             </Typography>
           </Box>
         ))}
-        {data?.approvalStatus?.map((item) => (
+        {userData?.approvalStatus?.map((item) => (
           <Box sx={{ mt: 2 }}>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               Approval Status
@@ -106,12 +100,12 @@ const Dashboard = () => {
       </Paper>
       <Paper
         elevation={8}
-        sx={{ width: 200, m: 4, p: 3, fontSize: '2rem', borderRadius: 2 }}
+        sx={{ width: 200, m: 2, p: 2, fontSize: '2rem', borderRadius: 2 }}
       >
         <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
           By Department
         </Typography>
-        {data?.department?.map((item) => (
+        {userData?.department?.map((item) => (
           <Box>
             <Typography variant="body1">
               {item._id} {' : '} {item.count}
@@ -122,12 +116,52 @@ const Dashboard = () => {
 
       <Paper
         elevation={8}
-        sx={{ width: 200, m: 4, p: 3, fontSize: '2rem', borderRadius: 2 }}
+        sx={{ width: 200, m: 2, p: 2, fontSize: '2rem', borderRadius: 2 }}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
+            Posts
+          </Typography>
+          <Typography variant="body1">
+            Total: {postData && postData[0].count + postData[1].count}
+          </Typography>
+          <Typography variant="body1">
+            Active: {postData?.find((item) => item._id === true).count}
+          </Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
+            Gallery Images
+          </Typography>
+          <Typography variant="body1">Total: </Typography>
+          <Typography variant="body1">
+            Active: {galleryData?.find((item) => item._id === true).count}
+          </Typography>
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
+            Tution
+          </Typography>
+          <Typography variant="body1">
+            Total:{' '}
+            {tutionData &&
+              tutionData[0].count +
+                (tutionData.length > 1 ? tutionData[1].count : 0)}
+          </Typography>
+          <Typography variant="body1">
+            Active: {tutionData?.find((item) => item._id === true).count}
+          </Typography>
+        </Box>
+      </Paper>
+
+      <Paper
+        elevation={8}
+        sx={{ width: 200, m: 2, p: 2, fontSize: '2rem', borderRadius: 2 }}
       >
         <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
           By Batch
         </Typography>
-        {data?.batch?.map((item) => (
+        {userData?.batch?.map((item) => (
           <Box>
             <Typography variant="body1">
               {item._id} {' : '} {item.count}

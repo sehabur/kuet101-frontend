@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   Box,
@@ -16,17 +16,22 @@ import Spinner from '../../components/shared/Spinner';
 import TutorCard from '../../components/shared/TutorCard';
 import { grey } from '@mui/material/colors';
 import { districts } from '../../data/mappingFile';
+import { searchActions } from '../../store';
 
 const FindTutor = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth);
+
+  const filter = useSelector((state) => state.search?.tution);
 
   const [findTutorData, setFindTutorData] = useState(null);
 
-  const [district, setDistrict] = useState('all');
+  const [district, setDistrict] = useState(filter || 'all');
 
   const handleChange = (event) => {
     setDistrict(event.target.value);
@@ -49,6 +54,7 @@ const FindTutor = () => {
         }
       );
       setFindTutorData(response.data.tutors);
+      dispatch(searchActions.setTutionFilter(district));
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
+  Checkbox,
+  Divider,
+  FormControlLabel,
   MenuItem,
   TextField,
   Typography,
@@ -16,6 +20,8 @@ import ReactTimeAgo from 'react-time-ago';
 import { Link as RouterLink } from 'react-router-dom';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { grey } from '@mui/material/colors';
+import { batchList, departments, status } from '../../data/mappingFile';
 
 const PostDetails = () => {
   const { id: postId } = useParams();
@@ -24,13 +30,37 @@ const PostDetails = () => {
 
   const [postDetails, setPostDetails] = useState(null);
 
+  const [mailRecpList, setMailRecpList] = useState({});
+
   const auth = useSelector((state) => state.auth);
 
   const [postSetActiveStatus, setPostSetActiveStatus] = useState();
 
+  const [sendMailSelection, setSendMailSelection] = useState();
+
   const [errorMessage, setErrorMessage] = useState('');
 
   const [successMessage, setSuccessMessage] = useState('');
+
+  const handleSendMailSelection = (event) => {
+    setSendMailSelection(event.target.checked);
+  };
+  // const handleCheckboxChange = (event) => {
+  //   setMailRecpList({
+  //     ...mailRecpList,
+  //     [event.target.name]: event.target.checked,
+  //   });
+  // };
+
+  console.log(mailRecpList);
+
+  const handleAutoCompleteChange = (name, value) => {
+    console.log(name, value);
+    setMailRecpList({
+      ...mailRecpList,
+      [name]: value,
+    });
+  };
 
   const handlePostActiveStatusChange = (event) => {
     setPostSetActiveStatus(event.target.value);
@@ -40,11 +70,19 @@ const PostDetails = () => {
     try {
       setIsLoading(true);
 
+      let mailReceivers = {};
+      for (let key in mailRecpList) {
+        if (mailRecpList[key].length > 0) {
+          mailReceivers[key] = mailRecpList[key];
+        }
+      }
       const response = await axios.patch(
         `${process.env.REACT_APP_BACKEND_URL}/api/admin/updatePostActiveStatus`,
         {
           postId: postDetails._id,
           isActive: postSetActiveStatus,
+          sendMailSelection,
+          mailReceivers,
         },
         {
           headers: {
@@ -56,7 +94,7 @@ const PostDetails = () => {
 
       if (response.status === 201) {
         setErrorMessage('');
-        setSuccessMessage('Post status update successful.');
+        setSuccessMessage(response.data.message);
       } else {
         setErrorMessage('Post status update failed.');
         setSuccessMessage('');
@@ -175,27 +213,128 @@ const PostDetails = () => {
       )}
 
       {auth?.isAdmin && (
-        <Box sx={{ mt: 4 }}>
-          <TextField
-            select
-            label="Active status"
-            name="isActive"
-            size="small"
-            value={postSetActiveStatus}
-            onChange={handlePostActiveStatusChange}
-            sx={{ minWidth: 160, mr: 2, mb: 2 }}
-          >
-            <MenuItem value={true}>Active</MenuItem>
-            <MenuItem value={false}>Inactive</MenuItem>
-          </TextField>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mb: 2, px: 3 }}
-            onClick={handlePostActiveStatusSubmit}
-          >
-            Update
-          </Button>
+        <Box sx={{ mt: 6, bgcolor: grey[50], p: 2, borderRadius: 2 }}>
+          <Typography sx={{ fontWeight: 700 }}>Admin Panel</Typography>
+          <Divider sx={{ my: 1 }} />
+          <Box sx={{ my: 4 }}>
+            <Box sx={{ my: 2 }}>
+              {/* <FormControlLabel
+                control={<Checkbox />}
+                label="Department"
+                name="deptSelect"
+                onChange={handleCheckboxChange}
+              /> */}
+              <Autocomplete
+                multiple
+                options={departments.map((item) => item.short)}
+                onChange={(event, value, reason = 'selectOption') => {
+                  handleAutoCompleteChange('departmentShort', value);
+                }}
+                size="small"
+                sx={{ maxWidth: 600 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="departmentShort"
+                    label="Select department"
+                  />
+                )}
+              />
+            </Box>
+            <Box sx={{ my: 2 }}>
+              {/* <FormControlLabel
+                control={<Checkbox />}
+                label="Batch"
+                name="batchSelect"
+                onChange={handleCheckboxChange}
+              /> */}
+              <Autocomplete
+                multiple
+                options={batchList}
+                onChange={(event, value, reason = 'selectOption') => {
+                  handleAutoCompleteChange('batch', value);
+                }}
+                size="small"
+                sx={{ maxWidth: 600 }}
+                renderInput={(params) => (
+                  <TextField {...params} name="batch" label="Select batch" />
+                )}
+              />
+            </Box>
+            <Box sx={{ my: 2 }}>
+              {/* <FormControlLabel
+                control={<Checkbox />}
+                label="Status"
+                name="statusSelect"
+                onChange={handleCheckboxChange}
+              /> */}
+              <Autocomplete
+                multiple
+                options={status.map((item) => item.value)}
+                onChange={(event, value, reason = 'selectOption') => {
+                  handleAutoCompleteChange('status', value);
+                }}
+                size="small"
+                sx={{ maxWidth: 600 }}
+                renderInput={(params) => (
+                  <TextField {...params} name="status" label="Select status" />
+                )}
+              />
+            </Box>
+            <Box sx={{ my: 2 }}>
+              {/* <FormControlLabel
+                control={<Checkbox />}
+                label="Current location"
+                name="locationSelect"
+                onChange={handleCheckboxChange}
+              /> */}
+              <Autocomplete
+                multiple
+                options={['insideBd', 'outsideBd']}
+                onChange={(event, value, reason = 'selectOption') => {
+                  handleAutoCompleteChange('currentlyLiveIn', value);
+                }}
+                size="small"
+                sx={{ maxWidth: 600 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="currentlyLiveIn"
+                    label="Select location"
+                  />
+                )}
+              />
+            </Box>
+            <FormControlLabel
+              sx={{ mt: 2, ml: 0 }}
+              control={<Checkbox />}
+              label="Send mail"
+              name="sendMail"
+              onChange={handleSendMailSelection}
+            />
+            <Box sx={{ mt: 1 }}>
+              <TextField
+                select
+                label="Active status"
+                name="isActive"
+                size="small"
+                value={postSetActiveStatus}
+                onChange={handlePostActiveStatusChange}
+                sx={{ minWidth: 200, mr: 2 }}
+              >
+                <MenuItem value={true}>Active</MenuItem>
+                <MenuItem value={false}>Inactive</MenuItem>
+              </TextField>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ px: 4 }}
+                onClick={handlePostActiveStatusSubmit}
+              >
+                Update
+              </Button>
+            </Box>
+          </Box>
 
           {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
           {successMessage && <Alert severity="success">{successMessage}</Alert>}
