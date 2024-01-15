@@ -38,7 +38,7 @@ const FindTutor = () => {
   };
 
   const handleSubmit = async () => {
-    getTutorData(district);
+    getTutorData();
   };
 
   const getTutorData = async () => {

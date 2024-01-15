@@ -27,8 +27,6 @@ const Blood = () => {
     'Search alumni using filters'
   );
 
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
@@ -48,28 +46,27 @@ const Blood = () => {
     });
   };
 
-  const handleSubmit = async () => {
-    if (formInputs.bloodGroup === '' || formInputs.presentDistrict === '') {
-      setSearchMessage('Please select Blood group and District.');
-      return;
-    }
-    let queryText = 'search=1';
-    for (let key in formInputs) {
-      if (formInputs[key] !== 'all' && formInputs[key] !== '') {
-        if (key === 'bloodGroup') {
-          queryText += '&' + key + '=' + formInputs[key].replace('+', '%2B');
-        } else {
-          queryText += '&' + key + '=' + formInputs[key];
-        }
-      }
-    }
-    dispatch(searchActions.setBloodFilter(formInputs));
-    getSearchedItems(queryText);
+  const handleBloodFilterSubmit = async () => {
+    getSearchedItems();
   };
 
-  const getSearchedItems = async (queryText = 'search=1') => {
+  const getSearchedItems = async () => {
     try {
       setIsLoading(true);
+
+      let queryText = 'search=1';
+
+      for (let key in formInputs) {
+        if (formInputs[key] !== 'all' && formInputs[key] !== '') {
+          if (key === 'bloodGroup') {
+            queryText += '&' + key + '=' + formInputs[key].replace('+', '%2B');
+          } else {
+            queryText += '&' + key + '=' + formInputs[key];
+          }
+        }
+      }
+      dispatch(searchActions.setBloodFilter(formInputs));
+
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/api/users/getUsersByQuery?${queryText}`,
         {
@@ -80,11 +77,13 @@ const Blood = () => {
         }
       );
       setSearchResult(response.data.users);
+
       if (response.data.users.length < 1) {
         setSearchMessage(
           'No alumni found matching your search. Try a different search.'
         );
       }
+
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -95,7 +94,7 @@ const Blood = () => {
   useEffect(() => {
     getSearchedItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [auth]);
 
   //   useEffect(() => {
   //     if (!auth?.isLoggedIn) {
@@ -163,7 +162,7 @@ const Blood = () => {
             color="primary"
             type="submit"
             sx={{ mb: 2, px: 3 }}
-            onClick={handleSubmit}
+            onClick={handleBloodFilterSubmit}
           >
             Search
           </Button>
