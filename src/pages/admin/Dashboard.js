@@ -6,11 +6,8 @@ import React, { useState, useEffect } from 'react';
 // } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
 import { Box, Paper, Typography } from '@mui/material';
-
 import Spinner from '../../components/shared/Spinner';
-import { grey } from '@mui/material/colors';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +19,20 @@ const Dashboard = () => {
   const [postData, setPostData] = useState(null);
   const [tutionData, setTutionData] = useState(null);
   const [galleryData, setGalleryData] = useState(null);
+
+  const getItemCount = (data) => {
+    let active = 0;
+    let inactive = 0;
+    for (let item of data) {
+      if (item._id === 'true') {
+        active = item.count;
+      } else if (item._id === 'false') {
+        inactive = item.count;
+      }
+    }
+    let total = active + inactive;
+    return [total, active, inactive];
+  };
 
   const getDashboardData = async () => {
     try {
@@ -36,9 +47,9 @@ const Dashboard = () => {
         }
       );
       setUserData(response.data.users[0]);
-      setPostData(response.data.posts);
-      setTutionData(response.data.tution);
-      setGalleryData(response.data.gallery);
+      setPostData(getItemCount(response.data.posts));
+      setTutionData(getItemCount(response.data.tution));
+      setGalleryData(getItemCount(response.data.gallery));
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -123,19 +134,25 @@ const Dashboard = () => {
             Posts
           </Typography>
           <Typography variant="body1">
-            Total: {postData && postData[0].count + postData[1].count}
+            Total: {postData && postData[0]}
+            {/* {postData &&
+              (postData.find((item) => item._id === true)?.count ||
+                0 + postData.find((item) => item._id === false)?.count ||
+                0)} */}
           </Typography>
           <Typography variant="body1">
-            Active: {postData?.find((item) => item._id === true).count}
+            Active: {postData && postData[1]}
           </Typography>
         </Box>
         <Box sx={{ mb: 2 }}>
           <Typography variant="h6" sx={{ mb: 1, color: 'primary.dark' }}>
             Gallery Images
           </Typography>
-          <Typography variant="body1">Total: </Typography>
           <Typography variant="body1">
-            Active: {galleryData?.find((item) => item._id === true).count}
+            Total: {galleryData && galleryData[0]}
+          </Typography>
+          <Typography variant="body1">
+            Active: {galleryData && galleryData[1]}
           </Typography>
         </Box>
         <Box sx={{ mb: 2 }}>
@@ -143,13 +160,10 @@ const Dashboard = () => {
             Tution
           </Typography>
           <Typography variant="body1">
-            Total:{' '}
-            {tutionData &&
-              tutionData[0].count +
-                (tutionData.length > 1 ? tutionData[1].count : 0)}
+            Total: {tutionData && tutionData[0]}
           </Typography>
           <Typography variant="body1">
-            Active: {tutionData?.find((item) => item._id === true).count}
+            Active: {tutionData && tutionData[1]}
           </Typography>
         </Box>
       </Paper>

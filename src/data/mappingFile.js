@@ -228,12 +228,15 @@ export const districts = [
 
 export const interests = [
   'software engineering',
-  'product management',
-  'intrumentaion',
+  'poduct management',
+  'intrumentaion and control',
   'data science',
   'artificial intelligence',
   'machine lerarning',
   'web development',
   'power plant',
   'nuclear engineering',
+  'telecommunication',
+  'netowrking',
+  'PLC',
 ];

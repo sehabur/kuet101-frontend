@@ -116,11 +116,10 @@ const SearchAlumni = () => {
     });
   };
 
-  const handleAutoCompleteChange = (event, targetName) => {
-    console.log(event.target.textContent);
+  const handleAutoCompleteChange = (name, value) => {
     setFilterOption({
       ...filterOption,
-      [targetName]: event.target.textContent,
+      [name]: value,
     });
   };
 
@@ -201,8 +200,6 @@ const SearchAlumni = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(auth);
-
   const filterMenu = (
     <Box sx={{ px: { xs: 6, sm: 3 }, pb: { xs: 2, sm: 0 } }}>
       <Stack
@@ -277,10 +274,9 @@ const SearchAlumni = () => {
       </TextField>
 
       <Autocomplete
-        freeSolo
         options={districts}
-        onChange={(e) => {
-          handleAutoCompleteChange(e, 'homeDistrict');
+        onChange={(event, value, reason) => {
+          handleAutoCompleteChange('homeDistrict', value);
         }}
         value={filterOption.homeDistrict}
         renderInput={(params) => (
@@ -297,10 +293,11 @@ const SearchAlumni = () => {
       <Box sx={{ display: 'flex' }}>
         <Autocomplete
           fullWidth
-          freeSolo
           options={districts}
-          onChange={(e) => {
-            handleAutoCompleteChange(e, 'presentDistrict');
+          freeSolo
+          autoSelect
+          onChange={(event, value, reason) => {
+            handleAutoCompleteChange('presentDistrict', value);
           }}
           value={filterOption.presentDistrict}
           renderInput={(params) => (
@@ -443,8 +440,8 @@ const SearchAlumni = () => {
       <Autocomplete
         freeSolo
         options={interestsList}
-        onChange={(e) => {
-          handleAutoCompleteChange(e, 'interests');
+        onChange={(event, value, reason) => {
+          handleAutoCompleteChange('interests', value);
         }}
         value={filterOption.interests}
         renderInput={(params) => (
@@ -460,8 +457,8 @@ const SearchAlumni = () => {
       <Autocomplete
         freeSolo
         options={interestsList}
-        onChange={(e) => {
-          handleAutoCompleteChange(e, 'expertin');
+        onChange={(event, value, reason) => {
+          handleAutoCompleteChange('expertin', value);
         }}
         value={filterOption.expertin}
         renderInput={(params) => (
