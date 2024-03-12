@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import 'react-image-upload/dist/index.css';
-import { Link as RouterLink } from 'react-router-dom';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import EmailIcon from '@mui/icons-material/Email';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "react-image-upload/dist/index.css";
+import { Link as RouterLink } from "react-router-dom";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import EmailIcon from "@mui/icons-material/Email";
 import {
   Alert,
   Autocomplete,
@@ -22,7 +22,7 @@ import {
   Typography,
   InputAdornment,
   IconButton,
-} from '@mui/material';
+} from "@mui/material";
 
 import {
   departments,
@@ -31,47 +31,48 @@ import {
   bloodGroupList,
   interests,
   batchList,
-} from '../../data/mappingFile';
-import Spinner from '../../components/shared/Spinner';
-import ImageEditor from '../../components/shared/ImageEditor';
+  countryStates,
+} from "../../data/mappingFile";
+import Spinner from "../../components/shared/Spinner";
+import ImageEditor from "../../components/shared/ImageEditor";
 
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Signup = () => {
   const [formInputs, setFormInputs] = useState({
-    firstName: '',
-    lastName: '',
-    homeDistrict: '',
-    currentlyLiveIn: '',
-    presentDistrict: '',
-    gender: '',
-    bloodGroup: '',
-    bloodDonationEnable: '',
-    departmentShort: '',
-    rollNo: '',
-    batch: '',
-    email: '',
-    phoneNo: '',
-    linkedinProfileUrl: '',
-    facebookProfileUrl: '',
-    status: '',
-    currentJobTitle: '',
-    currentOrganization: '',
-    registrationNo: '',
+    firstName: "",
+    lastName: "",
+    homeDistrict: "",
+    currentlyLiveIn: "",
+    presentDistrict: "",
+    gender: "",
+    bloodGroup: "",
+    bloodDonationEnable: "",
+    departmentShort: "",
+    rollNo: "",
+    batch: "",
+    email: "",
+    phoneNo: "",
+    linkedinProfileUrl: "",
+    facebookProfileUrl: "",
+    status: "",
+    currentJobTitle: "",
+    currentOrganization: "",
+    registrationNo: "",
     interests: [],
     expertin: [],
     profilePicture: null,
-    password: '',
-    confirmPassword: '',
-    referral: '',
+    password: "",
+    confirmPassword: "",
+    referral: "",
   });
 
   const [interestsList, setInterestsList] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
@@ -129,16 +130,16 @@ const Signup = () => {
       setIsLoading(true);
 
       if (formInputs.password === formInputs.confirmPassword) {
-        if (['seekingJob', 'runningStudent'].includes(formInputs.status)) {
-          formInputs.currentJobTitle = 'notApplicable';
-          formInputs.currentOrganization = 'notApplicable';
+        if (["seekingJob", "runningStudent"].includes(formInputs.status)) {
+          formInputs.currentJobTitle = "notApplicable";
+          formInputs.currentOrganization = "notApplicable";
         }
 
         let formData = new FormData();
 
         departments.forEach((item) => {
           if (item.short === formInputs.departmentShort) {
-            formData.append('departmentLong', item.long);
+            formData.append("departmentLong", item.long);
           }
         });
 
@@ -152,10 +153,10 @@ const Signup = () => {
         );
 
         if (response.status === 201) {
-          setErrorMessage('');
+          setErrorMessage("");
           handleSuccessDialogOpen();
         } else {
-          setErrorMessage('Account creation failed');
+          setErrorMessage("Account creation failed");
         }
       } else {
         setErrorMessage(`Password does not match with confirm password`);
@@ -203,7 +204,7 @@ const Signup = () => {
             Your account has been created successfully. Please login now.
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+        <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
           <Button
             onClick={handleSuccessDialogClose}
             variant="contained"
@@ -228,7 +229,7 @@ const Signup = () => {
       <DialogContent>
         <img src="/images/roll-pattern.jpg" alt="roll" width="100%" />
       </DialogContent>
-      <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+      <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
         <Button
           onClick={handleRollPatternDialogClose}
           variant="outlined"
@@ -241,19 +242,19 @@ const Signup = () => {
   );
 
   return (
-    <Box sx={{ maxWidth: '760px', mx: 'auto', p: 4 }}>
+    <Box sx={{ maxWidth: "760px", mx: "auto", p: 4 }}>
       <Spinner open={isLoading} />
       {successDialog}
       {rollPatternDialog}
-      <Box sx={{ textAlign: 'center' }}>
+      <Box sx={{ textAlign: "center" }}>
         <Box sx={{ mt: 2 }}>
           <img src="/images/logo.png" alt="logo" width="275" />
         </Box>
         <Typography
           sx={{
-            fontFamily: 'Proza Libre, sans-serif',
-            fontSize: '1.2rem',
-            textAlign: 'center',
+            fontFamily: "Proza Libre, sans-serif",
+            fontSize: "1.2rem",
+            textAlign: "center",
             mt: 1,
             mb: 1,
             px: 2,
@@ -279,9 +280,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -329,9 +330,31 @@ const Signup = () => {
           </TextField>
         </Grid>
 
-        {formInputs.currentlyLiveIn === 'outsideBd' ? (
+        {formInputs.currentlyLiveIn === "outsideBd" ? (
           <Grid item xs={12} sm={6}>
-            <TextField
+            <Autocomplete
+              freeSolo
+              options={countryStates}
+              onChange={(event, value, reason = "selectOption") => {
+                handleAutoCompleteChange("presentDistrict", value);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  required
+                  name="presentDistrict"
+                  label="Present Address"
+                  helperText="Please write state and country"
+                  sx={{
+                    ".MuiFormHelperText-root": {
+                      color: "warning.main",
+                    },
+                  }}
+                />
+              )}
+            />
+            {/* <TextField
               label="Present Address"
               name="presentDistrict"
               fullWidth
@@ -340,11 +363,17 @@ const Signup = () => {
               value={formInputs.presentDistrict}
               onChange={handleChange}
               sx={{
-                '.MuiFormHelperText-root': {
-                  color: 'warning.main',
+                ".MuiFormHelperText-root": {
+                  color: "warning.main",
                 },
               }}
-            />
+            >
+              {countryStates.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField> */}
           </Grid>
         ) : (
           <Grid item xs={12} sm={6}>
@@ -442,9 +471,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -484,7 +513,7 @@ const Signup = () => {
           <Button
             color="warning"
             onClick={handleRollPatternDialogOpen}
-            sx={{ fontSize: '.8rem', textDecoration: 'underline' }}
+            sx={{ fontSize: ".8rem", textDecoration: "underline" }}
           >
             Check roll pattern
           </Button>
@@ -511,9 +540,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -551,8 +580,8 @@ const Signup = () => {
             fullWidth
             helperText="Please ensure to fill this field as this url will be used further to update your profile"
             sx={{
-              '.MuiFormHelperText-root': {
-                color: 'warning.main',
+              ".MuiFormHelperText-root": {
+                color: "warning.main",
               },
             }}
             value={formInputs.linkedinProfileUrl}
@@ -573,9 +602,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -601,7 +630,7 @@ const Signup = () => {
           </TextField>
         </Grid>
 
-        {!['seekingJob', 'runningStudent'].includes(formInputs.status) && (
+        {!["seekingJob", "runningStudent"].includes(formInputs.status) && (
           <>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -609,7 +638,7 @@ const Signup = () => {
                 name="currentJobTitle"
                 fullWidth
                 required={
-                  !['seekingJob', 'runningStudent'].includes(formInputs.status)
+                  !["seekingJob", "runningStudent"].includes(formInputs.status)
                 }
                 value={formInputs.currentJobTitle}
                 onChange={handleChange}
@@ -622,14 +651,14 @@ const Signup = () => {
                 name="currentOrganization"
                 fullWidth
                 required={
-                  !['seekingJob', 'runningStudent'].includes(formInputs.status)
+                  !["seekingJob", "runningStudent"].includes(formInputs.status)
                 }
                 helperText="Please write the full name"
                 value={formInputs.currentOrganization}
                 onChange={handleChange}
                 sx={{
-                  '.MuiFormHelperText-root': {
-                    color: 'warning.main',
+                  ".MuiFormHelperText-root": {
+                    color: "warning.main",
                   },
                 }}
               ></TextField>
@@ -640,9 +669,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -656,8 +685,8 @@ const Signup = () => {
             freeSolo
             multiple
             options={interestsList}
-            onChange={(event, value, reason = 'selectOption') => {
-              handleAutoCompleteChange('interests', value);
+            onChange={(event, value, reason = "selectOption") => {
+              handleAutoCompleteChange("interests", value);
             }}
             renderInput={(params) => (
               <TextField
@@ -675,8 +704,8 @@ const Signup = () => {
             freeSolo
             multiple
             options={interestsList}
-            onChange={(event, value, reason = 'selectOption') => {
-              handleAutoCompleteChange('expertin', value);
+            onChange={(event, value, reason = "selectOption") => {
+              handleAutoCompleteChange("expertin", value);
             }}
             renderInput={(params) => (
               <TextField
@@ -702,9 +731,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -725,9 +754,9 @@ const Signup = () => {
         <Grid item xs={12}>
           <Typography
             sx={{
-              fontSize: '1.1rem',
-              color: 'primary.main',
-              textAlign: 'left',
+              fontSize: "1.1rem",
+              color: "primary.main",
+              textAlign: "left",
               ml: 0.5,
               mt: 2,
             }}
@@ -740,7 +769,7 @@ const Signup = () => {
           <TextField
             label="Password"
             name="password"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -789,7 +818,7 @@ const Signup = () => {
             fullWidth
             variant="contained"
             type="submit"
-            sx={{ mt: 4, mb: 3, py: 1.1, fontSize: '1.1rem' }}
+            sx={{ mt: 4, mb: 3, py: 1.1, fontSize: "1.1rem" }}
           >
             Sign Up
           </Button>
@@ -800,7 +829,7 @@ const Signup = () => {
 
       <Box
         sx={{
-          textAlign: 'center',
+          textAlign: "center",
           my: 4,
         }}
       >
@@ -811,12 +840,12 @@ const Signup = () => {
           color="primary"
           component={RouterLink}
           to="/signin"
-          sx={{ fontSize: '1rem', px: 4, py: 1, mt: 1 }}
+          sx={{ fontSize: "1rem", px: 4, py: 1, mt: 1 }}
         >
           Sign In
         </Button>
 
-        <Typography sx={{ mt: 5, color: 'warning.main', fontSize: '1rem' }}>
+        <Typography sx={{ mt: 5, color: "warning.main", fontSize: "1rem" }}>
           All information taken here are merely for community purpose and will
           never be used or shared anywhere else than this platform. Privacy
           sensitive information like phone number, blood group, facebook profile
@@ -825,13 +854,13 @@ const Signup = () => {
         <Divider sx={{ my: 3 }} />
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             ml: { xs: 7.2, sm: 0 },
           }}
         >
-          <Typography sx={{ color: 'text.secondary' }}>
+          <Typography sx={{ color: "text.secondary" }}>
             For any query or assistance please contact us
           </Typography>
           <Stack direction="row" spacing={1.5} sx={{ mt: 2, mb: 1 }}>

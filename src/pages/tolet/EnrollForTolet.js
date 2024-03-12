@@ -18,10 +18,12 @@ import { districts } from "../../data/mappingFile";
 
 import { Link as RouterLink } from "react-router-dom";
 
-const EnrollForTutor = () => {
+const EnrollForTolet = () => {
   const [formInputs, setFormInputs] = useState({
     district: "",
     area: "",
+    type: "",
+    description: "",
   });
 
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ const EnrollForTutor = () => {
       setIsLoading(true);
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/users/enrollForTutor`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/enrollForTolet`,
         formInputs,
         {
           headers: {
@@ -59,7 +61,7 @@ const EnrollForTutor = () => {
       if (response.status === 201) {
         setErrorMessage("");
         setIsLoading(false);
-        setSuccessMessage("Enrollment for being a tutor successful");
+        setSuccessMessage("Enrollment for being a tolet successful");
       }
     } catch (error) {
       setSuccessMessage("");
@@ -91,22 +93,23 @@ const EnrollForTutor = () => {
       <Spinner open={isLoading} />
 
       <Typography variant="h5" sx={{ mt: 2, mb: 2 }}>
-        Enroll to be a tutor
+        Post a house rental
       </Typography>
 
       <Typography sx={{ my: 2 }}>
-        Are you looking for a tution? Enroll here and wait for some other alumni
-        to get match with your profile and availibility area. Make sure your
-        phone number is up-to-date.
+        Are you looking for renting house to a family or bachelor ? Enroll here
+        and wait for some other alumni to get a match with your rent
+        specification and availibility area. Make sure your phone number is
+        up-to-date.
       </Typography>
 
       <Button
         variant="outlined"
         color="info"
         component={RouterLink}
-        to={`/tutor/my-enrollment/${auth?._id}`}
+        to={`/tolet/my-enrollment/${auth?._id}`}
       >
-        My tution enrollment
+        My tolet posts
       </Button>
 
       <Typography variant="h6" sx={{ mt: 6 }}>
@@ -118,7 +121,21 @@ const EnrollForTutor = () => {
 
       <TextField
         select
-        label="Select district"
+        label="Type"
+        name="type"
+        fullWidth
+        required
+        value={formInputs.type}
+        onChange={handleChange}
+        sx={{ mt: 2 }}
+      >
+        <MenuItem value="bachelor">Bachelor</MenuItem>
+        <MenuItem value="family">Family</MenuItem>
+      </TextField>
+
+      <TextField
+        select
+        label="District"
         name="district"
         fullWidth
         required
@@ -140,7 +157,20 @@ const EnrollForTutor = () => {
         required
         value={formInputs.area}
         onChange={handleChange}
-        sx={{ mt: 3 }}
+        sx={{ mt: 2 }}
+      />
+
+      <TextField
+        multiline
+        label="Description"
+        name="description"
+        minRows={4}
+        maxRows={12}
+        fullWidth
+        required
+        value={formInputs.description}
+        onChange={handleChange}
+        sx={{ width: "100%", mt: 2 }}
       />
 
       <Button
@@ -155,4 +185,4 @@ const EnrollForTutor = () => {
   );
 };
 
-export default EnrollForTutor;
+export default EnrollForTolet;

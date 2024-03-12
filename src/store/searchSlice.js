@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState: {
     search: null,
     tution: null,
+    tolet: null,
     blood: null,
   },
   reducers: {
@@ -18,6 +19,12 @@ const searchSlice = createSlice({
       return {
         ...state,
         tution: payload,
+      };
+    },
+    setToletFilter: (state, { payload }) => {
+      return {
+        ...state,
+        tolet: payload,
       };
     },
     setBloodFilter: (state, { payload }) => {

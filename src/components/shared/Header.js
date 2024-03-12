@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar,
   Avatar,
@@ -15,15 +15,15 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import LogoutIcon from '@mui/icons-material/Logout';
-import MenuIcon from '@mui/icons-material/Menu';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+} from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
-import { authActions } from '../../store';
-import ToastMessage from './ToastMessage';
+import { authActions } from "../../store";
+import ToastMessage from "./ToastMessage";
 
 const Header = () => {
   const theme = useTheme();
@@ -36,7 +36,7 @@ const Header = () => {
 
   const [logoutSuccess, setLogoutSuccess] = useState(false);
 
-  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const matchesSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState(null);
 
@@ -75,13 +75,13 @@ const Header = () => {
   };
 
   const handleNavigation = (navigateTo, type) => {
-    if (type === 'profile') {
+    if (type === "profile") {
       handleProfileMenuClose();
-    } else if (type === 'mobileView') {
+    } else if (type === "mobileView") {
       handleMobileViewMenuClose();
-    } else if (type === 'explore') {
+    } else if (type === "explore") {
       handleExploreMenuClose();
-    } else if (type === 'tution') {
+    } else if (type === "tution") {
       handleTutionMenuClose();
     }
     navigate(navigateTo);
@@ -93,10 +93,10 @@ const Header = () => {
 
   const handleLogout = () => {
     handleProfileMenuClose();
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem("userInfo");
     dispatch(authActions.logout());
     setLogoutSuccess(true);
-    navigate('/signin');
+    navigate("/signin");
   };
 
   const profileMenu = (
@@ -105,19 +105,19 @@ const Header = () => {
       open={Boolean(profileMenuAnchorEl)}
       onClose={handleProfileMenuClose}
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
+        vertical: "bottom",
+        horizontal: "left",
       }}
     >
       <Typography
-        sx={{ mt: 1, mb: 1.4, mx: 4, maxWidth: '200px' }}
+        sx={{ mt: 1, mb: 1.4, mx: 4, maxWidth: "200px" }}
         textAlign="center"
       >
         Hello, {auth?.firstName}
       </Typography>
       <Divider sx={{ mb: 1 }} />
       <MenuItem
-        onClick={() => handleNavigation(`/profile/${auth._id}`, 'profile')}
+        onClick={() => handleNavigation(`/profile/${auth._id}`, "profile")}
       >
         <ListItemIcon>
           <ManageAccountsIcon color="primary" />
@@ -129,7 +129,7 @@ const Header = () => {
 
       {auth?.isAdmin && (
         <MenuItem
-          onClick={() => handleNavigation(`/admin/dashboard`, 'profile')}
+          onClick={() => handleNavigation(`/admin/dashboard`, "profile")}
         >
           <ListItemIcon>
             <AdminPanelSettingsIcon color="primary" />
@@ -157,30 +157,43 @@ const Header = () => {
       open={Boolean(exploreMenuAnchorEl)}
       onClose={handleExploreMenuClose}
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
+        vertical: "bottom",
+        horizontal: "left",
       }}
     >
       <MenuItem
-        onClick={() => handleNavigation('/find-your-mates', 'explore')}
+        onClick={() => handleNavigation("/find-your-mates", "explore")}
         sx={{ px: 4 }}
       >
         Alumni dashboard
       </MenuItem>
       <MenuItem
-        onClick={() => handleNavigation('/posts', 'explore')}
+        onClick={() => handleNavigation("/posts", "explore")}
         sx={{ px: 4 }}
       >
         Posts
       </MenuItem>
       <MenuItem
-        onClick={() => handleNavigation('/gallery', 'explore')}
+        onClick={() => handleNavigation("/gallery", "explore")}
         sx={{ px: 4 }}
       >
         Photo gallery
       </MenuItem>
+
       <MenuItem
-        onClick={() => handleNavigation('/aboutus', 'explore')}
+        sx={{ px: 4 }}
+        onClick={() => handleNavigation("/tolet/find", "explore")}
+      >
+        Find to-let
+      </MenuItem>
+      <MenuItem
+        sx={{ px: 4 }}
+        onClick={() => handleNavigation("/tolet/enroll", "explore")}
+      >
+        Post to-let
+      </MenuItem>
+      <MenuItem
+        onClick={() => handleNavigation("/aboutus", "explore")}
         sx={{ px: 4 }}
       >
         About us
@@ -194,65 +207,78 @@ const Header = () => {
       open={Boolean(mobileViewMenuAnchorEl)}
       onClose={handleMobileViewMenuClose}
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
+        vertical: "bottom",
+        horizontal: "left",
       }}
     >
       <MenuItem
-        sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/search-alumni', 'mobileView')}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/search-alumni", "mobileView")}
       >
         Search alumni
       </MenuItem>
       <MenuItem
-        sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/find-your-mates', 'mobileView')}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/find-your-mates", "mobileView")}
       >
         Alumni dashboard
       </MenuItem>
 
       <MenuItem
-        sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/search-blood', 'mobileView')}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/search-blood", "mobileView")}
       >
         Blood donor
       </MenuItem>
 
       <MenuItem
-        sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/learning', 'mobileView')}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/learning", "mobileView")}
       >
         Learning hub
       </MenuItem>
 
       <MenuItem
-        sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/tutor/find', 'mobileView')}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/tutor/find", "mobileView")}
       >
         Find a tutor
       </MenuItem>
       <MenuItem
-        sx={{ px: 4, color: 'primary.dark' }}
-        onClick={() => handleNavigation('/tutor/enroll', 'mobileView')}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/tutor/enroll", "mobileView")}
       >
         Enroll to be a tutor
       </MenuItem>
 
       <MenuItem
-        onClick={() => handleNavigation('/posts', 'mobileView')}
-        sx={{ px: 4, color: 'primary.dark' }}
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/tolet/find", "mobileView")}
+      >
+        Find to-let
+      </MenuItem>
+      <MenuItem
+        sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/tolet/enroll", "mobileView")}
+      >
+        Post to-let
+      </MenuItem>
+
+      <MenuItem
+        onClick={() => handleNavigation("/posts", "mobileView")}
+        sx={{ px: 4, color: "primary.dark" }}
       >
         Posts
       </MenuItem>
       <MenuItem
-        onClick={() => handleNavigation('/gallery', 'mobileView')}
-        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation("/gallery", "mobileView")}
+        sx={{ px: 4, color: "primary.dark" }}
       >
         Photo gallery
       </MenuItem>
       <MenuItem
-        onClick={() => handleNavigation('/aboutus', 'mobileView')}
-        sx={{ px: 4, color: 'primary.dark' }}
+        onClick={() => handleNavigation("/aboutus", "mobileView")}
+        sx={{ px: 4, color: "primary.dark" }}
       >
         About us
       </MenuItem>
@@ -265,19 +291,19 @@ const Header = () => {
       open={Boolean(tutionMenuAnchorEl)}
       onClose={handleTutionMenuClose}
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
+        vertical: "bottom",
+        horizontal: "left",
       }}
     >
       <MenuItem
         sx={{ px: 4 }}
-        onClick={() => handleNavigation('/tutor/find', 'tution')}
+        onClick={() => handleNavigation("/tutor/find", "tution")}
       >
         Find a tutor
       </MenuItem>
       <MenuItem
         sx={{ px: 4 }}
-        onClick={() => handleNavigation('/tutor/enroll', 'tution')}
+        onClick={() => handleNavigation("/tutor/enroll", "tution")}
       >
         Enroll to be a tutor
       </MenuItem>
@@ -285,7 +311,7 @@ const Header = () => {
   );
 
   useEffect(() => {
-    const authDataFromStorage = JSON.parse(localStorage.getItem('userInfo'));
+    const authDataFromStorage = JSON.parse(localStorage.getItem("userInfo"));
     authDataFromStorage && dispatch(authActions.login(authDataFromStorage));
   }, [dispatch]);
 
@@ -294,13 +320,13 @@ const Header = () => {
       <AppBar
         position="fixed"
         sx={{
-          bgcolor: 'white',
+          bgcolor: "white",
           borderBottom: `1px solid #d8daf9`,
         }}
         elevation={0}
         // variant="outlined"
       >
-        <Toolbar sx={{ width: { xs: 'inherit', sm: '1280px' }, mx: 'auto' }}>
+        <Toolbar sx={{ width: { xs: "inherit", sm: "1280px" }, mx: "auto" }}>
           <Box
             sx={{
               pt: 0.7,
@@ -317,7 +343,7 @@ const Header = () => {
             <>
               <Button
                 color="primary"
-                onClick={() => handleNavigation('/search-alumni')}
+                onClick={() => handleNavigation("/search-alumni")}
                 sx={{ mx: 1 }}
               >
                 Search alumni
@@ -325,7 +351,7 @@ const Header = () => {
 
               <Button
                 color="primary"
-                onClick={() => handleNavigation('/search-blood')}
+                onClick={() => handleNavigation("/search-blood")}
                 sx={{ mx: 1 }}
               >
                 Blood donor
@@ -333,7 +359,7 @@ const Header = () => {
 
               <Button
                 color="primary"
-                onClick={() => handleNavigation('/learning')}
+                onClick={() => handleNavigation("/learning")}
                 sx={{ mx: 1 }}
               >
                 Learning hub
@@ -364,7 +390,7 @@ const Header = () => {
             <MenuIcon
               color="primary"
               onClick={handleMobileViewMenuOpen}
-              sx={{ mx: 1, fontSize: '1.8rem' }}
+              sx={{ mx: 1, fontSize: "1.8rem" }}
             />
           )}
 
@@ -373,8 +399,8 @@ const Header = () => {
             alt={auth?.firstName}
             onClick={handleProfileMenuOpen}
             sx={{
-              color: 'secondary.main',
-              bgcolor: '#ddd',
+              color: "secondary.main",
+              bgcolor: "#ddd",
               mx: 2,
             }}
           />

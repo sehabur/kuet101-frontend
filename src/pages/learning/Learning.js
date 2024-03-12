@@ -4,18 +4,19 @@ import {
   CardActionArea,
   CardContent,
   Typography,
-} from '@mui/material';
-import React, { useEffect } from 'react';
-import { grey } from '@mui/material/colors';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useState } from 'react';
-import Spinner from '../../components/shared/Spinner';
-import { useDispatch, useSelector } from 'react-redux';
-import { learningActions } from '../../store';
-import SchoolIcon from '@mui/icons-material/School';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+} from "@mui/material";
+import React, { useEffect } from "react";
+import { grey } from "@mui/material/colors";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import Spinner from "../../components/shared/Spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { learningActions } from "../../store";
+import SchoolIcon from "@mui/icons-material/School";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
+import ReactGA from "react-ga";
 
 const Learning = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +34,7 @@ const Learning = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/posts/getLearningFileStructure/${category}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${auth.token}`,
           },
         }
@@ -51,45 +52,49 @@ const Learning = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  }, []);
+
   return (
     <>
       <Spinner open={isLoading} />
-      <Box sx={{ py: 6, bgcolor: 'secondary.dark' }}>
+      <Box sx={{ py: 6, bgcolor: "secondary.dark" }}>
         <Box
           sx={{
-            maxWidth: '750px',
-            mx: 'auto',
+            maxWidth: "750px",
+            mx: "auto",
             px: 2,
-            textAlign: { xs: 'center', sm: 'left' },
+            textAlign: { xs: "center", sm: "left" },
           }}
         >
           <Typography variant="h4" sx={{ color: grey[100] }}>
             Welcome to Learning Hub
           </Typography>
-          <Typography sx={{ mt: 2, fontSize: '1.1rem', color: grey[300] }}>
+          <Typography sx={{ mt: 2, fontSize: "1.1rem", color: grey[300] }}>
             Find the learning materials you need from our huge amount of online
             resource collection and make yourself futureproof.
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ maxWidth: '750px', mx: 'auto', my: 4 }}>
+      <Box sx={{ maxWidth: "750px", mx: "auto", my: 4 }}>
         <Card sx={{ maxWidth: 550, mx: 2, borderRadius: 2 }} variant="outlined">
           <CardActionArea
             component={RouterLink}
             to="/learning/bcs"
-            onClick={() => handleLearningCategorySelect('bcs')}
+            onClick={() => handleLearningCategorySelect("bcs")}
           >
             <CardContent
               sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'flex-start',
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
               }}
             >
               <Box>
                 <LibraryBooksIcon
                   sx={{
-                    fontSize: '3rem',
+                    fontSize: "3rem",
                     mr: { xs: 2, sm: 3 },
                     ml: { xs: 0, sm: 1 },
                   }}
@@ -113,18 +118,18 @@ const Learning = () => {
           sx={{ maxWidth: 550, my: 4, mx: 2, borderRadius: 2 }}
           variant="outlined"
         >
-          <CardActionArea onClick={() => handleLearningCategorySelect('dept')}>
+          <CardActionArea onClick={() => handleLearningCategorySelect("dept")}>
             <CardContent
               sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'flex-start',
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
               }}
             >
               <Box>
                 <SchoolIcon
                   sx={{
-                    fontSize: '3rem',
+                    fontSize: "3rem",
                     mr: { xs: 2, sm: 3 },
                     ml: { xs: 0, sm: 1 },
                   }}
@@ -145,19 +150,19 @@ const Learning = () => {
 
         <Card sx={{ maxWidth: 550, mx: 2, borderRadius: 2 }} variant="outlined">
           <CardActionArea
-            onClick={() => handleLearningCategorySelect('higherStudy')}
+            onClick={() => handleLearningCategorySelect("higherStudy")}
           >
             <CardContent
               sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'flex-start',
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
               }}
             >
               <Box>
                 <FlightTakeoffIcon
                   sx={{
-                    fontSize: '3rem',
+                    fontSize: "3rem",
                     mr: { xs: 2, sm: 3 },
                     ml: { xs: 0, sm: 1 },
                   }}

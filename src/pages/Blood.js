@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -7,16 +7,17 @@ import {
   MenuItem,
   TextField,
   Typography,
-} from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Spinner from '../components/shared/Spinner';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { bloodGroupList, districts } from '../data/mappingFile';
-import { grey } from '@mui/material/colors';
-import AlumniCard from '../components/shared/AlumniCard';
-import axios from 'axios';
-import { searchActions } from '../store';
+} from "@mui/material";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../components/shared/Spinner";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { bloodGroupList, districts } from "../data/mappingFile";
+import { grey } from "@mui/material/colors";
+import AlumniCard from "../components/shared/AlumniCard";
+import axios from "axios";
+import { searchActions } from "../store";
+import ReactGA from "react-ga";
 
 const Blood = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +25,7 @@ const Blood = () => {
   const [searchResult, setSearchResult] = useState(null);
 
   const [searchMessage, setSearchMessage] = useState(
-    'Search alumni using filters'
+    "Search alumni using filters"
   );
 
   const dispatch = useDispatch();
@@ -34,8 +35,8 @@ const Blood = () => {
   const filter = useSelector((state) => state.search?.blood);
 
   const [formInputs, setFormInputs] = useState({
-    presentDistrict: filter?.presentDistrict || '',
-    bloodGroup: filter?.bloodGroup || '',
+    presentDistrict: filter?.presentDistrict || "",
+    bloodGroup: filter?.bloodGroup || "",
   });
 
   const handleChange = (event) => {
@@ -54,14 +55,14 @@ const Blood = () => {
     try {
       setIsLoading(true);
 
-      let queryText = 'search=1';
+      let queryText = "search=1";
 
       for (let key in formInputs) {
-        if (formInputs[key] !== 'all' && formInputs[key] !== '') {
-          if (key === 'bloodGroup') {
-            queryText += '&' + key + '=' + formInputs[key].replace('+', '%2B');
+        if (formInputs[key] !== "all" && formInputs[key] !== "") {
+          if (key === "bloodGroup") {
+            queryText += "&" + key + "=" + formInputs[key].replace("+", "%2B");
           } else {
-            queryText += '&' + key + '=' + formInputs[key];
+            queryText += "&" + key + "=" + formInputs[key];
           }
         }
       }
@@ -71,7 +72,7 @@ const Blood = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/users/getUsersByQuery?${queryText}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${auth?.token}`,
           },
         }
@@ -80,7 +81,7 @@ const Blood = () => {
 
       if (response.data.users.length < 1) {
         setSearchMessage(
-          'No alumni found matching your search. Try a different search.'
+          "No alumni found matching your search. Try a different search."
         );
       }
 
@@ -90,6 +91,10 @@ const Blood = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  }, []);
 
   useEffect(() => {
     getSearchedItems();
@@ -105,11 +110,11 @@ const Blood = () => {
   return (
     <Box>
       <Spinner open={isLoading} />
-      <Box sx={{ py: 2, bgcolor: 'secondary.main' }}>
-        <Box sx={{ maxWidth: '980px', mx: 'auto', px: 2 }}>
+      <Box sx={{ py: 2, bgcolor: "secondary.main" }}>
+        <Box sx={{ maxWidth: "980px", mx: "auto", px: 2 }}>
           <Typography
             variant="h4"
-            sx={{ fontSize: '1.7rem', color: grey[300] }}
+            sx={{ fontSize: "1.7rem", color: grey[300] }}
           >
             Search Blood
           </Typography>
@@ -118,8 +123,8 @@ const Blood = () => {
       <Box sx={{ bgcolor: grey[100] }}>
         <Box
           sx={{
-            maxWidth: '980px',
-            mx: 'auto',
+            maxWidth: "980px",
+            mx: "auto",
             px: 2,
             pt: 2,
           }}
@@ -170,7 +175,7 @@ const Blood = () => {
       </Box>
 
       <Box
-        sx={{ my: 4, maxWidth: '980px', minHeight: '50vh', mx: 'auto', px: 2 }}
+        sx={{ my: 4, maxWidth: "980px", minHeight: "50vh", mx: "auto", px: 2 }}
       >
         <Grid
           container

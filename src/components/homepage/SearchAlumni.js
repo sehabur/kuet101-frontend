@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
+import Carousel from 'react-material-ui-carousel';
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Divider,
   List,
   ListItem,
@@ -67,122 +68,192 @@ const SearchAlumni = () => {
           <Typography color="text.secondary" sx={{ fontSize: '1rem', mb: 3 }}>
             Search for an alumni at different organizations
           </Typography>
-          <List sx={{ bgcolor: '#f7f5fc', mx: { xs: 0, sm: 4 }, py: 0 }}>
-            <ListItem disablePadding disableGutters>
-              <ListItemButton
-                component={RouterLink}
-                to="/search-alumni?company=walton"
-              >
-                <ListItemIcon>
-                  <DashboardRoundedIcon
-                    color="info"
-                    sx={{ fontSize: '1rem' }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="Walton Hi-Tech Industries PLC"
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider light />
-            <ListItem disablePadding>
-              <ListItemButton
-                component={RouterLink}
-                to="/search-alumni?company=square"
-              >
-                <ListItemIcon>
-                  <DashboardRoundedIcon
-                    color="info"
-                    sx={{ fontSize: '1rem' }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="Square Pharmaceuticals PLC"
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider light />
-            <ListItem disablePadding>
-              <ListItemButton
-                component={RouterLink}
-                to="/search-alumni?company=pran rfl"
-              >
-                <ListItemIcon>
-                  <DashboardRoundedIcon
-                    color="info"
-                    sx={{ fontSize: '1rem', m: 0, p: 0 }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="PRAN-RFL Group"
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider light />
-            <ListItem disablePadding>
-              <ListItemButton
-                component={RouterLink}
-                to="/search-alumni?company=rural electrification breb"
-              >
-                <ListItemIcon>
-                  <DashboardRoundedIcon
-                    color="info"
-                    sx={{ fontSize: '1rem' }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="Bangladesh Rural Electrification Board (BREB)"
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider light />
-            <ListItem disablePadding>
-              <ListItemButton
-                component={RouterLink}
-                to="/search-alumni?company=local lged"
-              >
-                <ListItemIcon>
-                  <DashboardRoundedIcon
-                    color="info"
-                    sx={{ fontSize: '1rem' }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="Local Government Engineering Department (LGED)"
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider light />
-            <ListItem disablePadding>
-              <ListItemButton
-                component={RouterLink}
-                to="/search-alumni?company=power development bpdb"
-              >
-                <ListItemIcon>
-                  <DashboardRoundedIcon
-                    color="info"
-                    sx={{ fontSize: '1rem' }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ m: 0, p: 0, ml: -3 }}
-                  primary="Bangladesh power development board (BPDB)"
-                />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </CardContent>
+          <Carousel duration={1000} navButtonsAlwaysVisible={true} navButtonsProps={{          // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
+            style: {
+              backgroundColor: 'transparent',
+              color: grey[800],
+            }
+          }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', px: 2 }} >
+              <Chip label="Electrical" color="warning" variant='outlined' sx={{ px: 2, fontSize: '1rem', mb: 2 }} />
+              <List sx={{ bgcolor: '#f7f5fc', mx: { xs: 0, sm: 4 }, py: 0 }}>
+                <ListItem disablePadding disableGutters>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=walton"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Walton Hi-Tech Industries PLC"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=square"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Square Pharmaceuticals PLC"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=pran rfl"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem', m: 0, p: 0 }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="PRAN-RFL Group"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=rural electrification breb"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Bangladesh Rural Electrification Board (BREB)"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=local lged"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Local Government Engineering Department (LGED)"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=power development bpdb"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Bangladesh power development board (BPDB)"
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Box>
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+              <Chip label="Mechanical" color="warning" variant='outlined' sx={{ px: 2, fontSize: '1rem', mb: 2 }} />
+              <List sx={{ bgcolor: '#f7f5fc', mx: { xs: 0, sm: 4 }, py: 0 }}>
+                <ListItem disablePadding disableGutters>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=walton"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Walton Hi-Tech Industries PLC"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=square"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem' }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="Square Pharmaceuticals PLC"
+                    />
+                  </ListItemButton>
+                </ListItem>
+                <Divider light />
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component={RouterLink}
+                    to="/search-alumni?company=pran rfl"
+                  >
+                    <ListItemIcon>
+                      <DashboardRoundedIcon
+                        color="info"
+                        sx={{ fontSize: '1rem', m: 0, p: 0 }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{ m: 0, p: 0, ml: -3 }}
+                      primary="PRAN-RFL Group"
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Box>
+          </Carousel >
+        </CardContent >
         <CardActions sx={{ px: 2, ml: { xs: 0, sm: 4 } }}>
           <Button variant="outlined" component={RouterLink} to="/search-alumni">
             Search more
           </Button>
         </CardActions>
-      </Card>
+      </Card >
 
       <Card
         sx={{
@@ -325,7 +396,7 @@ const SearchAlumni = () => {
           </Button>
         </CardActions>
       </Card>
-    </Box>
+    </Box >
   );
 };
 

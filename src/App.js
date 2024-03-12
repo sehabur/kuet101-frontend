@@ -1,39 +1,47 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { Container, CssBaseline, ThemeProvider } from '@mui/material';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import { Container, CssBaseline, ThemeProvider } from "@mui/material";
+import ReactGA from "react-ga";
 
-import LayoutWithHeader from './LayoutWithHeader';
-import theme from './context/theme';
-import store from './store';
-import Homepage from './pages/Homepage';
-import Signin from './pages/auth/Signin';
-import Signup from './pages/auth/Signup';
-import FindYourMates from './pages/FindYourMates';
-import AlumniDetails from './pages/profile/AlumniDetails';
-import SearchAlumni from './pages/SearchAlumni';
-import FindTutor from './pages/tutor/FindTutor';
-import EnrollForTutor from './pages/tutor/EnrollForTutor';
-import EditProfile from './pages/profile/EditProfile';
-import ManagePassword from './pages/auth/ManagePassword';
-import CreatePost from './pages/posts/CreatePost';
-import ViewAllPosts from './pages/posts/ViewAllPosts';
-import PostDetails from './pages/posts/PostDetails';
-import AllPostsByUser from './pages/posts/AllPostsByUser';
-import TutionEnrollmentByUser from './pages/tutor/TutionEnrollmentByUser';
-import Learning from './pages/learning/Learning';
-import LearningFileExplorer from './pages/learning/LearningFileExplorer';
-import Gallery from './pages/gallery/Gallery';
-import AddGalleryPhoto from './pages/gallery/AddGalleryPhoto';
-import Blood from './pages/Blood';
-import About from './pages/About';
-import AdminLayout from './AdminLayout';
-import Users from './pages/admin/Users';
-import UserDetails from './pages/admin/UserDetails';
-import Dashboard from './pages/admin/Dashboard';
-import EditPost from './pages/posts/EditPost';
-import Posts from './pages/admin/Posts';
-import GalleryAdmin from './pages/admin/Gallery';
+import LayoutWithHeader from "./LayoutWithHeader";
+import theme from "./context/theme";
+import store from "./store";
+import Homepage from "./pages/Homepage";
+import Signin from "./pages/auth/Signin";
+import Signup from "./pages/auth/Signup";
+import FindYourMates from "./pages/FindYourMates";
+import AlumniDetails from "./pages/profile/AlumniDetails";
+import SearchAlumni from "./pages/SearchAlumni";
+
+import FindTutor from "./pages/tutor/FindTutor";
+import EnrollForTutor from "./pages/tutor/EnrollForTutor";
+import TutionEnrollmentByUser from "./pages/tutor/TutionEnrollmentByUser";
+
+import FindTolet from "./pages/tolet/FindTolet";
+import EnrollForTolet from "./pages/tolet/EnrollForTolet";
+import ToletEnrollmentByUser from "./pages/tolet/ToletEnrollmentByUser";
+import EditProfile from "./pages/profile/EditProfile";
+import ManagePassword from "./pages/auth/ManagePassword";
+import CreatePost from "./pages/posts/CreatePost";
+import ViewAllPosts from "./pages/posts/ViewAllPosts";
+import PostDetails from "./pages/posts/PostDetails";
+import AllPostsByUser from "./pages/posts/AllPostsByUser";
+import Learning from "./pages/learning/Learning";
+import LearningFileExplorer from "./pages/learning/LearningFileExplorer";
+import Gallery from "./pages/gallery/Gallery";
+import AddGalleryPhoto from "./pages/gallery/AddGalleryPhoto";
+import Blood from "./pages/Blood";
+import About from "./pages/About";
+import AdminLayout from "./AdminLayout";
+import Users from "./pages/admin/Users";
+import UserDetails from "./pages/admin/UserDetails";
+import Dashboard from "./pages/admin/Dashboard";
+import EditPost from "./pages/posts/EditPost";
+import Posts from "./pages/admin/Posts";
+import GalleryAdmin from "./pages/admin/Gallery";
+
+ReactGA.initialize("G-W5L8XBNGWZ");
 
 const App = () => {
   return (
@@ -69,6 +77,15 @@ const App = () => {
                   />
                 </Route>
 
+                <Route path="tolet/">
+                  <Route path="find" element={<FindTolet />} />
+                  <Route path="enroll" element={<EnrollForTolet />} />
+                  <Route
+                    path="my-enrollment/:id"
+                    element={<ToletEnrollmentByUser />}
+                  />
+                </Route>
+
                 <Route path="posts/">
                   <Route path="" element={<ViewAllPosts />} />
                   <Route path=":id" element={<PostDetails />} />
@@ -79,6 +96,11 @@ const App = () => {
 
                 <Route path="profile/">
                   <Route path=":id" element={<AlumniDetails />} />
+                  <Route path="edit/:id" element={<EditProfile />} />
+                </Route>
+
+                <Route path="try/">
+                  <Route path="home" element={<AlumniDetails />} />
                   <Route path="edit/:id" element={<EditProfile />} />
                 </Route>
 
