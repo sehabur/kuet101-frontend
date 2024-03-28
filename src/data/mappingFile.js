@@ -125,6 +125,10 @@ export const postCategoryList = [
     value: "knowledgeShare",
   },
   {
+    name: "Events/Programs",
+    value: "events",
+  },
+  {
     name: "Other",
     value: "other",
   },
@@ -224,6 +228,20 @@ export const districts = [
   "Sylhet",
   "Tangail",
   "Thakurgaon",
+];
+
+export const countries = [
+  "Bangladesh",
+  "United States of America (USA)",
+  "Canada",
+  "Finland",
+  "Germany",
+  "Australia",
+  "Japan",
+  "United Arab Emirates (UAE)",
+  "United kingdom (UK)",
+  "Malaysia",
+  "Austria",
 ];
 
 export const countryStates = [
@@ -374,13 +392,13 @@ export const countryStates = [
   "Yamagata, Japan",
   "Yamaguchi, Japan",
   "Yamanashi, Japan",
-  "Abu Dhabi, United Arab Emirates ",
-  "Dubai, United Arab Emirates ",
-  "Sharjah, United Arab Emirates ",
-  "Ajman, United Arab Emirates ",
-  "Umm Al Quwain, United Arab Emirates ",
-  "Ras Al Khaimah, United Arab Emirates ",
-  "Fujairah, United Arab Emirates ",
+  "Abu Dhabi, United Arab Emirates (UAE) ",
+  "Dubai, United Arab Emirates (UAE) ",
+  "Sharjah, United Arab Emirates (UAE) ",
+  "Ajman, United Arab Emirates (UAE) ",
+  "Umm Al Quwain, United Arab Emirates (UAE) ",
+  "Ras Al Khaimah, United Arab Emirates (UAE) ",
+  "Fujairah, United Arab Emirates (UAE) ",
   "England , United kingdom (UK)",
   "Ireland, United kingdom (UK)",
   "Scotland, United kingdom (UK)",

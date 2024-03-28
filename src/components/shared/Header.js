@@ -46,6 +46,8 @@ const Header = () => {
 
   const [tutionMenuAnchorEl, setTutionMenuAnchorEl] = useState(null);
 
+  const [toletMenuAnchorEl, setToletMenuAnchorEl] = useState(null);
+
   const handleProfileMenuOpen = (event) => {
     setProfileMenuAnchorEl(event.currentTarget);
   };
@@ -74,6 +76,13 @@ const Header = () => {
     setTutionMenuAnchorEl(null);
   };
 
+  const handleToletMenuOpen = (event) => {
+    setToletMenuAnchorEl(event.currentTarget);
+  };
+  const handleToletMenuClose = () => {
+    setToletMenuAnchorEl(null);
+  };
+
   const handleNavigation = (navigateTo, type) => {
     if (type === "profile") {
       handleProfileMenuClose();
@@ -83,6 +92,8 @@ const Header = () => {
       handleExploreMenuClose();
     } else if (type === "tution") {
       handleTutionMenuClose();
+    } else if (type === "tolet") {
+      handleToletMenuClose();
     }
     navigate(navigateTo);
   };
@@ -178,19 +189,6 @@ const Header = () => {
         sx={{ px: 4 }}
       >
         Photo gallery
-      </MenuItem>
-
-      <MenuItem
-        sx={{ px: 4 }}
-        onClick={() => handleNavigation("/tolet/find", "explore")}
-      >
-        Find to-let
-      </MenuItem>
-      <MenuItem
-        sx={{ px: 4 }}
-        onClick={() => handleNavigation("/tolet/enroll", "explore")}
-      >
-        Post to-let
       </MenuItem>
       <MenuItem
         onClick={() => handleNavigation("/aboutus", "explore")}
@@ -310,6 +308,31 @@ const Header = () => {
     </Menu>
   );
 
+  const toletMenu = (
+    <Menu
+      anchorEl={toletMenuAnchorEl}
+      open={Boolean(toletMenuAnchorEl)}
+      onClose={handleToletMenuClose}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+    >
+      <MenuItem
+        sx={{ px: 4 }}
+        onClick={() => handleNavigation("/tolet/find", "tolet")}
+      >
+        Find a to-let
+      </MenuItem>
+      <MenuItem
+        sx={{ px: 4 }}
+        onClick={() => handleNavigation("/tolet/enroll", "tolet")}
+      >
+        Post a to-let
+      </MenuItem>
+    </Menu>
+  );
+
   useEffect(() => {
     const authDataFromStorage = JSON.parse(localStorage.getItem("userInfo"));
     authDataFromStorage && dispatch(authActions.login(authDataFromStorage));
@@ -374,6 +397,16 @@ const Header = () => {
                 Tution
               </Button>
               {tutionMenu}
+
+              <Button
+                color="primary"
+                sx={{ mx: 1 }}
+                endIcon={<ArrowDropDownIcon sx={{ ml: -1 }} />}
+                onClick={handleToletMenuOpen}
+              >
+                To-let
+              </Button>
+              {toletMenu}
 
               <Button
                 color="primary"

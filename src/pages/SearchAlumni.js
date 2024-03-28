@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 import {
   Grid,
@@ -20,8 +20,8 @@ import {
   Stack,
   InputAdornment,
   styled,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 import {
   bloodGroupList,
@@ -30,15 +30,17 @@ import {
   status,
   interests,
   batchList,
-} from '../data/mappingFile';
-import AlumniCard from '../components/shared/AlumniCard';
-import Spinner from '../components/shared/Spinner';
-import { grey } from '@mui/material/colors';
-import { searchActions } from '../store';
+  countryStates,
+  countries,
+} from "../data/mappingFile";
+import AlumniCard from "../components/shared/AlumniCard";
+import Spinner from "../components/shared/Spinner";
+import { grey } from "@mui/material/colors";
+import { searchActions } from "../store";
 
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
-import HelpIcon from '@mui/icons-material/Help';
+import HelpIcon from "@mui/icons-material/Help";
 
 const CustomTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -46,7 +48,7 @@ const CustomTooltip = styled(({ className, ...props }) => (
   [`& .${tooltipClasses.tooltip}`]: {
     maxWidth: 350,
     fontSize: 14,
-    padding: '12px',
+    padding: "12px",
   },
 }));
 
@@ -57,16 +59,16 @@ const SearchAlumni = () => {
 
   let [searchParams, setSearchParams] = useSearchParams();
 
-  const companySearchText = searchParams.get('company');
+  const companySearchText = searchParams.get("company");
 
-  const matchesSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const matchesSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [searchResult, setSearchResult] = useState(null);
 
   const [searchMessage, setSearchMessage] = useState(
-    'Search alumni using filters'
+    "Search alumni using filters"
   );
 
   const [interestsList, setInterestsList] = useState([]);
@@ -75,29 +77,30 @@ const SearchAlumni = () => {
 
   const searchFilter = useSelector((state) => state.search?.search);
 
-  let currOrg = '';
+  let currOrg = "";
   if (companySearchText) {
     currOrg = companySearchText;
   } else if (searchFilter?.currentOrganization) {
     currOrg = searchFilter.currentOrganization;
   } else {
-    currOrg = '';
+    currOrg = "";
   }
 
   const [filterOption, setFilterOption] = useState({
-    name: searchFilter?.name || '',
-    rollNo: searchFilter?.rollNo || '',
-    batch: searchFilter?.batch || '',
-    departmentShort: searchFilter?.departmentShort || '',
-    homeDistrict: searchFilter?.homeDistrict || '',
-    presentDistrict: searchFilter?.presentDistrict || '',
-    gender: searchFilter?.gender || '',
-    bloodGroup: searchFilter?.bloodGroup || '',
-    status: searchFilter?.status || '',
-    currentJobTitle: searchFilter?.currentJobTitle || '',
+    name: searchFilter?.name || "",
+    rollNo: searchFilter?.rollNo || "",
+    batch: searchFilter?.batch || "",
+    departmentShort: searchFilter?.departmentShort || "",
+    homeDistrict: searchFilter?.homeDistrict || "",
+    presentDistrict: searchFilter?.presentDistrict || "",
+    country: searchFilter?.country || "",
+    gender: searchFilter?.gender || "",
+    bloodGroup: searchFilter?.bloodGroup || "",
+    status: searchFilter?.status || "",
+    currentJobTitle: searchFilter?.currentJobTitle || "",
     currentOrganization: currOrg,
-    interests: searchFilter?.interests || '',
-    expertin: searchFilter?.expertin || '',
+    interests: searchFilter?.interests || "",
+    expertin: searchFilter?.expertin || "",
   });
 
   const auth = useSelector((state) => state.auth);
@@ -124,18 +127,18 @@ const SearchAlumni = () => {
   };
 
   const handleFilterSubmit = async (type) => {
-    let queryText = 'search=1';
+    let queryText = "search=1";
     for (let key in filterOption) {
-      if (filterOption[key] !== 'all' && filterOption[key] !== '') {
-        if (key === 'bloodGroup') {
-          queryText += '&' + key + '=' + filterOption[key].replace('+', '%2B');
+      if (filterOption[key] !== "all" && filterOption[key] !== "") {
+        if (key === "bloodGroup") {
+          queryText += "&" + key + "=" + filterOption[key].replace("+", "%2B");
         } else {
-          queryText += '&' + key + '=' + filterOption[key];
+          queryText += "&" + key + "=" + filterOption[key];
         }
       }
     }
     getSearchedItems(queryText);
-    if (type === 'button') {
+    if (type === "button") {
       dispatch(searchActions.setSearchFilter(filterOption));
       setSearchParams({});
     }
@@ -144,30 +147,30 @@ const SearchAlumni = () => {
   const handleResetSearchFilter = () => {
     dispatch(searchActions.reset());
     setFilterOption({
-      name: '',
-      rollNo: '',
-      batch: '',
-      departmentShort: '',
-      homeDistrict: '',
-      presentDistrict: '',
-      gender: '',
-      bloodGroup: '',
-      status: '',
-      currentJobTitle: '',
-      currentOrganization: '',
-      interests: '',
-      expertin: '',
+      name: "",
+      rollNo: "",
+      batch: "",
+      departmentShort: "",
+      homeDistrict: "",
+      presentDistrict: "",
+      gender: "",
+      bloodGroup: "",
+      status: "",
+      currentJobTitle: "",
+      currentOrganization: "",
+      interests: "",
+      expertin: "",
     });
   };
 
-  const getSearchedItems = async (queryText = 'search=1') => {
+  const getSearchedItems = async (queryText = "search=1") => {
     try {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/api/users/getUsersByQuery?${queryText}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${auth?.token}`,
           },
         }
@@ -175,12 +178,12 @@ const SearchAlumni = () => {
       setSearchResult(response.data.users);
       if (response.data.users.length < 1) {
         setSearchMessage(
-          'No alumni found maching your search. Try again with different option.'
+          "No alumni found maching your search. Try again with different option."
         );
       }
       handleToggleDrawer(false);
       setIsLoading(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       setIsLoading(false);
     }
@@ -196,7 +199,7 @@ const SearchAlumni = () => {
 
   useEffect(() => {
     getInerests();
-    handleFilterSubmit('initial');
+    handleFilterSubmit("initial");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -212,7 +215,7 @@ const SearchAlumni = () => {
         <Button
           size="small"
           onClick={handleResetSearchFilter}
-          sx={{ textDecoration: 'underline', fontSize: '.95rem' }}
+          sx={{ textDecoration: "underline", fontSize: ".95rem" }}
         >
           Reset filters
         </Button>
@@ -274,9 +277,26 @@ const SearchAlumni = () => {
       </TextField>
 
       <Autocomplete
+        options={countries}
+        onChange={(event, value, reason) => {
+          handleAutoCompleteChange("country", value);
+        }}
+        value={filterOption.country}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Present country"
+            name="country"
+            size="small"
+            sx={{ my: 1 }}
+          />
+        )}
+      />
+
+      <Autocomplete
         options={districts}
         onChange={(event, value, reason) => {
-          handleAutoCompleteChange('homeDistrict', value);
+          handleAutoCompleteChange("homeDistrict", value);
         }}
         value={filterOption.homeDistrict}
         renderInput={(params) => (
@@ -290,14 +310,14 @@ const SearchAlumni = () => {
         )}
       />
 
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <Autocomplete
           fullWidth
-          options={districts}
+          options={districts.concat(countryStates)}
           freeSolo
           autoSelect
           onChange={(event, value, reason) => {
-            handleAutoCompleteChange('presentDistrict', value);
+            handleAutoCompleteChange("presentDistrict", value);
           }}
           value={filterOption.presentDistrict}
           renderInput={(params) => (
@@ -318,14 +338,14 @@ const SearchAlumni = () => {
         >
           <IconButton
             edge="end"
-            sx={{ ':hover': { bgcolor: 'transparent', color: 'primary.main' } }}
+            sx={{ ":hover": { bgcolor: "transparent", color: "primary.main" } }}
           >
-            <HelpIcon sx={{ fontSize: '1.2rem' }} />
+            <HelpIcon sx={{ fontSize: "1.2rem" }} />
           </IconButton>
         </CustomTooltip>
       </Box>
 
-      {auth?.gender === 'female' && (
+      {auth?.gender === "female" && (
         <TextField
           select
           label="Gender"
@@ -395,7 +415,7 @@ const SearchAlumni = () => {
         sx={{ my: 1 }}
       />
 
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <TextField
           fullWidth
           label="Current organization"
@@ -430,9 +450,9 @@ const SearchAlumni = () => {
         >
           <IconButton
             edge="end"
-            sx={{ ':hover': { bgcolor: 'transparent', color: 'primary.main' } }}
+            sx={{ ":hover": { bgcolor: "transparent", color: "primary.main" } }}
           >
-            <HelpIcon sx={{ fontSize: '1.2rem' }} />
+            <HelpIcon sx={{ fontSize: "1.2rem" }} />
           </IconButton>
         </CustomTooltip>
       </Box>
@@ -441,7 +461,7 @@ const SearchAlumni = () => {
         freeSolo
         options={interestsList}
         onChange={(event, value, reason) => {
-          handleAutoCompleteChange('interests', value);
+          handleAutoCompleteChange("interests", value);
         }}
         value={filterOption.interests}
         renderInput={(params) => (
@@ -458,7 +478,7 @@ const SearchAlumni = () => {
         freeSolo
         options={interestsList}
         onChange={(event, value, reason) => {
-          handleAutoCompleteChange('expertin', value);
+          handleAutoCompleteChange("expertin", value);
         }}
         value={filterOption.expertin}
         renderInput={(params) => (
@@ -475,7 +495,7 @@ const SearchAlumni = () => {
       <Box sx={{ mb: 1 }}>
         <Button
           variant="contained"
-          onClick={() => handleFilterSubmit('button')}
+          onClick={() => handleFilterSubmit("button")}
           sx={{ mt: 1.8 }}
           fullWidth
         >
@@ -487,7 +507,7 @@ const SearchAlumni = () => {
 
   useEffect(() => {
     if (!auth?.isLoggedIn) {
-      navigate('/signin');
+      navigate("/signin");
     }
   }, [navigate, auth]);
 
@@ -502,8 +522,8 @@ const SearchAlumni = () => {
       >
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
+            display: "flex",
+            justifyContent: "flex-end",
             mt: 1,
             mr: 2,
           }}
@@ -521,18 +541,18 @@ const SearchAlumni = () => {
         justifyContent="flex-start"
         alignItems="flex-start"
         sx={{
-          maxWidth: '1175px',
-          mx: 'auto',
+          maxWidth: "1175px",
+          mx: "auto",
         }}
       >
         <Grid item xs={12} sm={3.5}>
           <Paper
             sx={{
-              maxWidth: '300px',
+              maxWidth: "300px",
               py: 2,
               mt: 6,
               mb: 4,
-              display: { xs: 'none', sm: 'block' },
+              display: { xs: "none", sm: "block" },
             }}
             elevation={0}
             variant="outlined"
@@ -542,7 +562,7 @@ const SearchAlumni = () => {
         </Grid>
 
         <Grid item xs={12} sm={8.5}>
-          <Box sx={{ maxWidth: '800px' }}>
+          <Box sx={{ maxWidth: "800px" }}>
             {matchesSmDown && (
               <Box sx={{ px: 4, mt: 4 }}>
                 <Button
@@ -556,12 +576,12 @@ const SearchAlumni = () => {
               </Box>
             )}
             <Typography
-              sx={{ fontSize: '1.4rem', mt: 5.2, mb: 2, px: { xs: 3, sm: 0 } }}
+              sx={{ fontSize: "1.4rem", mt: 5.2, mb: 2, px: { xs: 3, sm: 0 } }}
             >
-              Search result{' '}
+              Search result{" "}
               {searchResult &&
                 `(${
-                  searchResult.length > 99 ? '99+' : searchResult.length
+                  searchResult.length > 99 ? "99+" : searchResult.length
                 } matches)`}
             </Typography>
 

@@ -61,7 +61,7 @@ const EnrollForTolet = () => {
       if (response.status === 201) {
         setErrorMessage("");
         setIsLoading(false);
-        setSuccessMessage("Enrollment for being a tolet successful");
+        setSuccessMessage("Tolet post creation successful");
       }
     } catch (error) {
       setSuccessMessage("");
@@ -72,7 +72,7 @@ const EnrollForTolet = () => {
         } else if (error.response.data.errors) {
           composeMsg = error.response.data.errors[0].msg;
         }
-        setErrorMessage(`Account creation failed. ${composeMsg}`);
+        setErrorMessage(`Tolet post creation failed. ${composeMsg}`);
       }
       setIsLoading(false);
     }
@@ -179,7 +179,7 @@ const EnrollForTolet = () => {
         type="submit"
         sx={{ mt: 4, mb: 3, py: 1.1, fontSize: "1.1rem" }}
       >
-        Enroll
+        Save
       </Button>
     </Box>
   );

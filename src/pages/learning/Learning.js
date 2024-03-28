@@ -3,10 +3,12 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardMedia,
+  Divider,
   Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import { grey } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
@@ -17,6 +19,9 @@ import SchoolIcon from "@mui/icons-material/School";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import ReactGA from "react-ga";
+
+import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 
 const Learning = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -178,6 +183,58 @@ const Learning = () => {
                   universities abroad
                 </Typography>
               </Box>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Box>
+      <Box sx={{ maxWidth: 750, mx: "auto", my: 8, px: 2 }}>
+        <Typography
+          variant="h1"
+          color="text.secondary"
+          sx={{ mb: 4, mt: 8, fontSize: "1.8rem", fontWeight: 500 }}
+        >
+          Class Lectures
+        </Typography>
+        {/* <Divider /> */}
+        <Card sx={{ maxWidth: 270, borderRadius: 2 }} elevation={4}>
+          <CardActionArea
+            component={RouterLink}
+            to="https://sites.google.com/view/kueteee/1st-year-2nd-semester"
+            target="_blank"
+          >
+            <NoteAltIcon
+              sx={{
+                bgcolor: blue[50],
+                color: blue[500],
+                borderRadius: "50%",
+                p: 1.4,
+                ml: 2,
+                mt: 3,
+                fontSize: "5rem",
+              }}
+            />
+            {/* <CardMedia
+              component="img"
+              height="140"
+              image="/static/images/cards/contemplative-reptile.jpg"
+              alt="green iguana"
+            /> */}
+            <CardContent>
+              <Typography
+                gutterBottom
+                component="div"
+                sx={{
+                  fontSize: "1.4rem",
+                  fontWeight: 500,
+                  color: "primary.dark",
+                }}
+              >
+                EEE Class Lecture Archieve
+              </Typography>
+              <Typography color="text.secondary">
+                Get all class lectures of EEE department at same place organized
+                according to semesters
+              </Typography>
             </CardContent>
           </CardActionArea>
         </Card>
