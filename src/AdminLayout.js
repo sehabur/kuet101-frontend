@@ -30,6 +30,7 @@ const AdminLayout = () => {
           sx={{
             width: 600,
             mx: "auto",
+            px: 2,
             my: 12,
           }}
         >

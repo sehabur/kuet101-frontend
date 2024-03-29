@@ -149,7 +149,7 @@ const RecurringDonation = () => {
             color="success"
           />
           <Typography variant="h5" sx={{ mb: 3 }} color="success.main">
-            Subscripe for a recurring donation plan and support hundred of
+            Subscribe for a recurring donation plan and support hundred of
             families
           </Typography>
 

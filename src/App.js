@@ -47,6 +47,8 @@ import ViewAllActiveDonor from "./pages/tryAdmin/activeDonor/ViewAllActiveDonor"
 import CreateActiveDonor from "./pages/tryAdmin/activeDonor/CreateActiveDonor";
 
 import TryHomepage from "./pages/try/Homepage";
+import ViewAllSpecial from "./pages/tryAdmin/ViewAllSpecial";
+import ViewAllRecurring from "./pages/tryAdmin/ViewAllRecurring";
 
 ReactGA.initialize("G-W5L8XBNGWZ");
 
@@ -141,15 +143,14 @@ const App = () => {
                   <Route path="" element={<ViewAllActiveDonor />} />
                   <Route path="create" element={<CreateActiveDonor />} />
                 </Route>
-
-                <Route path="allActiveDonors" element={<Dashboard />} />
-                <Route path="createActiveDonors" element={<UserDetails />} />
-
-                <Route path="allSpecialDonation" element={<Dashboard />} />
-                <Route path="specialDonation/:id" element={<Dashboard />} />
-
-                <Route path="allRecurringDonation" element={<Dashboard />} />
-                <Route path="recurringDonation/:id" element={<Dashboard />} />
+                <Route
+                  path="all-special-donation"
+                  element={<ViewAllSpecial />}
+                />
+                <Route
+                  path="all-recurring-donation"
+                  element={<ViewAllRecurring />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>

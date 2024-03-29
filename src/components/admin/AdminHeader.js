@@ -70,34 +70,51 @@ const AdminHeader = () => {
         </>
       )}
 
-      {auth?.isAdmin && ["try"].includes(auth?.adminRole) && (
-        <>
-          <MenuItem
-            onClick={() => handleNavigation("/try-admin/donation/create")}
-            sx={{ px: 4 }}
-          >
-            Create Donation
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleNavigation("/try-admin/donation")}
-            sx={{ px: 4 }}
-          >
-            All Donations
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleNavigation("/try-admin/active-donor/create")}
-            sx={{ px: 4 }}
-          >
-            Create active donor
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleNavigation("/try-admin/active-donor")}
-            sx={{ px: 4 }}
-          >
-            All active donor
-          </MenuItem>
-        </>
-      )}
+      {auth?.isAdmin &&
+        ["superAdmin", "editor", "try"].includes(auth?.adminRole) && (
+          <>
+            <MenuItem
+              onClick={() => handleNavigation("/try-admin/donation/create")}
+              sx={{ px: 4 }}
+            >
+              Create Donation
+            </MenuItem>
+            <MenuItem
+              onClick={() => handleNavigation("/try-admin/donation")}
+              sx={{ px: 4 }}
+            >
+              All Donations
+            </MenuItem>
+            <MenuItem
+              onClick={() => handleNavigation("/try-admin/active-donor/create")}
+              sx={{ px: 4 }}
+            >
+              Create active donor
+            </MenuItem>
+            <MenuItem
+              onClick={() => handleNavigation("/try-admin/active-donor")}
+              sx={{ px: 4 }}
+            >
+              All active donor
+            </MenuItem>
+            <MenuItem
+              onClick={() =>
+                handleNavigation("/try-admin/all-special-donation")
+              }
+              sx={{ px: 4 }}
+            >
+              All special donation
+            </MenuItem>
+            <MenuItem
+              onClick={() =>
+                handleNavigation("/try-admin/all-recurring-donation")
+              }
+              sx={{ px: 4 }}
+            >
+              All recurring donation
+            </MenuItem>
+          </>
+        )}
 
       <MenuItem onClick={() => handleNavigation("/")} sx={{ px: 4 }}>
         Back to website
@@ -186,7 +203,7 @@ const AdminHeader = () => {
             </Button>
           </Box> */}
 
-          <Box sx={{ display: { xs: "block", sm: "block" } }}>
+          <Box>
             <MenuIcon
               color="primary"
               onClick={handleMenuOpen}

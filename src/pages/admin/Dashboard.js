@@ -197,6 +197,7 @@ const Dashboard = () => {
               width: 600,
               mx: "auto",
               my: 12,
+              px: 4,
             }}
           >
             <Paper

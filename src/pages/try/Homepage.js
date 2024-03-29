@@ -68,7 +68,7 @@ const Homepage = () => {
           stopAutoPlayOnHover={false}
           indicators={false}
           navButtonsAlwaysVisible={true}
-          autoPlay={false}
+          autoPlay={true}
           height={matchesSmUp ? 530 : 220}
           navButtonsProps={{
             style: {

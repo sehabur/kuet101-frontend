@@ -238,6 +238,13 @@ const Header = () => {
 
       <MenuItem
         sx={{ px: 4, color: "primary.dark" }}
+        onClick={() => handleNavigation("/try", "mobileView")}
+      >
+        TRY
+      </MenuItem>
+
+      <MenuItem
+        sx={{ px: 4, color: "primary.dark" }}
         onClick={() => handleNavigation("/tutor/find", "mobileView")}
       >
         Find a tutor
