@@ -390,6 +390,14 @@ const Header = () => {
 
               <Button
                 color="primary"
+                onClick={() => handleNavigation("/try")}
+                sx={{ mx: 1 }}
+              >
+                TRY
+              </Button>
+
+              <Button
+                color="primary"
                 sx={{ mx: 1 }}
                 endIcon={<ArrowDropDownIcon sx={{ ml: -1 }} />}
                 onClick={handleTutionMenuOpen}

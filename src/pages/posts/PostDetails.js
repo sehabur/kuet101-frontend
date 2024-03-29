@@ -10,18 +10,18 @@ import {
   MenuItem,
   TextField,
   Typography,
-} from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import Spinner from '../../components/shared/Spinner';
-import ReactTimeAgo from 'react-time-ago';
-import { Link as RouterLink } from 'react-router-dom';
-import { PhotoProvider, PhotoView } from 'react-photo-view';
-import 'react-photo-view/dist/react-photo-view.css';
-import { grey } from '@mui/material/colors';
-import { batchList, departments, status } from '../../data/mappingFile';
+} from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import Spinner from "../../components/shared/Spinner";
+import ReactTimeAgo from "react-time-ago";
+import { Link as RouterLink } from "react-router-dom";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
+import { grey } from "@mui/material/colors";
+import { batchList, departments, status } from "../../data/mappingFile";
 
 const PostDetails = () => {
   const { id: postId } = useParams();
@@ -36,23 +36,17 @@ const PostDetails = () => {
 
   const [postSetActiveStatus, setPostSetActiveStatus] = useState();
 
+  const [mailSubject, setMailSubject] = useState("");
+
   const [sendMailSelection, setSendMailSelection] = useState();
 
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSendMailSelection = (event) => {
     setSendMailSelection(event.target.checked);
   };
-  // const handleCheckboxChange = (event) => {
-  //   setMailRecpList({
-  //     ...mailRecpList,
-  //     [event.target.name]: event.target.checked,
-  //   });
-  // };
-
-  console.log(mailRecpList);
 
   const handleAutoCompleteChange = (name, value) => {
     console.log(name, value);
@@ -64,6 +58,10 @@ const PostDetails = () => {
 
   const handlePostActiveStatusChange = (event) => {
     setPostSetActiveStatus(event.target.value);
+  };
+
+  const handleMailSubjectChange = (event) => {
+    setMailSubject(event.target.value);
   };
 
   const handlePostActiveStatusSubmit = async () => {
@@ -83,27 +81,28 @@ const PostDetails = () => {
           isActive: postSetActiveStatus,
           sendMailSelection,
           mailReceivers,
+          mailSubject,
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${auth?.token}`,
           },
         }
       );
 
       if (response.status === 201) {
-        setErrorMessage('');
+        setErrorMessage("");
         setSuccessMessage(response.data.message);
       } else {
-        setErrorMessage('Post status update failed.');
-        setSuccessMessage('');
+        setErrorMessage("Post status update failed.");
+        setSuccessMessage("");
       }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      setErrorMessage('Post status update failed.');
-      setSuccessMessage('');
+      setErrorMessage("Post status update failed.");
+      setSuccessMessage("");
     }
   };
 
@@ -115,7 +114,7 @@ const PostDetails = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/posts/${postId}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${auth && auth.token}`,
           },
         }
@@ -133,39 +132,39 @@ const PostDetails = () => {
   }, [auth]);
 
   return (
-    <Box sx={{ maxWidth: '950px', mx: 'auto', py: 4, px: 2, mb: 4 }}>
+    <Box sx={{ maxWidth: "950px", mx: "auto", py: 4, px: 2, mb: 4 }}>
       <Spinner open={isLoading} />
 
       {postDetails && (
         <>
-          <Typography variant="title" sx={{ my: 2, fontSize: '1.8rem' }}>
+          <Typography variant="title" sx={{ my: 2, fontSize: "1.8rem" }}>
             {postDetails.title}
           </Typography>
 
           <Typography
             sx={{
-              fontSize: '.9rem',
-              fontStyle: 'italic',
+              fontSize: ".9rem",
+              fontStyle: "italic",
               ml: 0.3,
               mt: 1,
               mb: 2,
             }}
           >
-            Posted by{' '}
+            Posted by{" "}
             <Typography
-              sx={{ display: 'inline' }}
+              sx={{ display: "inline" }}
               component={RouterLink}
               to={`/profile/${postDetails.user._id}`}
             >
               {postDetails.user.firstName} {postDetails.user.lastName}
-            </Typography>{' '}
+            </Typography>{" "}
             <ReactTimeAgo
               date={postDetails.createdAt}
               locale="en-US"
               timeStyle="round-minute"
             />
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+          <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
             <PhotoProvider>
               {postDetails.images.map((image) => (
                 <PhotoView
@@ -173,12 +172,12 @@ const PostDetails = () => {
                 >
                   <Box
                     sx={{
-                      width: { xs: '95vw', sm: 220 },
+                      width: { xs: "95vw", sm: 220 },
                       pr: 2,
                       height: 175,
                       mb: 2,
-                      ':hover': {
-                        cursor: 'pointer',
+                      ":hover": {
+                        cursor: "pointer",
                       },
                     }}
                     // component={RouterLink}
@@ -188,7 +187,7 @@ const PostDetails = () => {
                     <img
                       src={`${process.env.REACT_APP_CLOUD_IMAGE_URL}/${image}`}
                       sx={{
-                        width: { xs: '95vw', sm: 220 },
+                        width: { xs: "95vw", sm: 220 },
                         pr: 2,
                         height: 175,
                         mb: 2,
@@ -197,7 +196,7 @@ const PostDetails = () => {
                       width="100%"
                       height="100%"
                       style={{
-                        objectFit: 'cover',
+                        objectFit: "cover",
                       }}
                     />
                   </Box>
@@ -206,7 +205,7 @@ const PostDetails = () => {
             </PhotoProvider>
           </Box>
 
-          <Typography paragraph={true} sx={{ mt: 2, whiteSpace: 'pre-wrap' }}>
+          <Typography paragraph={true} sx={{ mt: 2, whiteSpace: "pre-wrap" }}>
             {postDetails.description}
           </Typography>
         </>
@@ -218,17 +217,11 @@ const PostDetails = () => {
           <Divider sx={{ my: 1 }} />
           <Box sx={{ my: 4 }}>
             <Box sx={{ my: 2 }}>
-              {/* <FormControlLabel
-                control={<Checkbox />}
-                label="Department"
-                name="deptSelect"
-                onChange={handleCheckboxChange}
-              /> */}
               <Autocomplete
                 multiple
                 options={departments.map((item) => item.short)}
-                onChange={(event, value, reason = 'selectOption') => {
-                  handleAutoCompleteChange('departmentShort', value);
+                onChange={(event, value, reason = "selectOption") => {
+                  handleAutoCompleteChange("departmentShort", value);
                 }}
                 size="small"
                 sx={{ maxWidth: 600 }}
@@ -242,17 +235,11 @@ const PostDetails = () => {
               />
             </Box>
             <Box sx={{ my: 2 }}>
-              {/* <FormControlLabel
-                control={<Checkbox />}
-                label="Batch"
-                name="batchSelect"
-                onChange={handleCheckboxChange}
-              /> */}
               <Autocomplete
                 multiple
                 options={batchList}
-                onChange={(event, value, reason = 'selectOption') => {
-                  handleAutoCompleteChange('batch', value);
+                onChange={(event, value, reason = "selectOption") => {
+                  handleAutoCompleteChange("batch", value);
                 }}
                 size="small"
                 sx={{ maxWidth: 600 }}
@@ -262,17 +249,11 @@ const PostDetails = () => {
               />
             </Box>
             <Box sx={{ my: 2 }}>
-              {/* <FormControlLabel
-                control={<Checkbox />}
-                label="Status"
-                name="statusSelect"
-                onChange={handleCheckboxChange}
-              /> */}
               <Autocomplete
                 multiple
                 options={status.map((item) => item.value)}
-                onChange={(event, value, reason = 'selectOption') => {
-                  handleAutoCompleteChange('status', value);
+                onChange={(event, value, reason = "selectOption") => {
+                  handleAutoCompleteChange("status", value);
                 }}
                 size="small"
                 sx={{ maxWidth: 600 }}
@@ -282,17 +263,11 @@ const PostDetails = () => {
               />
             </Box>
             <Box sx={{ my: 2 }}>
-              {/* <FormControlLabel
-                control={<Checkbox />}
-                label="Current location"
-                name="locationSelect"
-                onChange={handleCheckboxChange}
-              /> */}
               <Autocomplete
                 multiple
-                options={['insideBd', 'outsideBd']}
-                onChange={(event, value, reason = 'selectOption') => {
-                  handleAutoCompleteChange('currentlyLiveIn', value);
+                options={["insideBd", "outsideBd"]}
+                onChange={(event, value, reason = "selectOption") => {
+                  handleAutoCompleteChange("currentlyLiveIn", value);
                 }}
                 size="small"
                 sx={{ maxWidth: 600 }}
@@ -303,6 +278,17 @@ const PostDetails = () => {
                     label="Select location"
                   />
                 )}
+              />
+            </Box>
+            <Box sx={{ my: 2, maxWidth: 600 }}>
+              <TextField
+                label="Mail subject"
+                name="mailSubject"
+                size="small"
+                fullWidth
+                value={mailSubject}
+                onChange={handleMailSubjectChange}
+                sx={{ minWidth: 200, mr: 2 }}
               />
             </Box>
             <FormControlLabel

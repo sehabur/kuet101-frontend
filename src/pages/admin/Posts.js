@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -7,22 +7,22 @@ import {
   Paper,
   TextField,
   Typography,
-} from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+} from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import Spinner from '../../components/shared/Spinner';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { blueGrey, grey } from '@mui/material/colors';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import Spinner from "../../components/shared/Spinner";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { blueGrey, grey } from "@mui/material/colors";
+import axios from "axios";
 
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const Posts = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +30,7 @@ const Posts = () => {
   const [searchResult, setSearchResult] = useState(null);
 
   const [formInputs, setFormInputs] = useState({
-    isActive: '',
+    isActive: "",
   });
 
   const auth = useSelector((state) => state.auth);
@@ -48,13 +48,13 @@ const Posts = () => {
       setIsLoading(true);
 
       const queryString =
-        formInputs.isActive !== 'all' ? `active=${formInputs.isActive}` : '';
+        formInputs.isActive !== "all" ? `active=${formInputs.isActive}` : "";
 
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/api/admin/getPosts?${queryString}`,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${auth?.token}`,
           },
         }
@@ -70,8 +70,8 @@ const Posts = () => {
   return (
     <Box
       sx={{
-        maxWidth: '720px',
-        mx: 'auto',
+        maxWidth: "720px",
+        mx: "auto",
         px: 2,
         pt: 2,
       }}
@@ -108,10 +108,10 @@ const Posts = () => {
           <Table>
             <TableHead sx={{ bgcolor: grey[200] }}>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>User</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Created at</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Active</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>User</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Created at</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Active</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -120,28 +120,28 @@ const Posts = () => {
                   <TableCell
                     component={RouterLink}
                     to={`/admin/post-details/${row._id}`}
-                    sx={{ color: 'primary.main' }}
+                    sx={{ color: "primary.main" }}
                   >
                     {row.title}
                   </TableCell>
                   <TableCell
                     component={RouterLink}
                     to={`/admin/user-profile?id=${row.user._id}`}
-                    sx={{ color: 'primary.main' }}
+                    sx={{ color: "primary.main" }}
                   >
                     {row.user.firstName} {row.user.lastName}
                   </TableCell>
                   <TableCell>
-                    {format(new Date(row.createdAt), 'dd/MM/yyyy')}
+                    {format(new Date(row.createdAt), "dd/MM/yyyy")}
                   </TableCell>
-                  <TableCell>{row.isActive ? 'Yes' : 'No'}</TableCell>
+                  <TableCell>{row.isActive ? "Yes" : "No"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
         {searchResult?.length < 1 && (
-          <Typography sx={{ textAlign: 'center', my: 8 }}>
+          <Typography sx={{ textAlign: "center", my: 8 }}>
             No result found
           </Typography>
         )}

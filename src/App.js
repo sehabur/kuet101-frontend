@@ -40,6 +40,13 @@ import Dashboard from "./pages/admin/Dashboard";
 import EditPost from "./pages/posts/EditPost";
 import Posts from "./pages/admin/Posts";
 import GalleryAdmin from "./pages/admin/Gallery";
+import CreateDonation from "./pages/tryAdmin/donation/CreateDonation";
+import DonationDetails from "./pages/tryAdmin/donation/DonationDetails";
+import ViewAllDonation from "./pages/tryAdmin/donation/ViewAllDonation";
+import ViewAllActiveDonor from "./pages/tryAdmin/activeDonor/ViewAllActiveDonor";
+import CreateActiveDonor from "./pages/tryAdmin/activeDonor/CreateActiveDonor";
+
+import TryHomepage from "./pages/try/Homepage";
 
 ReactGA.initialize("G-W5L8XBNGWZ");
 
@@ -100,27 +107,49 @@ const App = () => {
                 </Route>
 
                 <Route path="try/">
-                  <Route path="home" element={<AlumniDetails />} />
+                  <Route path="" element={<TryHomepage />} />
+                  <Route path="donation/:id" element={<DonationDetails />} />
                   <Route path="edit/:id" element={<EditProfile />} />
                 </Route>
 
                 <Route path="aboutus" element={<About />} />
               </Route>
 
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/signup" element={<Signup />} />
+              <Route path="signin" element={<Signin />} />
+              <Route path="signup" element={<Signup />} />
               <Route
-                path="/manage-password/:type"
+                path="manage-password/:type"
                 element={<ManagePassword />}
               />
 
-              <Route path="/admin/" element={<AdminLayout />}>
+              <Route path="admin/" element={<AdminLayout />}>
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="all-users" element={<Users />} />
                 <Route path="user-profile" element={<UserDetails />} />
                 <Route path="all-posts" element={<Posts />} />
                 <Route path="post-details/:id" element={<PostDetails />} />
                 <Route path="gallery" element={<GalleryAdmin />} />
+              </Route>
+
+              <Route path="try-admin/" element={<AdminLayout />}>
+                <Route path="donation/">
+                  <Route path="" element={<ViewAllDonation />} />
+                  <Route path=":id" element={<DonationDetails />} />
+                  <Route path="create" element={<CreateDonation />} />
+                </Route>
+                <Route path="active-donor/">
+                  <Route path="" element={<ViewAllActiveDonor />} />
+                  <Route path="create" element={<CreateActiveDonor />} />
+                </Route>
+
+                <Route path="allActiveDonors" element={<Dashboard />} />
+                <Route path="createActiveDonors" element={<UserDetails />} />
+
+                <Route path="allSpecialDonation" element={<Dashboard />} />
+                <Route path="specialDonation/:id" element={<Dashboard />} />
+
+                <Route path="allRecurringDonation" element={<Dashboard />} />
+                <Route path="recurringDonation/:id" element={<Dashboard />} />
               </Route>
             </Routes>
           </BrowserRouter>

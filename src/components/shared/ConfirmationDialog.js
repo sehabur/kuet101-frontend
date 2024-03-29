@@ -6,8 +6,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@mui/material';
-import React from 'react';
+} from "@mui/material";
+import React from "react";
 
 const ConfirmationDialog = ({
   dialogOpen,
@@ -24,13 +24,13 @@ const ConfirmationDialog = ({
         </DialogContent>
         <DialogActions sx={{ mr: 2, mb: 1.5 }}>
           <Button
-            onClick={(e) => dialogOnClose(e, 'cancel')}
+            onClick={(e) => dialogOnClose(e, "cancel")}
             variant="outlined"
           >
             Cancel
           </Button>
           <Button
-            onClick={(e) => dialogOnClose(e, 'confirm')}
+            onClick={(e) => dialogOnClose(e, "confirm")}
             variant="contained"
           >
             Confirm

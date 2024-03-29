@@ -1,13 +1,16 @@
-import { AppBar, Box, Button, Menu, MenuItem, Toolbar } from '@mui/material';
-import React, { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { AppBar, Box, Button, Menu, MenuItem, Toolbar } from "@mui/material";
+import React, { useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
+import { useSelector } from "react-redux";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+
+  const auth = useSelector((state) => state.auth);
 
   const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
@@ -28,41 +31,75 @@ const AdminHeader = () => {
       open={Boolean(menuAnchorEl)}
       onClose={handleMenuClose}
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
+        vertical: "bottom",
+        horizontal: "left",
       }}
     >
-      <MenuItem
-        onClick={() => handleNavigation('/admin/dashboard')}
-        sx={{ px: 4 }}
-      >
-        Dashboard
-      </MenuItem>
-      <MenuItem
-        onClick={() => handleNavigation('/admin/all-users')}
-        sx={{ px: 4 }}
-      >
-        Users list
-      </MenuItem>
-      <MenuItem
-        onClick={() => handleNavigation('/admin/user-profile')}
-        sx={{ px: 4 }}
-      >
-        User profile
-      </MenuItem>
-      <MenuItem
-        onClick={() => handleNavigation('/admin/all-posts')}
-        sx={{ px: 4 }}
-      >
-        Posts
-      </MenuItem>
-      <MenuItem
-        onClick={() => handleNavigation('/admin/gallery')}
-        sx={{ px: 4 }}
-      >
-        Gallery
-      </MenuItem>
-      <MenuItem onClick={() => handleNavigation('/')} sx={{ px: 4 }}>
+      {auth?.isAdmin && ["superAdmin", "editor"].includes(auth?.adminRole) && (
+        <>
+          <MenuItem
+            onClick={() => handleNavigation("/admin/dashboard")}
+            sx={{ px: 4 }}
+          >
+            Dashboard
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/admin/all-users")}
+            sx={{ px: 4 }}
+          >
+            Users list
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/admin/user-profile")}
+            sx={{ px: 4 }}
+          >
+            User profile
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/admin/all-posts")}
+            sx={{ px: 4 }}
+          >
+            Posts
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/admin/gallery")}
+            sx={{ px: 4 }}
+          >
+            Gallery
+          </MenuItem>
+        </>
+      )}
+
+      {auth?.isAdmin && ["try"].includes(auth?.adminRole) && (
+        <>
+          <MenuItem
+            onClick={() => handleNavigation("/try-admin/donation/create")}
+            sx={{ px: 4 }}
+          >
+            Create Donation
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/try-admin/donation")}
+            sx={{ px: 4 }}
+          >
+            All Donations
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/try-admin/active-donor/create")}
+            sx={{ px: 4 }}
+          >
+            Create active donor
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleNavigation("/try-admin/active-donor")}
+            sx={{ px: 4 }}
+          >
+            All active donor
+          </MenuItem>
+        </>
+      )}
+
+      <MenuItem onClick={() => handleNavigation("/")} sx={{ px: 4 }}>
         Back to website
       </MenuItem>
     </Menu>
@@ -73,12 +110,12 @@ const AdminHeader = () => {
       <AppBar
         position="fixed"
         sx={{
-          bgcolor: 'white',
+          bgcolor: "white",
           borderBottom: `1px solid #d8daf9`,
         }}
         elevation={0}
       >
-        <Toolbar sx={{ width: { xs: 'inherit', sm: '1080px' }, mx: 'auto' }}>
+        <Toolbar sx={{ width: { xs: "inherit", sm: "1080px" }, mx: "auto" }}>
           <Box
             sx={{
               pt: 0.7,
@@ -89,9 +126,9 @@ const AdminHeader = () => {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Box
+          {/* <Box
             sx={{
-              display: { xs: 'none', sm: 'block' },
+              display: { xs: "none", sm: "block" },
             }}
           >
             <Button
@@ -147,13 +184,13 @@ const AdminHeader = () => {
             >
               Back to website
             </Button>
-          </Box>
+          </Box> */}
 
-          <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+          <Box sx={{ display: { xs: "block", sm: "block" } }}>
             <MenuIcon
               color="primary"
               onClick={handleMenuOpen}
-              sx={{ mx: 1, fontSize: '1.8rem' }}
+              sx={{ mx: 1, fontSize: "1.8rem" }}
             />
           </Box>
           {menus}
